@@ -5,5 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 add_executable(Sl4m_outdoor main.cpp
-        buldingAndMapping.cpp)
+        detectAndComputeGFTT.cpp
+        detectAndComputeGFTT.h)
 target_link_libraries(Sl4m_outdoor ${OpenCV_LIBS})
