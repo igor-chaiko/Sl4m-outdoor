@@ -11,7 +11,7 @@ int main() {
     std::string relativeFilePath = "sources/testVideo.mp4";
     std::filesystem::path path = currentDir / relativeFilePath;
 
-    VideoCapture cap(path);
+    VideoCapture cap(0);
 
     if (!cap.isOpened()) {
         cerr << "Ошибка при открытии видео!" << endl;
@@ -39,10 +39,14 @@ int main() {
 
         detectAndComputeGFTT(grayFrame2, keypoints2, descriptors2);
 
+        cerr << descriptors2.size() << endl;
+
         BFMatcher matcher(NORM_HAMMING);
         vector<DMatch> matches;
 
         matcher.match(descriptors1, descriptors2, matches);
+
+
 
         drawMatches(frame1, keypoints1, frame2, keypoints2, matches, img);
 

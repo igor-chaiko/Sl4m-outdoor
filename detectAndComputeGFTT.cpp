@@ -80,8 +80,8 @@ int featuresByOrb() {
     return 0;
 }
 
-int unionOfTwoWays(string path) {
-    VideoCapture cap(path);
+int unionOfTwoWays() {
+    VideoCapture cap(0);
     if (!cap.isOpened()) {
         cerr << "Ошибка при открытии видео!" << endl;
         return -1;
@@ -148,25 +148,27 @@ int unionOfTwoWays(string path) {
 
 void detectAndComputeGFTT(Mat grayImage,
                           CV_OUT CV_IN_OUT vector<KeyPoint> &keypoints,
-                          Mat descriptors) {
+                          CV_OUT Mat &descriptors) {
     keypoints.clear();
     descriptors.release();
 
     vector<KeyPoint> orbKeypoints;
-    Mat orbDescriptors;
     Ptr<ORB> orb = ORB::create(200);
+    Mat orbDescriptors;
     vector<Point2f> features;
 
     goodFeaturesToTrack(grayImage, features, 200, quality, minDistance);
 
-    orb->detectAndCompute(grayImage, noArray(), orbKeypoints, orbDescriptors);
+    orb->detect(grayImage, orbKeypoints, noArray());
 
-    for (size_t i = 0; i < orbKeypoints.size(); i++) {
+    for (auto & orbKeypoint : orbKeypoints) {
         for (auto feature : features) {
-            if (norm(orbKeypoints[i].pt - feature) < 1) {
-                keypoints.push_back(orbKeypoints[i]);
-                descriptors.push_back(orbDescriptors.row(i));
+            if (norm(orbKeypoint.pt - feature) < 5) {
+                keypoints.push_back(orbKeypoint);
             }
         }
     }
+    orb->compute(grayImage, keypoints, descriptors);
+
+    cerr << descriptors.size() << endl;
 }
