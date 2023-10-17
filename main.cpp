@@ -1,12 +1,18 @@
 #include <opencv2/opencv.hpp>
 #include "detectAndComputeGFTT.h"
-
+#include <filesystem>
 
 using namespace cv;
 using namespace std;
 
 int main() {
-    VideoCapture cap(0);
+    std::filesystem::path currentDir = std::filesystem::current_path();
+    currentDir.replace_filename(""); // удаляем ебучий "cmake-build-debug" из пути, хз че он там забыл
+    std::string relativeFilePath = "sources/testVideo.mp4";
+    std::filesystem::path path = currentDir / relativeFilePath;
+
+    VideoCapture cap(path);
+
     if (!cap.isOpened()) {
         cerr << "Ошибка при открытии видео!" << endl;
         return -1;
@@ -51,5 +57,6 @@ int main() {
 
     }
 
+//    int res = unionOfTwoWays(path);
     return 0;
 }

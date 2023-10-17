@@ -1,4 +1,17 @@
-/snap/clion/250/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/250/bin/ninja/linux/x64/ninja -G Ninja -S /media/rustam/Work/Study/Sl4m-outdoor -B /media/rustam/Work/Study/Sl4m-outdoor/cmake-build-debug
--- Configuring done (0.0s)
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor -B /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug
+-- The C compiler identification is AppleClang 14.0.0.14000029
+-- The CXX compiler identification is AppleClang 14.0.0.14000029
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /Library/Developer/CommandLineTools/usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /Library/Developer/CommandLineTools/usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Found OpenCV: /opt/homebrew/Cellar/opencv/4.8.1 (found version "4.8.1") 
+-- Configuring done (1.0s)
 -- Generating done (0.0s)
--- Build files have been written to: /media/rustam/Work/Study/Sl4m-outdoor/cmake-build-debug
+-- Build files have been written to: /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug

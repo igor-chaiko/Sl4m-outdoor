@@ -8,3 +8,5 @@
 void detectAndComputeGFTT(cv::Mat grayImage,
                           CV_OUT CV_IN_OUT std::vector<cv::KeyPoint> &keypoints,
                           cv::Mat descriptors);
+
+int unionOfTwoWays(std::string);

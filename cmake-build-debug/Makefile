@@ -129,29 +129,29 @@ Sl4m_outdoor/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/build
 .PHONY : Sl4m_outdoor/fast
 
-buldingAndMapping.o: buldingAndMapping.cpp.o
-.PHONY : buldingAndMapping.o
+detectAndComputeGFTT.o: detectAndComputeGFTT.cpp.o
+.PHONY : detectAndComputeGFTT.o
 
 # target to build an object file
-buldingAndMapping.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/buldingAndMapping.cpp.o
-.PHONY : buldingAndMapping.cpp.o
+detectAndComputeGFTT.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/detectAndComputeGFTT.cpp.o
+.PHONY : detectAndComputeGFTT.cpp.o
 
-buldingAndMapping.i: buldingAndMapping.cpp.i
-.PHONY : buldingAndMapping.i
+detectAndComputeGFTT.i: detectAndComputeGFTT.cpp.i
+.PHONY : detectAndComputeGFTT.i
 
 # target to preprocess a source file
-buldingAndMapping.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/buldingAndMapping.cpp.i
-.PHONY : buldingAndMapping.cpp.i
+detectAndComputeGFTT.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/detectAndComputeGFTT.cpp.i
+.PHONY : detectAndComputeGFTT.cpp.i
 
-buldingAndMapping.s: buldingAndMapping.cpp.s
-.PHONY : buldingAndMapping.s
+detectAndComputeGFTT.s: detectAndComputeGFTT.cpp.s
+.PHONY : detectAndComputeGFTT.s
 
 # target to generate assembly for a file
-buldingAndMapping.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/buldingAndMapping.cpp.s
-.PHONY : buldingAndMapping.cpp.s
+detectAndComputeGFTT.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/detectAndComputeGFTT.cpp.s
+.PHONY : detectAndComputeGFTT.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -186,9 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Sl4m_outdoor"
-	@echo "... buldingAndMapping.o"
-	@echo "... buldingAndMapping.i"
-	@echo "... buldingAndMapping.s"
+	@echo "... detectAndComputeGFTT.o"
+	@echo "... detectAndComputeGFTT.i"
+	@echo "... detectAndComputeGFTT.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -16,9 +16,8 @@ int buildingFeaturesInVideoUsingGFTT(string path) {
 
     Mat frame;
     Mat grayFrame;
-//    Point2f - это структура или класс (в зависимости от того, как она определена в вашем коде), используемая в
-//    библиотеке OpenCV для представления двухмерных точек на плоскости. Эта структура обычно используется для хранения
-//    координат (x, y) точек, которые могут представлять, например, пиксели на изображении.
+
+//  Point2f - структура, которая описывает точки на кадре в формате (х, у)
     vector<Point2f> corners;
 
     while (true) {
@@ -81,7 +80,7 @@ int featuresByOrb() {
     return 0;
 }
 
-int unionOfTwo(string path) {
+int unionOfTwoWays(string path) {
     VideoCapture cap(path);
     if (!cap.isOpened()) {
         cerr << "Ошибка при открытии видео!" << endl;
