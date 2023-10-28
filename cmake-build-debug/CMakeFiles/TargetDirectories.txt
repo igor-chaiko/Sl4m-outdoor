@@ -1,3 +1,3 @@
-/media/rustam/Work/Study/Sl4m-outdoor/cmake-build-debug/CMakeFiles/Sl4m_outdoor.dir
-/media/rustam/Work/Study/Sl4m-outdoor/cmake-build-debug/CMakeFiles/edit_cache.dir
-/media/rustam/Work/Study/Sl4m-outdoor/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles/Sl4m_outdoor.dir
+/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles/rebuild_cache.dir
