@@ -1,16 +1,4 @@
 #include <opencv2/opencv.hpp>
-#include <filesystem>
-#include <iostream>
-
-namespace fs = std::filesystem;
-
-void isImageOpen(const cv::Mat& photo) {
-    if(photo.empty()) {
-        std::cout << "Не получилось открыть фотографию" << std::endl;
-        exit(-1);
-    }
-}
-
 int main() {
     /* Итак, сначала нам нужно найти как можно больше возможных совпадений
      * между двумя изображениями, чтобы найти фундаментальную
@@ -95,7 +83,6 @@ int main() {
     //-- Show detected matches
     imshow("Good Matches", img_matches );
     cv::waitKey();
-
 
 
     return 0;
