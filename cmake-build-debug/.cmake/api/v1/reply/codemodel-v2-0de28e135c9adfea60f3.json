@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/media/rustam/Work/Study/Sl4m-outdoor/cmake-build-debug",
-		"source" : "/media/rustam/Work/Study/Sl4m-outdoor"
+		"build" : "/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug",
+		"source" : "/home/ruslan/CLionProjects/Sl4m-outdoor"
 	},
 	"version" : 
 	{
