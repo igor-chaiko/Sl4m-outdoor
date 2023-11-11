@@ -29,10 +29,16 @@ public:
 
     cv::Point2d getVector();
 
-    double vectorLength();
+    double vectorLength() const;
 
     // угол в радианах
-    double calculateAngle();
+    double calculateAngle() const;
+
+    // вычисляем глобальные координаты точки, в которую ведет вектор
+    static cv::Point2d calculateNewCoords(cv::Point2d, cv::Mat, cv::Mat);
+
+    // вычисляем угол поворота камеры
+    static cv::Point2d calculateRotationAngle(cv::Mat);
 };
 
 #endif //SL4M_OUTDOOR_MAPPOINT_H
