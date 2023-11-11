@@ -23,6 +23,8 @@ public:
 
     void setGlobalCoordinates(cv::Point2d);
 
+    cv::Point2d getGlobalCoordinates();
+
     void setVector(double x, double y);
 
     cv::Point2d getVector();

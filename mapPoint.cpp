@@ -7,6 +7,19 @@ MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localC
     this->vector = vector;
 }
 
+void MapPoint::setGlobalCoordinates(double x, double y) {
+    globalCoordinate.x = x;
+    globalCoordinate.y = y;
+}
+
+void MapPoint::setGlobalCoordinates(cv::Point2d newGlobalCoordinate) {
+    globalCoordinate = newGlobalCoordinate;
+}
+
+cv::Point2d MapPoint::getGlobalCoordinates() {
+    return this->globalCoordinate;
+}
+
 void MapPoint::setVector(double x, double y) {
     vector.x = x;
     vector.y = y;
@@ -25,11 +38,5 @@ double MapPoint::calculateAngle() {
     return std::atan2(vector.y, vector.x);
 }
 
-void MapPoint::setGlobalCoordinates(double x, double y) {
-    globalCoordinate.x = x;
-    globalCoordinate.y = y;
-}
 
-void MapPoint::setGlobalCoordinates(cv::Point2d newGlobalCoordinate) {
-    globalCoordinate = newGlobalCoordinate;
-}
+
