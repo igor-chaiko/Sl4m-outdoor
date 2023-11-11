@@ -1,6 +1,7 @@
-CMakeFiles/Sl4m_outdoor.dir/main.cpp.o: \
- /home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp \
- /usr/include/stdc-predef.h /usr/local/include/opencv4/opencv2/opencv.hpp \
+CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: \
+ /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp \
+ /usr/include/stdc-predef.h /home/ruslan/CLionProjects/Sl4m-outdoor/Map.h \
+ /usr/local/include/opencv4/opencv2/opencv.hpp \
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/local/include/opencv4/opencv2/core.hpp \
  /usr/local/include/opencv4/opencv2/core/cvdef.h \
@@ -357,5 +358,4 @@ CMakeFiles/Sl4m_outdoor.dir/main.cpp.o: \
  /usr/local/include/opencv4/opencv2/video.hpp \
  /usr/local/include/opencv4/opencv2/video/tracking.hpp \
  /usr/local/include/opencv4/opencv2/video/background_segm.hpp \
- /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.h \
- /home/ruslan/CLionProjects/Sl4m-outdoor/Map.h
+ /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.h

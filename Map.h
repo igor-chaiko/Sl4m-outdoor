@@ -1,20 +1,17 @@
-//
-// Created by ruslan on 11.11.2023.
-//
-
-#ifndef SL4M_OUTDOOR_DRAWMAP_H
-#define SL4M_OUTDOOR_DRAWMAP_H
+#ifndef SL4M_OUTDOOR_MAP_H
+#define SL4M_OUTDOOR_MAP_H
 
 #include <opencv2/opencv.hpp>
 #include "mapPoint.h"
 #include <vector>
 
-
 class DrawMap {
 private:
     std::vector<MapPoint> coordinates;
-    int canvasHeight = 900;
-    int canvasWeight = 900;
+    int canvasSize = 900;
+
+    double maxCoordinate = std::numeric_limits<double>::min();
+
 
     void drawAxes(cv::Mat canvas);
 
@@ -26,9 +23,7 @@ public:
 
     void drawMap();
 
-    void setCanvasWeight(int weight);
-
-    void setCanvasHeight(int height);
+    void setCanvasSize(int size);
 };
 
-#endif //SL4M_OUTDOOR_DRAWMAP_H
+#endif //SL4M_OUTDOOR_MAP_H

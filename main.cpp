@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include "mapPoint.h"
-#include "drawMap.h"
+#include "Map.h"
 
 void isImageOpen(const cv::Mat& image) {
     if (image.empty()) {
@@ -18,7 +18,7 @@ int main() {
     std::vector<MapPoint> coordinates;
 
     double radius = 1.0; // Радиус спирали
-    int numPoints = 400; // Количество точек для генерации
+    int numPoints = 40; // Количество точек для генерации
 
     for (int i = 0; i < numPoints; ++i) {
         double t = 0.1 * i; // Значения t варьируются, чтобы сгенерировать несколько оборотов
