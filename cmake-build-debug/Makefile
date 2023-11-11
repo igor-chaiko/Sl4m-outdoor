@@ -129,29 +129,29 @@ Sl4m_outdoor/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/build
 .PHONY : Sl4m_outdoor/fast
 
-DrawMap.o: DrawMap.cpp.o
-.PHONY : DrawMap.o
+drawMap.o: drawMap.cpp.o
+.PHONY : drawMap.o
 
 # target to build an object file
-DrawMap.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o
-.PHONY : DrawMap.cpp.o
+drawMap.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.o
+.PHONY : drawMap.cpp.o
 
-DrawMap.i: DrawMap.cpp.i
-.PHONY : DrawMap.i
+drawMap.i: drawMap.cpp.i
+.PHONY : drawMap.i
 
 # target to preprocess a source file
-DrawMap.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.i
-.PHONY : DrawMap.cpp.i
+drawMap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.i
+.PHONY : drawMap.cpp.i
 
-DrawMap.s: DrawMap.cpp.s
-.PHONY : DrawMap.s
+drawMap.s: drawMap.cpp.s
+.PHONY : drawMap.s
 
 # target to generate assembly for a file
-DrawMap.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.s
-.PHONY : DrawMap.cpp.s
+drawMap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.s
+.PHONY : drawMap.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -234,9 +234,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Sl4m_outdoor"
-	@echo "... DrawMap.o"
-	@echo "... DrawMap.i"
-	@echo "... DrawMap.s"
+	@echo "... drawMap.o"
+	@echo "... drawMap.i"
+	@echo "... drawMap.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o"
-  "CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o.d"
+  "CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.o"
+  "CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.o.d"
   "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o"
   "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o.d"
   "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o"

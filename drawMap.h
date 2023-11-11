@@ -13,11 +13,22 @@
 class DrawMap {
 private:
     std::vector<MapPoint> coordinates;
+    int canvasHeight = 900;
+    int canvasWeight = 900;
 
+    void drawAxes(cv::Mat canvas);
+
+    cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point);
 public:
+    DrawMap(std::vector<MapPoint> coordinates);
+
     void addPoint(MapPoint point);
 
     void drawMap();
+
+    void setCanvasWeight(int weight);
+
+    void setCanvasHeight(int height);
 };
 
 #endif //SL4M_OUTDOOR_DRAWMAP_H
