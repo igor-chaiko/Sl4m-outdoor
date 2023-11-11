@@ -9,6 +9,6 @@ add_executable(Sl4m_outdoor main.cpp
         triangulation.h
         mapPoint.h
         mapPoint.cpp
-        drawMap.cpp
-        drawMap.h)
+        DrawMap.cpp
+        DrawMap.h)
 target_link_libraries(Sl4m_outdoor ${OpenCV_LIBS})

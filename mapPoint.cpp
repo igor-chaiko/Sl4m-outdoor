@@ -1,28 +1,35 @@
 #include <opencv2/opencv.hpp>
+#include "mapPoint.h"
 
-class MapPoint {
-private:
-//    переменная для хранения координаты (x, y) в какой-то момент времени
-    cv::Point2d globalCoordinate;
-//    массив фичей, обноруженных в этот момент врмени(их 2д координаты)
-    std::vector<cv::Point2d> localCoordinates;
-//    направление оси x в локальной системе координат (нормализован т.е. единичный)
-    cv::Point2d vector;
+MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Point2d vector) {
+    this->globalCoordinate = globalCoordinate;
+    this->localCoordinates = localCoordinates;
+    this->vector = vector;
+}
 
-public:
-    void setVector(double x, double y) {
-        vector.x = x;
-        vector.y = y;
-    }
+void MapPoint::setVector(double x, double y) {
+    vector.x = x;
+    vector.y = y;
+}
 
-    double vectorLength() {
-        double x = vector.x, y = vector.y;
+cv::Point2d MapPoint::getVector() {
+    return this->vector;
+}
 
-        return std::sqrt(x * x + y * y);
-    }
+double MapPoint::vectorLength() {
+    double x = vector.x, y = vector.y;
+    return std::sqrt(x * x + y * y);
+}
 
-    //угол в радианах
-    double calculateAngle() {
-        return std::atan2(vector.y, vector.x);
-    }
-};
+double MapPoint::calculateAngle() {
+    return std::atan2(vector.y, vector.x);
+}
+
+void MapPoint::setGlobalCoordinates(double x, double y) {
+    globalCoordinate.x = x;
+    globalCoordinate.y = y;
+}
+
+void MapPoint::setGlobalCoordinates(cv::Point2d newGlobalCoordinate) {
+    globalCoordinate = newGlobalCoordinate;
+}

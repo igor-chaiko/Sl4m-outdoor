@@ -1,4 +1,4 @@
 /home/ruslan/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/ruslan/CLionProjects/Sl4m-outdoor -B /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug
--- Configuring done (0.0s)
+-- Configuring done (0.2s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug

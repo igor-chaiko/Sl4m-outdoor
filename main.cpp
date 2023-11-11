@@ -1,5 +1,5 @@
 #include <opencv2/opencv.hpp>
-
+#include "DrawMap.h"
 void isImageOpen(const cv::Mat& image) {
     if (image.empty()) {
         std::cerr << "Error: Unable to open image." << std::endl;
@@ -11,6 +11,12 @@ void isImageOpen(const cv::Mat& image) {
 }
 
 int main() {
+
+
+
+    return 0;
+
+
     /* Итак, сначала нам нужно найти как можно больше возможных совпадений
      * между двумя изображениями, чтобы найти фундаментальную
      * матрицу.

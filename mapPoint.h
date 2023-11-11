@@ -1,7 +1,3 @@
-//
-// Created by ruslan on 11.11.2023.
-//
-
 #ifndef SL4M_OUTDOOR_MAPPOINT_H
 #define SL4M_OUTDOOR_MAPPOINT_H
 
@@ -20,7 +16,16 @@ private:
     cv::Point2d vector;
 
 public:
+
+    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Point2d vector);
+
+    void setGlobalCoordinates(double x, double y);
+
+    void setGlobalCoordinates(cv::Point2d);
+
     void setVector(double x, double y);
+
+    cv::Point2d getVector();
 
     double vectorLength();
 
