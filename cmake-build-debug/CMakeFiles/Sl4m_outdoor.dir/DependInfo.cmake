@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/ruslan/CLionProjects/Sl4m-outdoor/DrawMap.cpp" "CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o.d"
+  "/home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp" "CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o.d"
   "/home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp" "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o.d"
   "/home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp" "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o.d"
   "/home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp" "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o.d"

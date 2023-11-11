@@ -111,26 +111,26 @@ CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp -o CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s
 
-CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o: CMakeFiles/Sl4m_outdoor.dir/flags.make
-CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o: /home/ruslan/CLionProjects/Sl4m-outdoor/DrawMap.cpp
-CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o: CMakeFiles/Sl4m_outdoor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o -c /home/ruslan/CLionProjects/Sl4m-outdoor/DrawMap.cpp
+CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: CMakeFiles/Sl4m_outdoor.dir/flags.make
+CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp
+CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: CMakeFiles/Sl4m_outdoor.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o -c /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp
 
-CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruslan/CLionProjects/Sl4m-outdoor/DrawMap.cpp > CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.i
+CMakeFiles/Sl4m_outdoor.dir/Map.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sl4m_outdoor.dir/Map.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp > CMakeFiles/Sl4m_outdoor.dir/Map.cpp.i
 
-CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruslan/CLionProjects/Sl4m-outdoor/DrawMap.cpp -o CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.s
+CMakeFiles/Sl4m_outdoor.dir/Map.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/Map.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp -o CMakeFiles/Sl4m_outdoor.dir/Map.cpp.s
 
 # Object files for target Sl4m_outdoor
 Sl4m_outdoor_OBJECTS = \
 "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o" \
 "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o" \
 "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o" \
-"CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o"
+"CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o"
 
 # External object files for target Sl4m_outdoor
 Sl4m_outdoor_EXTERNAL_OBJECTS =
@@ -138,7 +138,7 @@ Sl4m_outdoor_EXTERNAL_OBJECTS =
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/main.cpp.o
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o
-Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/DrawMap.cpp.o
+Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/build.make
 Sl4m_outdoor: /usr/local/lib/libopencv_gapi.so.4.8.0
 Sl4m_outdoor: /usr/local/lib/libopencv_highgui.so.4.8.0

@@ -1,6 +1,8 @@
-CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o: \
- /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp \
- /usr/include/stdc-predef.h /usr/local/include/opencv4/opencv2/opencv.hpp \
+CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.o: \
+ /home/ruslan/CLionProjects/Sl4m-outdoor/drawMap.cpp \
+ /usr/include/stdc-predef.h \
+ /home/ruslan/CLionProjects/Sl4m-outdoor/drawMap.h \
+ /usr/local/include/opencv4/opencv2/opencv.hpp \
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/local/include/opencv4/opencv2/core.hpp \
  /usr/local/include/opencv4/opencv2/core/cvdef.h \

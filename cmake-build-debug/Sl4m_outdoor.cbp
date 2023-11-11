@@ -84,10 +84,10 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/DrawMap.cpp">
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/DrawMap.h">
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/Map.h">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
 		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp">

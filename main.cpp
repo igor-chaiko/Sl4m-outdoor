@@ -1,5 +1,7 @@
 #include <opencv2/opencv.hpp>
-#include "DrawMap.h"
+#include "mapPoint.h"
+#include "Map.h"
+
 void isImageOpen(const cv::Mat& image) {
     if (image.empty()) {
         std::cerr << "Error: Unable to open image." << std::endl;
@@ -11,6 +13,27 @@ void isImageOpen(const cv::Mat& image) {
 }
 
 int main() {
+    std::vector<cv::Point2d> local;
+    cv::Point2d vector;
+    std::vector<MapPoint> coordinates;
+
+    double radius = 1.0; // Радиус спирали
+    int numPoints = 40; // Количество точек для генерации
+
+    for (int i = 0; i < numPoints; ++i) {
+        double t = 0.1 * i; // Значения t варьируются, чтобы сгенерировать несколько оборотов
+        double x = radius * t * std::cos(t);
+        double y = radius * t * std::sin(t);
+        coordinates.emplace_back(cv::Point2d(x * 10, y * 10), local, vector);
+    }
+
+
+
+
+
+
+    DrawMap testMap(coordinates);
+    testMap.drawMap();
 
 
 
