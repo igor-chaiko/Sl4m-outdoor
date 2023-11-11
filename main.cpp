@@ -1,4 +1,15 @@
 #include <opencv2/opencv.hpp>
+
+void isImageOpen(const cv::Mat& image) {
+    if (image.empty()) {
+        std::cerr << "Error: Unable to open image." << std::endl;
+        exit(1);
+
+    } else {
+        std::cout << "Image successfully opened." << std::endl;
+    }
+}
+
 int main() {
     /* Итак, сначала нам нужно найти как можно больше возможных совпадений
      * между двумя изображениями, чтобы найти фундаментальную

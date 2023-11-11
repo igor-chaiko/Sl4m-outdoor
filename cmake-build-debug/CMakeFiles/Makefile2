@@ -81,12 +81,12 @@ clean: CMakeFiles/Sl4m_outdoor.dir/clean
 CMakeFiles/Sl4m_outdoor.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target Sl4m_outdoor"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5 "Built target Sl4m_outdoor"
 .PHONY : CMakeFiles/Sl4m_outdoor.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Sl4m_outdoor.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Sl4m_outdoor.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/Sl4m_outdoor.dir/rule

@@ -6,5 +6,9 @@ find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
 add_executable(Sl4m_outdoor main.cpp
         triangulation.cpp
-        triangulation.h)
+        triangulation.h
+        mapPoint.h
+        mapPoint.cpp
+        drawMap.cpp
+        drawMap.h)
 target_link_libraries(Sl4m_outdoor ${OpenCV_LIBS})

@@ -1,5 +1,5 @@
-CMakeFiles/Sl4m_outdoor.dir/main.cpp.o: \
- /home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp \
+CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o: \
+ /home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp \
  /usr/include/stdc-predef.h /usr/local/include/opencv4/opencv2/opencv.hpp \
  /usr/local/include/opencv4/opencv2/opencv_modules.hpp \
  /usr/local/include/opencv4/opencv2/core.hpp \

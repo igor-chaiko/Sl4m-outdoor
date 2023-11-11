@@ -129,6 +129,30 @@ Sl4m_outdoor/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/build
 .PHONY : Sl4m_outdoor/fast
 
+drawMap.o: drawMap.cpp.o
+.PHONY : drawMap.o
+
+# target to build an object file
+drawMap.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.o
+.PHONY : drawMap.cpp.o
+
+drawMap.i: drawMap.cpp.i
+.PHONY : drawMap.i
+
+# target to preprocess a source file
+drawMap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.i
+.PHONY : drawMap.cpp.i
+
+drawMap.s: drawMap.cpp.s
+.PHONY : drawMap.s
+
+# target to generate assembly for a file
+drawMap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/drawMap.cpp.s
+.PHONY : drawMap.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -153,6 +177,54 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+mapPoint.o: mapPoint.cpp.o
+.PHONY : mapPoint.o
+
+# target to build an object file
+mapPoint.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o
+.PHONY : mapPoint.cpp.o
+
+mapPoint.i: mapPoint.cpp.i
+.PHONY : mapPoint.i
+
+# target to preprocess a source file
+mapPoint.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.i
+.PHONY : mapPoint.cpp.i
+
+mapPoint.s: mapPoint.cpp.s
+.PHONY : mapPoint.s
+
+# target to generate assembly for a file
+mapPoint.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s
+.PHONY : mapPoint.cpp.s
+
+triangulation.o: triangulation.cpp.o
+.PHONY : triangulation.o
+
+# target to build an object file
+triangulation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o
+.PHONY : triangulation.cpp.o
+
+triangulation.i: triangulation.cpp.i
+.PHONY : triangulation.i
+
+# target to preprocess a source file
+triangulation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.i
+.PHONY : triangulation.cpp.i
+
+triangulation.s: triangulation.cpp.s
+.PHONY : triangulation.s
+
+# target to generate assembly for a file
+triangulation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Sl4m_outdoor.dir/build.make CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.s
+.PHONY : triangulation.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +234,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Sl4m_outdoor"
+	@echo "... drawMap.o"
+	@echo "... drawMap.i"
+	@echo "... drawMap.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... mapPoint.o"
+	@echo "... mapPoint.i"
+	@echo "... mapPoint.s"
+	@echo "... triangulation.o"
+	@echo "... triangulation.i"
+	@echo "... triangulation.s"
 .PHONY : help
 
 

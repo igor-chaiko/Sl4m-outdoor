@@ -84,7 +84,25 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/drawMap.cpp">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/drawMap.h">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
 		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.h">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
+		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.h">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
 		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/CMakeLists.txt">
