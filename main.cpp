@@ -1,6 +1,5 @@
 #include <opencv2/opencv.hpp>
 #include "mapPoint.h"
-#include "Map.h"
 
 void isImageOpen(const cv::Mat& image) {
     if (image.empty()) {
@@ -13,27 +12,39 @@ void isImageOpen(const cv::Mat& image) {
 }
 
 int main() {
-    std::vector<cv::Point2d> local;
-    cv::Point2d vector;
-    std::vector<MapPoint> coordinates;
+    cv::Point2d startPoint(4, 4);
+    cv::Mat vector1 = (cv::Mat_<double>(3, 1) <<
+                                             5, 2, 0
+                                             );
+    cv::Mat vector2 = (cv::Mat_<double>(3, 1) <<
+                                            3.8, 2, 0
+                                            );
 
-    double radius = 1.0; // Радиус спирали
-    int numPoints = 40; // Количество точек для генерации
+    int test1 = testCoordsFinder(45, startPoint, vector1);
+    int test2 = testCoordsFinder(360 - 45, startPoint,vector2);
+    int test3 = testCoordsFinder(0, startPoint, vector1);
 
-    for (int i = 0; i < numPoints; ++i) {
-        double t = 0.1 * i; // Значения t варьируются, чтобы сгенерировать несколько оборотов
-        double x = radius * t * std::cos(t);
-        double y = radius * t * std::sin(t);
-        coordinates.emplace_back(cv::Point2d(x * 10, y * 10), local, vector);
-    }
-
-
-
-
-
-
-    DrawMap testMap(coordinates);
-    testMap.drawMap();
+//    std::vector<cv::Point2d> local;
+//    cv::Point2d vector;
+//    std::vector<MapPoint> coordinates;
+//
+//    double radius = 1.0; // Радиус спирали
+//    int numPoints = 40; // Количество точек для генерации
+//
+//    for (int i = 0; i < numPoints; ++i) {
+//        double t = 0.1 * i; // Значения t варьируются, чтобы сгенерировать несколько оборотов
+//        double x = radius * t * std::cos(t);
+//        double y = radius * t * std::sin(t);
+//        coordinates.emplace_back(cv::Point2d(x * 10, y * 10), local, vector);
+//    }
+//
+//
+//
+//
+//
+//
+//    DrawMap testMap(coordinates);
+//    testMap.drawMap();
 
 
 

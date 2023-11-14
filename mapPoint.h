@@ -35,10 +35,13 @@ public:
     double calculateAngle() const;
 
     // вычисляем глобальные координаты точки, в которую ведет вектор
-    static cv::Point2d calculateNewCoords(cv::Point2d, cv::Mat, cv::Mat);
+    cv::Point2d calculateNewCoords(cv::Mat, cv::Mat);
 
     // вычисляем угол поворота камеры
     static cv::Point2d calculateRotationAngle(cv::Mat);
 };
+
+// тестирует calculateNewCoords из MapPoint
+int testCoordsFinder(int angleInDegrees, cv::Point2d startPoint, cv::Mat vector);
 
 #endif //SL4M_OUTDOOR_MAPPOINT_H

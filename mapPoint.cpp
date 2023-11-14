@@ -38,8 +38,7 @@ double MapPoint::calculateAngle() const {
     return std::atan2(vector.y, vector.x);
 }
 
-cv::Point2d MapPoint::calculateNewCoords(cv::Point2d startCoords,
-                                         cv::Mat displacementVector3D,
+cv::Point2d MapPoint::calculateNewCoords(cv::Mat displacementVector3D,
                                          cv::Mat rotationMatrix3D) {
     cv::Point2d globalCoords;
 
@@ -47,18 +46,16 @@ cv::Point2d MapPoint::calculateNewCoords(cv::Point2d startCoords,
     cv::Mat displacementVector2D = displacementVector3D(cv::Range(0, 2),
                                                         cv::Range::all()
                                                         );
-    //убрезаем у вектора координату Z
+    // обрезаем у вектора координату Z
     cv::Mat rotationMatrix2D = rotationMatrix3D(cv::Range(0, 2),
                                                 cv::Range(0, 2)
                                                 );
-    // вычисляем обратную матрицу вращения
-    cv::Mat inverseRotationMatrix = rotationMatrix2D.t();
 
-    // вектор, повернутый в обратном направлении
-    cv::Mat inverseVector = inverseRotationMatrix * displacementVector2D;
+    // повернутый вектор
+    cv::Mat inverseVector = rotationMatrix2D * displacementVector2D;
 
-    globalCoords.x = startCoords.x + inverseVector.at<double>(0, 0);
-    globalCoords.y = startCoords.y + inverseVector.at<double>(0, 1);
+    globalCoords.x = this->globalCoordinate.x + inverseVector.at<double>(0, 0);
+    globalCoords.y = this->globalCoordinate.y + inverseVector.at<double>(0, 1);
 
     return globalCoords;
 }
