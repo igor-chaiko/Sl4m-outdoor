@@ -14,10 +14,10 @@ DrawMap::DrawMap(std::vector<MapPoint> coordinates) {
 
 void DrawMap::addPoint(MapPoint point) {
     this->coordinates.push_back(point);
-    if (point.getGlobalCoordinates().x > maxCoordinate) {
+    if (abs(point.getGlobalCoordinates().x) > maxCoordinate) {
         maxCoordinate = abs(point.getGlobalCoordinates().x);
     }
-    if (point.getGlobalCoordinates().y > maxCoordinate) {
+    if (abs(point.getGlobalCoordinates().y) > maxCoordinate) {
         maxCoordinate = abs(point.getGlobalCoordinates().y);
     }
 }
