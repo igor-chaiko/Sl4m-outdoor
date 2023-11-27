@@ -31,7 +31,7 @@ int getFramesPull(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
 }
 
 int entryPoint(const std::string &path) {
-    cv::VideoCapture cap(0);
+    cv::VideoCapture cap(path);
 
     if (!cap.isOpened()) {
         std::cerr << "Ошибка при открытии видео!" << std::endl;
@@ -42,10 +42,6 @@ int entryPoint(const std::string &path) {
 
     int status = getFramesPull(firstWindow, cap);
     status = getFramesPull(secondWindow, cap);
-
-    if (firstWindow.empty() || secondWindow.empty()) {
-        return -1;
-    }
 
     while (true) {
 
