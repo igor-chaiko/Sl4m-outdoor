@@ -1,6 +1,10 @@
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <fstream>
 #include "processVideo.h"
+#include "mapPoint.h"
+#include "Map.h"
+#include "triangulation.h"
 
 std::vector<cv::Mat> init() {
     std::vector<cv::Mat> frames;
@@ -31,6 +35,29 @@ int getFramesPull(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
 }
 
 int entryPoint(const std::string &path) {
+    std::ifstream inputFile("CalibratedCamera.txt");
+
+    if (!inputFile.is_open()) {
+        std::cerr << "Unable to open the file(" << std::endl;
+        return -1;
+    }
+
+    cv::Mat cameraMatrix(3, 3, CV_64F);
+
+    for (int i = 0; i < cameraMatrix.rows; i++) {
+        for (int j = 0; j < cameraMatrix.cols; j++) {
+            double value;
+            if (inputFile >> value) {
+                cameraMatrix.at<double>(i, j) = value;
+            } else {
+                std::cerr << "No value((" << std::endl;
+                return -1;
+            }
+        }
+    }
+
+    inputFile.close();
+
     cv::VideoCapture cap(path);
 
     if (!cap.isOpened()) {
@@ -38,18 +65,34 @@ int entryPoint(const std::string &path) {
         return -1;
     }
 
+    cv::Point2d start = cv::Point2d(0, 0), vector = cv::Point2d(1, 0);
+    std::vector<cv::Point2d> points;
+    std::vector<MapPoint> empty;
+
+    MapPoint firstPoint = MapPoint(start, points, vector);
+    DrawMap map = DrawMap(empty);
+    map.addPoint(firstPoint);
+
     std::vector<cv::Mat> firstWindow = init(), secondWindow = init();
 
     int status = getFramesPull(firstWindow, cap);
-    status = getFramesPull(secondWindow, cap);
+
+    cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
+    cv::Mat image1 = firstWindow[0], image2, points3D;
 
     while (true) {
 
-        //...
+        status = getFramesPull(secondWindow, cap);
+
+        image2 = secondWindow[0];
+
+        cv::imshow(" ", image2);
+        triangulation(image1, image2, cameraMatrix, P1, P2, points3D);
+        std::cout << P2 << std::endl;
 
         firstWindow = secondWindow;
-        status = getFramesPull(secondWindow, cap);
-        //...
+        image1 = image2;
+        P1 = P2;
 
         if (cv::waitKey(30) == 27) {
             break;

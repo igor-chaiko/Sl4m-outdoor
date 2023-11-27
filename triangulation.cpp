@@ -44,6 +44,7 @@ void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, cv::Ma
 
     cv::Mat points4D;
     cv::triangulatePoints(P1, P2, matched_points1, matched_points2, points4D);
+    points3D = cv::Mat::zeros(3, points4D.cols, CV_64F);
 
     for (int i = 0; i < points4D.cols; i++) {
         cv::Mat point = points4D.col(i);
@@ -51,6 +52,4 @@ void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, cv::Ma
             points3D.at<double>(j, i) = point.at<double>(j) / point.at<double>(3);
         }
     }
-
-    std::cout << points3D << std::endl;
 }
