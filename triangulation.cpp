@@ -2,7 +2,7 @@
 #include "triangulation.h"
 
 void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const cv::Mat &cameraMatrix, const cv::Mat &P1,
-              const cv::Mat &P2, cv::Mat points3D) {
+              cv::Mat &P2, cv::Mat points3D) {
     cv::Mat firstGray, secondGray;
     cv::cvtColor(firstFrame, firstGray, cv::COLOR_BGR2GRAY);
     cv::cvtColor(secondFrame, secondGray, cv::COLOR_BGR2GRAY);
@@ -21,7 +21,7 @@ void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const 
 
     std::vector<cv::Point2d> matched_points2;
     std::vector<cv::Point2d> matched_points1;
-    double ratio_threshold = 0.8;
+    double ratio_threshold = 0.5;
 
     for (auto &match: matches) {
         if (match[0].distance < ratio_threshold * match[1].distance) {
@@ -31,27 +31,41 @@ void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const 
         }
     }
 
+    int num_best_matches = std::min(13, static_cast<int>(good_Matches.size()));
+    good_Matches.resize(num_best_matches);
+    matched_points1.resize(num_best_matches);
+    matched_points2.resize(num_best_matches);
+
+    std::cout << matched_points1.size() << std::endl;
+
+    cv::Mat img_matches;
+    cv::drawMatches(firstGray, keyPoints1, secondGray, keyPoints2, good_Matches, img_matches);
+    cv::namedWindow("Matches", cv::WINDOW_NORMAL);
+    cv::imshow("Matches", img_matches);
+    cv::waitKey(1);
+
 
     cv::Mat E = cv::findEssentialMat(matched_points1, matched_points2, cameraMatrix);
 
     cv::Mat R, t;
     cv::recoverPose(E, matched_points1, matched_points2, cameraMatrix, R, t);
 
-    R = R * P1(cv::Rect(0, 0, 3, 3));
-    t = R * t + P1(cv::Rect(3, 0, 1, 3));
+    cv::Mat tmp;
+    cv::hconcat(R, t, tmp);
 
+    cv::Mat newRow = (cv::Mat_<double>(1, 4) << 0, 0, 0, 1);
+    tmp.push_back(newRow);
 
-    R.copyTo(P2(cv::Rect(0, 0, 3, 3)));
-    t.copyTo(P2(cv::Rect(3, 0, 1, 3)));
+    P2 = P1 * tmp;
 
-    cv::Mat points4D;
-    cv::triangulatePoints(P1, P2, matched_points1, matched_points2, points4D);
-    points3D = cv::Mat::zeros(3, points4D.cols, CV_64F);
-
-    for (int i = 0; i < points4D.cols; i++) {
-        cv::Mat point = points4D.col(i);
-        for (int j = 0; j < 3; j++) {
-            points3D.at<double>(j, i) = point.at<double>(j) / point.at<double>(3);
-        }
-    }
+//    cv::Mat points4D;
+//    cv::triangulatePoints(P1, P2, matched_points1, matched_points2, points4D);
+//    points3D = cv::Mat::zeros(3, points4D.cols, CV_64F);
+//
+//    for (int i = 0; i < points4D.cols; i++) {
+//        cv::Mat point = points4D.col(i);
+//        for (int j = 0; j < 3; j++) {
+//            points3D.at<double>(j, i) = point.at<double>(j) / point.at<double>(3);
+//        }
+//    }
 }
