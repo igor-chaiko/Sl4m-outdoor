@@ -1,8 +1,8 @@
 #include <opencv2/opencv.hpp>
 #include "triangulation.h"
 
-void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, cv::Mat cameraMatrix, const cv::Mat &P1,
-                   const cv::Mat &P2, cv::Mat points3D) {
+void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const cv::Mat &cameraMatrix, const cv::Mat &P1,
+              const cv::Mat &P2, cv::Mat points3D) {
     cv::Mat firstGray, secondGray;
     cv::cvtColor(firstFrame, firstGray, cv::COLOR_BGR2GRAY);
     cv::cvtColor(secondFrame, secondGray, cv::COLOR_BGR2GRAY);
@@ -23,7 +23,7 @@ void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, cv::Ma
     std::vector<cv::Point2d> matched_points1;
     double ratio_threshold = 0.8;
 
-    for (auto & match : matches) {
+    for (auto &match: matches) {
         if (match[0].distance < ratio_threshold * match[1].distance) {
             matched_points1.push_back(keyPoints1[match[0].queryIdx].pt);
             matched_points2.push_back(keyPoints2[match[0].trainIdx].pt);
@@ -31,13 +31,14 @@ void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, cv::Ma
         }
     }
 
-    cv::Mat mask;
-    cv::Mat E = cv::findEssentialMat(matched_points1, matched_points2, cameraMatrix.at<double>(0, 0),
-                                     cv::Point2d(cameraMatrix.at<double>(0, 2), cameraMatrix.at<double>(1, 2)),
-                                     cv::RANSAC, 0.999, 1.0, mask);
+
+    cv::Mat E = cv::findEssentialMat(matched_points1, matched_points2, cameraMatrix);
 
     cv::Mat R, t;
-    cv::recoverPose(E, matched_points1, matched_points2, cameraMatrix, R, t, mask);
+    cv::recoverPose(E, matched_points1, matched_points2, cameraMatrix, R, t);
+
+    R = R * P1(cv::Rect(0, 0, 3, 3));
+    t = t + P1(cv::Rect(3, 0, 1, 3));
 
     R.copyTo(P2(cv::Rect(0, 0, 3, 3)));
     t.copyTo(P2(cv::Rect(3, 0, 1, 3)));
