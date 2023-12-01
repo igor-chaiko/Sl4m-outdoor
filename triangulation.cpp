@@ -38,7 +38,8 @@ void triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const 
     cv::recoverPose(E, matched_points1, matched_points2, cameraMatrix, R, t);
 
     R = R * P1(cv::Rect(0, 0, 3, 3));
-    t = t + P1(cv::Rect(3, 0, 1, 3));
+    t = R * t + P1(cv::Rect(3, 0, 1, 3));
+
 
     R.copyTo(P2(cv::Rect(0, 0, 3, 3)));
     t.copyTo(P2(cv::Rect(3, 0, 1, 3)));

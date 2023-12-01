@@ -5,7 +5,10 @@
 #include "mapPoint.h"
 #include <vector>
 
-class DrawMap {
+#define WINDOW_NAME "Map"
+
+
+class Map {
 private:
     std::vector<MapPoint> coordinates;
     int canvasSize = 900;
@@ -17,11 +20,14 @@ private:
 
     cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point);
 public:
-    DrawMap(std::vector<MapPoint> coordinates);
+    Map(std::vector<MapPoint> coordinates);
+
+    Map();
+
 
     void addPoint(MapPoint point);
 
-    void drawMap();
+    void showMap();
 
     void setCanvasSize(int size);
 };

@@ -1,6 +1,6 @@
 #include "Map.h"
 
-DrawMap::DrawMap(std::vector<MapPoint> coordinates) {
+Map::Map(std::vector<MapPoint> coordinates) {
     this->coordinates = coordinates;
     for (MapPoint mapPoint: coordinates) {
         if(abs(mapPoint.getGlobalCoordinates().x) > maxCoordinate) {
@@ -12,7 +12,11 @@ DrawMap::DrawMap(std::vector<MapPoint> coordinates) {
     }
 }
 
-void DrawMap::addPoint(MapPoint point) {
+Map::Map() {
+    this->coordinates = std::vector<MapPoint>();
+}
+
+void Map::addPoint(MapPoint point) {
     this->coordinates.push_back(point);
     if (abs(point.getGlobalCoordinates().x) > maxCoordinate) {
         maxCoordinate = abs(point.getGlobalCoordinates().x);
@@ -22,7 +26,7 @@ void DrawMap::addPoint(MapPoint point) {
     }
 }
 
-void DrawMap::drawMap() {
+void Map::showMap() {
     cv::Mat blackCanvas = cv::Mat::zeros(canvasSize, canvasSize, CV_8UC3); // байт на канал, 3 канала цвета (ргб вообщем)
     drawAxes(blackCanvas);
 
@@ -44,11 +48,14 @@ void DrawMap::drawMap() {
         lastPoint = tmpPoint;
     }
 
-    cv::imshow("Map", blackCanvas);
+    cv::imshow(WINDOW_NAME, blackCanvas);
     cv::waitKey(0);
 }
 
-void DrawMap::drawAxes(cv::Mat canvas) {
+
+
+
+void Map::drawAxes(cv::Mat canvas) {
     cv::Point2d start_x(0, canvasSize / 2);
     cv::Point2d finish_x(canvasSize, canvasSize / 2);
     cv::line(canvas, start_x, finish_x, cv::Scalar(255,255,255), 1);
@@ -92,13 +99,13 @@ void DrawMap::drawAxes(cv::Mat canvas) {
     cv::line(canvas, start_y, finish_y, cv::Scalar(255,255,255), 1);
 }
 
-cv::Point2d DrawMap::transformationOfCoordinatesToMatrixView(cv::Point2d point) {
+cv::Point2d Map::transformationOfCoordinatesToMatrixView(cv::Point2d point) {
     int coordinateX = canvasSize / 2 + point.x;
     int coordinateY = canvasSize / 2 - point.y;
     cv::Point2d pointInNewCoordinate(coordinateX, coordinateY);
     return pointInNewCoordinate;
 }
 
-void DrawMap::setCanvasSize(int size) {
+void Map::setCanvasSize(int size) {
     this->canvasSize = size;
 }

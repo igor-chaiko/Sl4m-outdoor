@@ -24,7 +24,7 @@ int getFramesPull(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
         cap >> frame;
 
         if (frame.empty() && i == 0) {
-            std::cerr << "Нет кадра( " << std::endl;
+            std::cerr << "I have no frame( " << std::endl;
             return -1;
         }
 
@@ -61,34 +61,48 @@ int entryPoint(const std::string &path) {
     cv::VideoCapture cap(path);
 
     if (!cap.isOpened()) {
-        std::cerr << "Ошибка при открытии видео!" << std::endl;
+        std::cerr << "Open video error!" << std::endl;
         return -1;
     }
-
-    cv::Point2d start = cv::Point2d(0, 0), vector = cv::Point2d(1, 0);
-    std::vector<cv::Point2d> points;
-    std::vector<MapPoint> empty;
-
-    MapPoint firstPoint = MapPoint(start, points, vector);
-    DrawMap map = DrawMap(empty);
-    map.addPoint(firstPoint);
 
     std::vector<cv::Mat> firstWindow = init(), secondWindow = init();
 
     int status = getFramesPull(firstWindow, cap);
 
     cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
-    cv::Mat image1 = firstWindow[0], image2, points3D;
+    cv::Mat image1 = firstWindow[0], image2;
+    cv::Mat points3D;
+
+
+
+    cv::Point2d start = cv::Point2d(0, 0);
+    cv::Point2d vector = cv::Point2d(1, 0);
+    std::vector<cv::Point2d> points;
+
+    MapPoint firstPoint = MapPoint(start, points, vector);
+    Map map = Map();
+    map.addPoint(firstPoint);
 
     while (true) {
 
-        status = getFramesPull(secondWindow, cap);
+        if(getFramesPull(secondWindow, cap) == -1) {
+            break;
+        }
 
         image2 = secondWindow[0];
 
         cv::imshow(" ", image2);
         triangulation(image1, image2, cameraMatrix, P1, P2, points3D);
         std::cout << P2 << std::endl;
+
+        double x = P2.at<double>(2, 3);
+        double y = P2.at<double>(1, 3);
+        double z = P2.at<double>(0, 3);
+
+        cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
+        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points, vector);
+
+        map.addPoint(currentMapPoint);
 
         firstWindow = secondWindow;
         image1 = image2;
@@ -98,6 +112,10 @@ int entryPoint(const std::string &path) {
             break;
         }
     }
+
+
+    map.showMap();
+
 
     cap.release();
     cv::destroyAllWindows();
