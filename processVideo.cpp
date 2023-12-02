@@ -92,7 +92,7 @@ int entryPoint(const std::string &path) {
         image2 = secondWindow[0];
 
         cv::imshow(" ", image2);
-        triangulation(image1, image2, cameraMatrix, P1, P2, points3D);
+        points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
         std::cout << P2 << std::endl;
 
         double x = P2.at<double>(2, 3);
