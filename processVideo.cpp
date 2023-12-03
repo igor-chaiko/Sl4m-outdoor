@@ -95,6 +95,9 @@ int entryPoint(const std::string &path) {
         cv::imshow(" ", image2);
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
+        std::cout << P2 << std::endl;
+
+
         //std::cout << points3D.size << std::endl;
 
         //на первой итерации координаты мега кал

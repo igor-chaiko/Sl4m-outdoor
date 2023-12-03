@@ -3,6 +3,9 @@
 #ifndef SL4M_OUTDOOR_TRIANGULATION_H
 #define SL4M_OUTDOOR_TRIANGULATION_H
 
+#define EPS 10
+#define MIN_SIZE 400
+
 cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const cv::Mat &cameraMatrix, const cv::Mat &P1,
                    cv::Mat &P2);
 
