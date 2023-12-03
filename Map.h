@@ -11,23 +11,25 @@
 class Map {
 private:
     std::vector<MapPoint> coordinates;
-    int canvasSize = 900;
+    int canvasSize = 600;
 
     double maxCoordinate = std::numeric_limits<double>::min();
-
 
     void drawAxes(cv::Mat canvas);
 
     cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point);
+
+    std::vector<cv::Mat> feachures = std::vector<cv::Mat>();
 public:
     Map(std::vector<MapPoint> coordinates);
 
     Map();
 
+    void addFeaturesPoint(cv::Mat mat);
 
     void addPoint(MapPoint point);
 
-    void showMap();
+    void showMap(int delay);
 
     void setCanvasSize(int size);
 };

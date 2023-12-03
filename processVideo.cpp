@@ -83,6 +83,7 @@ int entryPoint(const std::string &path) {
     Map map = Map();
     map.addPoint(firstPoint);
 
+    int fstOperation = 1;
     while (true) {
 
         if(getFramesPull(secondWindow, cap) == -1) {
@@ -92,12 +93,22 @@ int entryPoint(const std::string &path) {
         image2 = secondWindow[0];
 
         cv::imshow(" ", image2);
-        triangulation(image1, image2, cameraMatrix, P1, P2, points3D);
-        std::cout << P2 << std::endl;
+        points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
-        double x = P2.at<double>(2, 3);
-        double y = P2.at<double>(1, 3);
-        double z = P2.at<double>(0, 3);
+        //std::cout << points3D.size << std::endl;
+
+        //на первой итерации координаты мега кал
+        if (fstOperation == 1) {
+            fstOperation = 0;
+        } else {
+            map.addFeaturesPoint(points3D);
+        }
+
+        //std::cout << P2 << std::endl;
+
+        double y = -P2.at<double>(2, 3);
+        double z = P2.at<double>(1, 3);
+        double x = P2.at<double>(0, 3);
 
         cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
         MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points, vector);
@@ -111,10 +122,13 @@ int entryPoint(const std::string &path) {
         if (cv::waitKey(30) == 27) {
             break;
         }
+        map.showMap(1);
     }
 
 
-    map.showMap();
+    map.showMap(0);
+
+
 
 
     cap.release();

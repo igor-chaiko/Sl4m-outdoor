@@ -26,7 +26,32 @@ void Map::addPoint(MapPoint point) {
     }
 }
 
-void Map::showMap() {
+void Map::addFeaturesPoint(cv::Mat mat) {
+    this->feachures.push_back(mat);
+
+    int weight = mat.rows;
+    int height = mat.cols;
+
+
+    for (int i = 0; i < height; i++) {
+        // double y = -P2.at<double>(2, 3);
+        // double z = P2.at<double>(1, 3);
+        // double x = P2.at<double>(0, 3);
+
+        double y = -mat.at<double>(2, i);
+        double z = mat.at<double>(1, i);
+        double x = mat.at<double>(0, i);
+
+        if (abs(y) > maxCoordinate && abs(y) < 100) {
+            maxCoordinate = abs(y);
+        }
+
+        if (abs(x) > maxCoordinate && abs(x) < 100) {
+            maxCoordinate = abs(x);
+        }
+    }
+}
+void Map::showMap(int delay) {
     cv::Mat blackCanvas = cv::Mat::zeros(canvasSize, canvasSize, CV_8UC3); // байт на канал, 3 канала цвета (ргб вообщем)
     drawAxes(blackCanvas);
 
@@ -43,13 +68,36 @@ void Map::showMap() {
         tmpPoint.y = tmpPoint.y / coefficient;
         tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
 
-        cv::circle(blackCanvas, tmpPoint, 2, cv::Scalar(0, 0, 255), -1);
+        cv::circle(blackCanvas, tmpPoint, 3, cv::Scalar(0, 0, 255), -1);
         cv::arrowedLine(blackCanvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), 1);
         lastPoint = tmpPoint;
     }
 
+    std::cout << "vector size:" << feachures.size() << std::endl;
+    for (cv::Mat pointMatrix : feachures) {
+        std::cout << pointMatrix.size << std::endl;
+
+        int weight = pointMatrix.cols;
+        //int height = pointMatrix.rows;
+
+        for (int i = 0; i < weight; i++) {
+            // double y = -P2.at<double>(2, 3);
+            // double z = P2.at<double>(1, 3);
+            // double x = P2.at<double>(0, 3);
+
+            double y = pointMatrix.at<double>(2, i) / coefficient;
+            //double z = pointMatrix.at<double>(1, i);
+            double x = pointMatrix.at<double>(0, i) / coefficient;
+            cv::Point2d tmpPoint = cv::Point2d(x, y);
+            tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
+
+
+            cv::circle(blackCanvas, tmpPoint, 1, cv::Scalar(169, 242, 202), -1);
+        }
+    }
+
     cv::imshow(WINDOW_NAME, blackCanvas);
-    cv::waitKey(0);
+    cv::waitKey(delay);
 }
 
 
