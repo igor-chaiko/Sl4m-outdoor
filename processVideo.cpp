@@ -6,6 +6,14 @@
 #include "Map.h"
 #include "triangulation.h"
 
+/**
+ * Глобальная переменная для захвата видео-потока.
+ */
+cv::VideoCapture cap;
+
+/**
+ * Инициализируем пустые пуллы.
+ */
 std::vector<cv::Mat> init() {
     std::vector<cv::Mat> frames;
     frames.reserve(NUMBER_OF_FRAMES);
@@ -17,7 +25,10 @@ std::vector<cv::Mat> init() {
     return frames;
 }
 
-int getFramesPull(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
+/**
+ * Получаем очередной пулл кадров.
+ */
+int getFramesPull(std::vector<cv::Mat> &frames) {
     cv::Mat frame;
 
     for (int i = 0; i < NUMBER_OF_FRAMES; i++) {
@@ -34,6 +45,9 @@ int getFramesPull(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
     return 0;
 }
 
+/**
+ * Точка входа в приложение.
+ */
 int entryPoint(const std::string &path) {
     std::ifstream inputFile("CalibratedCamera.txt");
 
@@ -58,7 +72,7 @@ int entryPoint(const std::string &path) {
 
     inputFile.close();
 
-    cv::VideoCapture cap(path);
+    cap.open(path);
 
     if (!cap.isOpened()) {
         std::cerr << "Open video error!" << std::endl;
@@ -67,7 +81,7 @@ int entryPoint(const std::string &path) {
 
     std::vector<cv::Mat> firstWindow = init(), secondWindow = init();
 
-    int status = getFramesPull(firstWindow, cap);
+    int status = getFramesPull(firstWindow);
 
     cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
     cv::Mat image1 = firstWindow[0], image2;
@@ -87,7 +101,7 @@ int entryPoint(const std::string &path) {
 
     while (true) {
 
-        if(getFramesPull(secondWindow, cap) == -1) {
+        if(getFramesPull(secondWindow) == -1) {
             break;
         }
 
