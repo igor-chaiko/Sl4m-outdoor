@@ -5,120 +5,122 @@
 		<Option title="Sl4m_outdoor"/>
 		<Option makefile_is_custom="1"/>
 		<Option compiler="gcc"/>
-		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\local\;CMake Files\..\..\..\..\usr\local\lib\;CMake Files\..\..\..\..\usr\local\lib\cmake\;CMake Files\..\..\..\..\usr\local\lib\cmake\opencv4\;"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\;CMake Files\..\..\..\..\..\..\..\opt\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\lib\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\;CMake Files\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\opencv4\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug"/>
+				<Option working_dir="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Sl4m_outdoor">
-				<Option output="/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Sl4m_outdoor" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug"/>
+				<Option output="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Sl4m_outdoor" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/local/include/opencv4"/>
-					<Add directory="/usr/include/c++/11"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
-					<Add directory="/usr/include/c++/11/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
+					<Add directory="/opt/homebrew/Cellar/opencv/4.8.1/include/opencv4"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 Sl4m_outdoor"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 Sl4m_outdoor"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Sl4m_outdoor/fast">
-				<Option output="/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Sl4m_outdoor" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug"/>
+				<Option output="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Sl4m_outdoor" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/local/include/opencv4"/>
-					<Add directory="/usr/include/c++/11"/>
-					<Add directory="/usr/include/x86_64-linux-gnu/c++/11"/>
-					<Add directory="/usr/include/c++/11/backward"/>
-					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/include/x86_64-linux-gnu"/>
-					<Add directory="/usr/include"/>
+					<Add directory="/opt/homebrew/Cellar/opencv/4.8.1/include/opencv4"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/bin/../include/c++/v1"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/lib/clang/14.0.0/include"/>
+					<Add directory="/Library/Developer/CommandLineTools/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 Sl4m_outdoor/fast"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 Sl4m_outdoor/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug"/>
+				<Option working_dir="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug"/>
+				<Option working_dir="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/gmake -j4 -f &quot;/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/Map.cpp">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/Map.h">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/Map.h">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/main.cpp">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/mapPoint.cpp">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.h">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/mapPoint.h">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/processVideo.cpp">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.h">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/processVideo.h">
 			<Option target="Sl4m_outdoor"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/CMakeLists.txt">
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/triangulation.cpp">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/triangulation.h">
+			<Option target="Sl4m_outdoor"/>
+		</Unit>
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/../../../../usr/local/lib/cmake/opencv4/OpenCVConfig-version.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/../../../../../../../opt/homebrew/lib/cmake/opencv4/OpenCVConfig-version.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\opencv4\"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/../../../../usr/local/lib/cmake/opencv4/OpenCVConfig.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/../../../../../../../opt/homebrew/lib/cmake/opencv4/OpenCVConfig.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\opencv4\"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/../../../../usr/local/lib/cmake/opencv4/OpenCVModules-release.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/../../../../../../../opt/homebrew/lib/cmake/opencv4/OpenCVModules-release.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\opencv4\"/>
 		</Unit>
-		<Unit filename="/home/ruslan/CLionProjects/Sl4m-outdoor/../../../../usr/local/lib/cmake/opencv4/OpenCVModules.cmake">
-			<Option virtualFolder="CMake Files\..\..\..\..\usr\local\lib\cmake\opencv4\"/>
+		<Unit filename="/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/../../../../../../../opt/homebrew/lib/cmake/opencv4/OpenCVModules.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\..\..\opt\homebrew\lib\cmake\opencv4\"/>
 		</Unit>
 	</Project>
 </CodeBlocks_project_file>

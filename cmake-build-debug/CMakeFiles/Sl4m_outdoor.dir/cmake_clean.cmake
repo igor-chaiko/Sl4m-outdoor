@@ -5,6 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o.d"
   "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o"
   "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o.d"
+  "CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o"
+  "CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o.d"
   "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o"
   "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o.d"
   "Sl4m_outdoor"

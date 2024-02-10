@@ -1,106 +1,106 @@
 #include <opencv2/opencv.hpp>
+#include "triangulation.h"
 
-using namespace cv;
-using namespace std;
+std::vector<cv::KeyPoint> findIntersection(const std::vector<cv::KeyPoint>& keyPointsORB,
+                                           std::vector<cv::Point2d>& corners) {
+    std::vector<cv::KeyPoint> result;
+    cv::Point2d empty(0, 0);
 
-void triangulatePointsAndShowResult(const Mat &P1, const Mat &P2, const vector<Point2d> &points1,
-                                    const vector<Point2d> &points2) {
-    Mat points4D;
-    triangulatePoints(P1, P2, points1, points2, points4D);
+    for (const auto& keyPoint : keyPointsORB) {
+        cv::Point2d orbPoint(keyPoint.pt.x, keyPoint.pt.y);
 
-    for (int i = 0; i < points4D.cols; i++) {
-        Mat point = points4D.col(i);
-        double x = point.at<double>(0) / point.at<double>(3);
-        double y = point.at<double>(1) / point.at<double>(3);
-        double z = point.at<double>(2) / point.at<double>(3);
-        cout << x << ", " << y << ", " << z << endl;
-    }
-    cout << endl;
-}
-
-
-void triangulation() {
-    Mat firstFrame = imread("resources/1.jpg");
-    Mat secondFrame = imread("resources/2.jpg");
-
-    Mat K = (Mat_<double>(3, 3) << 534.546, 0, 320,
-            0, 534.546, 240,
-            0, 0, 1);
-    Mat D = (Mat_<double>(5, 1) << 0.01, -0.001, 0.002, 0.003, 0.001);
-
-    Mat firstGray, secondGray;
-    cvtColor(firstFrame, firstGray, COLOR_BGR2GRAY);
-    cvtColor(secondFrame, secondGray, COLOR_BGR2GRAY);
-
-    Ptr<ORB> orb = ORB::create();
-    vector<KeyPoint> keypoints1, keypoints2;
-    Mat descriptors1, descriptors2;
-    orb->detectAndCompute(firstGray, noArray(), keypoints1, descriptors1);
-    orb->detectAndCompute(secondGray, noArray(), keypoints2, descriptors2);
-
-    BFMatcher bfMatcher(NORM_HAMMING);
-
-    vector<vector<DMatch>> matches;
-    vector<DMatch> good_matches;
-    bfMatcher.knnMatch(descriptors1, descriptors2, matches, 2);
-
-    vector<Point2d> matched_points2;
-    vector<Point2d> matched_points1;
-    double ratio_threshold = 0.8;
-
-    for (size_t i = 0; i < matches.size(); i++) {
-        if (matches[i][0].distance < ratio_threshold * matches[i][1].distance) {
-            matched_points1.push_back(keypoints1[matches[i][0].queryIdx].pt);
-            matched_points2.push_back(keypoints2[matches[i][0].trainIdx].pt);
-            good_matches.push_back(matches[i][0]);
+        for (int i = 0; i < corners.size(); i++) {
+            if (cv::norm(corners[i] - orbPoint) < EPS) {
+//                corners[i] = empty;
+                result.push_back(keyPoint);
+                break;
+            }
         }
     }
 
+    if (result.size() < MIN_SIZE) {
+        return keyPointsORB;
+    }
+
+    return result;
+}
+
+cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const cv::Mat &cameraMatrix,
+                      const cv::Mat &P1, cv::Mat &P2) {
+    cv::Mat firstGray, secondGray;
+    cv::cvtColor(firstFrame, firstGray, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(secondFrame, secondGray, cv::COLOR_BGR2GRAY);
+
+    cv::Ptr<cv::ORB> orb = cv::ORB::create();
+    std::vector<cv::KeyPoint> keyPoints1, keyPoints2;
+    cv::Mat descriptors1, descriptors2;
+    orb->detectAndCompute(firstGray, cv::noArray(), keyPoints1, descriptors1);
+    orb->detectAndCompute(secondGray, cv::noArray(), keyPoints2, descriptors2);
+
+    std::vector<cv::Point2d> corners1;
+    cv::goodFeaturesToTrack(firstGray, corners1, 200, 0.03, 35);
+
+    std::vector<cv::Point2d> corners2;
+    cv::goodFeaturesToTrack(secondGray, corners2, 200, 0.03, 35);
+
+//    keyPoints1 = findIntersection(keyPoints1, corners1);
+//    keyPoints2 = findIntersection(keyPoints2, corners2);
+    corners1.clear();
+    corners2.clear();
+
+    cv::BFMatcher bfMatcher(cv::NORM_HAMMING);
+
+    std::vector<std::vector<cv::DMatch>> matches;
+    std::vector<cv::DMatch> good_Matches;
+    bfMatcher.knnMatch(descriptors1, descriptors2, matches, 2);
+
+    std::vector<cv::Point2d> matched_points2;
+    std::vector<cv::Point2d> matched_points1;
+    double ratio_threshold = 0.7;
+
+    for (auto &match: matches) {
+        if (match[0].distance < ratio_threshold * match[1].distance) {
+            matched_points1.push_back(keyPoints1[match[0].queryIdx].pt);
+            matched_points2.push_back(keyPoints2[match[0].trainIdx].pt);
+            good_Matches.push_back(match[0]);
+        }
+    }
+
+    //int num_best_matches = std::min(40, static_cast<int>(good_Matches.size()));
+    //good_Matches.resize(num_best_matches);
+    //matched_points1.resize(num_best_matches);
+    //matched_points2.resize(num_best_matches);
+
     cv::Mat img_matches;
-    cv::drawMatches(firstFrame, keypoints1, secondFrame, keypoints2, good_matches, img_matches);
-    cv::imshow("Good Matches", img_matches);
-    cv::waitKey(0);
+    cv::drawMatches(firstGray, keyPoints1, secondGray, keyPoints2, good_Matches, img_matches);
+    cv::namedWindow("Matches", cv::WINDOW_NORMAL);
+    cv::imshow("Matches", img_matches);
+    cv::waitKey(1);
 
-    Mat mask;
-    Mat E = findEssentialMat(matched_points1, matched_points2);
-    //cout << E << endl;
-    //cout << endl;
 
-    Mat R, t, R1, R2, t_, _t_;
-    recoverPose(E, matched_points1, matched_points2, R, t);
-    //cout << R << endl;
-    //cout << t << endl << endl;
+    cv::Mat E = cv::findEssentialMat(matched_points1, matched_points2, cameraMatrix);
 
-    decomposeEssentialMat(E, R1, R2, t_);
-    _t_ = -t;
+    cv::Mat R, t;
+    cv::recoverPose(E, matched_points1, matched_points2, cameraMatrix, R, t);
 
-    Mat P1 = (Mat_<double>(3, 4) << 1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0);
-    Mat P2 = Mat::eye(3, 4, CV_64F);
-    R.copyTo(P2(Rect(0, 0, 3, 3)));
-    t.copyTo(P2(Rect(3, 0, 1, 3)));
+    cv::Mat tmp;
+    cv::hconcat(R, t, tmp);
 
-    triangulatePointsAndShowResult(P1, P2, matched_points1, matched_points2);
+    cv::Mat newRow = (cv::Mat_<double>(1, 4) << 0, 0, 0, 1);
+    tmp.push_back(newRow);
 
-    R1.copyTo(P2(Rect(0, 0, 3, 3)));
-    t_.copyTo(P2(Rect(3, 0, 1, 3)));
+    P2 = P1 * tmp;
 
-    triangulatePointsAndShowResult(P1, P2, matched_points1, matched_points2);
+    cv::Mat points4D;
+    cv::triangulatePoints(P1, P2, matched_points1, matched_points2, points4D);
+    cv::Mat points3D = cv::Mat::zeros(3, points4D.cols, CV_64F);
 
-    R2.copyTo(P2(Rect(0, 0, 3, 3)));
-    t_.copyTo(P2(Rect(3, 0, 1, 3)));
+    for (int i = 0; i < points4D.cols; i++) {
+        cv::Mat point = points4D.col(i);
+        for (int j = 0; j < 3; j++) {
+            points3D.at<double>(j, i) = point.at<double>(j) / point.at<double>(3);
+        }
+    }
 
-    triangulatePointsAndShowResult(P1, P2, matched_points1, matched_points2);
-
-    R1.copyTo(P2(Rect(0, 0, 3, 3)));
-    _t_.copyTo(P2(Rect(3, 0, 1, 3)));
-
-    triangulatePointsAndShowResult(P1, P2, matched_points1, matched_points2);
-
-    R2.copyTo(P2(Rect(0, 0, 3, 3)));
-    _t_.copyTo(P2(Rect(3, 0, 1, 3)));
-
-    triangulatePointsAndShowResult(P1, P2, matched_points1, matched_points2);
-
+    return points3D;
 }

@@ -8,10 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp" "CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o.d"
-  "/home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp" "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o.d"
-  "/home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp" "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o.d"
-  "/home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp" "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o.d"
+  "/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/Map.cpp" "CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o.d"
+  "/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/main.cpp" "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o.d"
+  "/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/mapPoint.cpp" "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o.d"
+  "/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/processVideo.cpp" "CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o.d"
+  "/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/triangulation.cpp" "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o" "gcc" "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
