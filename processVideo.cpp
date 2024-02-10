@@ -84,6 +84,7 @@ int entryPoint(const std::string &path) {
     map.addPoint(firstPoint);
 
     int fstOperation = 1;
+
     while (true) {
 
         if(getFramesPull(secondWindow, cap) == -1) {
@@ -92,10 +93,10 @@ int entryPoint(const std::string &path) {
 
         image2 = secondWindow[0];
 
-        cv::imshow(" ", image2);
+        //cv::imshow(" ", image2);
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
-        std::cout << P2 << std::endl;
+        //std::cout << P2 << std::endl;
 
 
         //std::cout << points3D.size << std::endl;

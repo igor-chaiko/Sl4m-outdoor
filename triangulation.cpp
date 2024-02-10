@@ -56,7 +56,7 @@ cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, con
 
     std::vector<cv::Point2d> matched_points2;
     std::vector<cv::Point2d> matched_points1;
-    double ratio_threshold = 0.5;
+    double ratio_threshold = 0.7;
 
     for (auto &match: matches) {
         if (match[0].distance < ratio_threshold * match[1].distance) {

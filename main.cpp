@@ -1,7 +1,7 @@
 #include "processVideo.h"
 
 int main() {
-    int state = entryPoint("testVideo.MOV");
+    int state = entryPoint("nsu.MOV");
 
     return 0;
 }

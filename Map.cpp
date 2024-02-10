@@ -27,29 +27,29 @@ void Map::addPoint(MapPoint point) {
 }
 
 void Map::addFeaturesPoint(cv::Mat mat) {
-    this->feachures.push_back(mat);
-
-    int weight = mat.rows;
-    int height = mat.cols;
-
-
-    for (int i = 0; i < height; i++) {
-        // double y = -P2.at<double>(2, 3);
-        // double z = P2.at<double>(1, 3);
-        // double x = P2.at<double>(0, 3);
-
-        double y = -mat.at<double>(2, i);
-        double z = mat.at<double>(1, i);
-        double x = mat.at<double>(0, i);
-
-        if (abs(y) > maxCoordinate && abs(y) < 100) {
-            maxCoordinate = abs(y);
-        }
-
-        if (abs(x) > maxCoordinate && abs(x) < 100) {
-            maxCoordinate = abs(x);
-        }
-    }
+//    this->feachures.push_back(mat);
+//
+//    int weight = mat.rows;
+//    int height = mat.cols;
+//
+//
+//    for (int i = 0; i < height; i++) {
+//        // double y = -P2.at<double>(2, 3);
+//        // double z = P2.at<double>(1, 3);
+//        // double x = P2.at<double>(0, 3);
+//
+//        double y = -mat.at<double>(2, i);
+//        double z = mat.at<double>(1, i);
+//        double x = mat.at<double>(0, i);
+//
+//        if (abs(y) > maxCoordinate && abs(y) < 100) {
+//            maxCoordinate = abs(y);
+//        }
+//
+//        if (abs(x) > maxCoordinate && abs(x) < 100) {
+//            maxCoordinate = abs(x);
+//        }
+//    }
 }
 void Map::showMap(int delay) {
     cv::Mat blackCanvas = cv::Mat::zeros(canvasSize, canvasSize, CV_8UC3); // байт на канал, 3 канала цвета (ргб вообщем)

@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /home/ruslan/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake
+CMAKE_COMMAND = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake
 
 # The command to remove a file.
-RM = /home/ruslan/.local/share/JetBrains/Toolbox/apps/clion/bin/cmake/linux/x64/bin/cmake -E rm -f
+RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ruslan/CLionProjects/Sl4m-outdoor
+CMAKE_SOURCE_DIR = /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Sl4m_outdoor.dir/depend.make
@@ -70,67 +70,82 @@ include CMakeFiles/Sl4m_outdoor.dir/progress.make
 include CMakeFiles/Sl4m_outdoor.dir/flags.make
 
 CMakeFiles/Sl4m_outdoor.dir/main.cpp.o: CMakeFiles/Sl4m_outdoor.dir/flags.make
-CMakeFiles/Sl4m_outdoor.dir/main.cpp.o: /home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp
+CMakeFiles/Sl4m_outdoor.dir/main.cpp.o: /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/main.cpp
 CMakeFiles/Sl4m_outdoor.dir/main.cpp.o: CMakeFiles/Sl4m_outdoor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/main.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/main.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/main.cpp.o -c /home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/main.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/main.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/main.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/main.cpp.o -c /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/main.cpp
 
 CMakeFiles/Sl4m_outdoor.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sl4m_outdoor.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp > CMakeFiles/Sl4m_outdoor.dir/main.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/main.cpp > CMakeFiles/Sl4m_outdoor.dir/main.cpp.i
 
 CMakeFiles/Sl4m_outdoor.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruslan/CLionProjects/Sl4m-outdoor/main.cpp -o CMakeFiles/Sl4m_outdoor.dir/main.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/main.cpp -o CMakeFiles/Sl4m_outdoor.dir/main.cpp.s
 
 CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o: CMakeFiles/Sl4m_outdoor.dir/flags.make
-CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o: /home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp
+CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o: /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/triangulation.cpp
 CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o: CMakeFiles/Sl4m_outdoor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o -c /home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o -c /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/triangulation.cpp
 
 CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp > CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/triangulation.cpp > CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.i
 
 CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruslan/CLionProjects/Sl4m-outdoor/triangulation.cpp -o CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/triangulation.cpp -o CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.s
 
 CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o: CMakeFiles/Sl4m_outdoor.dir/flags.make
-CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o: /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp
+CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o: /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/mapPoint.cpp
 CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o: CMakeFiles/Sl4m_outdoor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o -c /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o -c /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/mapPoint.cpp
 
 CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp > CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/mapPoint.cpp > CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.i
 
 CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruslan/CLionProjects/Sl4m-outdoor/mapPoint.cpp -o CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/mapPoint.cpp -o CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.s
 
 CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: CMakeFiles/Sl4m_outdoor.dir/flags.make
-CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp
+CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/Map.cpp
 CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o: CMakeFiles/Sl4m_outdoor.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o -c /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o -c /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/Map.cpp
 
 CMakeFiles/Sl4m_outdoor.dir/Map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sl4m_outdoor.dir/Map.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp > CMakeFiles/Sl4m_outdoor.dir/Map.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/Map.cpp > CMakeFiles/Sl4m_outdoor.dir/Map.cpp.i
 
 CMakeFiles/Sl4m_outdoor.dir/Map.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/Map.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruslan/CLionProjects/Sl4m-outdoor/Map.cpp -o CMakeFiles/Sl4m_outdoor.dir/Map.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/Map.cpp -o CMakeFiles/Sl4m_outdoor.dir/Map.cpp.s
+
+CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o: CMakeFiles/Sl4m_outdoor.dir/flags.make
+CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o: /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/processVideo.cpp
+CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o: CMakeFiles/Sl4m_outdoor.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o -MF CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o.d -o CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o -c /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/processVideo.cpp
+
+CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/processVideo.cpp > CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.i
+
+CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/processVideo.cpp -o CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.s
 
 # Object files for target Sl4m_outdoor
 Sl4m_outdoor_OBJECTS = \
 "CMakeFiles/Sl4m_outdoor.dir/main.cpp.o" \
 "CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o" \
 "CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o" \
-"CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o"
+"CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o" \
+"CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o"
 
 # External object files for target Sl4m_outdoor
 Sl4m_outdoor_EXTERNAL_OBJECTS =
@@ -139,24 +154,65 @@ Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/main.cpp.o
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/triangulation.cpp.o
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/mapPoint.cpp.o
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/Map.cpp.o
+Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/processVideo.cpp.o
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/build.make
-Sl4m_outdoor: /usr/local/lib/libopencv_gapi.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_highgui.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_ml.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_objdetect.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_photo.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_stitching.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_video.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_videoio.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_imgcodecs.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_dnn.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_calib3d.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_features2d.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_flann.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_imgproc.so.4.8.0
-Sl4m_outdoor: /usr/local/lib/libopencv_core.so.4.8.0
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_gapi.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_stitching.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_alphamat.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_aruco.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_bgsegm.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_bioinspired.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_ccalib.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_dnn_objdetect.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_dnn_superres.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_dpm.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_face.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_freetype.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_fuzzy.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_hfs.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_img_hash.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_intensity_transform.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_line_descriptor.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_mcc.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_quality.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_rapid.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_reg.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_rgbd.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_saliency.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_sfm.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_stereo.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_structured_light.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_superres.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_surface_matching.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_tracking.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_videostab.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_viz.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_wechat_qrcode.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_xfeatures2d.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_xobjdetect.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_xphoto.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_shape.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_highgui.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_datasets.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_plot.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_text.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_ml.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_phase_unwrapping.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_optflow.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_ximgproc.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_video.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_videoio.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_imgcodecs.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_objdetect.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_calib3d.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_dnn.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_features2d.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_flann.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_photo.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_imgproc.4.8.1.dylib
+Sl4m_outdoor: /opt/homebrew/lib/libopencv_core.4.8.1.dylib
 Sl4m_outdoor: CMakeFiles/Sl4m_outdoor.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable Sl4m_outdoor"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable Sl4m_outdoor"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Sl4m_outdoor.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -168,6 +224,6 @@ CMakeFiles/Sl4m_outdoor.dir/clean:
 .PHONY : CMakeFiles/Sl4m_outdoor.dir/clean
 
 CMakeFiles/Sl4m_outdoor.dir/depend:
-	cd /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/ruslan/CLionProjects/Sl4m-outdoor /home/ruslan/CLionProjects/Sl4m-outdoor /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug /home/ruslan/CLionProjects/Sl4m-outdoor/cmake-build-debug/CMakeFiles/Sl4m_outdoor.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug /Users/igorchaiko/Documents/nsu/programming/second-course/Sl4m-outdoor/cmake-build-debug/CMakeFiles/Sl4m_outdoor.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Sl4m_outdoor.dir/depend
 
