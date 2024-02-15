@@ -38,15 +38,19 @@ double MapPoint::calculateAngle() const {
     return std::atan2(vector.y, vector.x);
 }
 
+/**
+ * фунция для нахождения координат с учетом вращения.
+ * @return глобальные координаты.
+ */
 cv::Point2d MapPoint::calculateNewCoords(cv::Mat displacementVector3D,
                                          cv::Mat rotationMatrix3D) {
     cv::Point2d globalCoords;
 
-    // переход от 3х3 матрицы к 2х2, учитывая вращение только по Z
+    // переход от 3х3 матрицы к 2х2, учитывая вращение только вдоль Z
     cv::Mat displacementVector2D = displacementVector3D(cv::Range(0, 2),
                                                         cv::Range::all()
                                                         );
-    // обрезаем у вектора координату Z
+    // отрезаем у вектора координату Z
     cv::Mat rotationMatrix2D = rotationMatrix3D(cv::Range(0, 2),
                                                 cv::Range(0, 2)
                                                 );

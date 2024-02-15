@@ -35,7 +35,7 @@ int getFramesPull(std::vector<cv::Mat> &frames) {
         cap >> frame;
 
         if (frame.empty() && i == 0) {
-            std::cerr << "I have no frame( " << std::endl;
+            std::cerr << "No frame( " << std::endl;
             return -1;
         }
 
@@ -46,17 +46,13 @@ int getFramesPull(std::vector<cv::Mat> &frames) {
 }
 
 /**
- * Точка входа в приложение.
+ * заполняем матрицу отколиброванными значениями.
+ * @param inputFile заготовленный файл.
+ * @return заполненная матрица.
  */
-int entryPoint(const std::string &path) {
-    std::ifstream inputFile("CalibratedCamera.txt");
-
-    if (!inputFile.is_open()) {
-        std::cerr << "Unable to open the file(" << std::endl;
-        return -1;
-    }
-
+cv::Mat fillCameraMatrix(std::ifstream& inputFile) {
     cv::Mat cameraMatrix(3, 3, CV_64F);
+    cv::Mat empty;
 
     for (int i = 0; i < cameraMatrix.rows; i++) {
         for (int j = 0; j < cameraMatrix.cols; j++) {
@@ -64,14 +60,32 @@ int entryPoint(const std::string &path) {
             if (inputFile >> value) {
                 cameraMatrix.at<double>(i, j) = value;
             } else {
-                std::cerr << "No value((" << std::endl;
-                return -1;
+                std::cerr << "No value" << std::endl;
+                return empty;
             }
         }
     }
 
-    inputFile.close();
+    return cameraMatrix;
+}
 
+/**
+ * Точка входа в приложение.
+ */
+int entryPoint(const std::string &path) {
+    std::ifstream cameraMatrixFile("CalibratedCamera.txt");
+
+    if (!cameraMatrixFile.is_open()) {
+        std::cerr << "Unable to open the file(" << std::endl;
+        return -1;
+    }
+
+    cv::Mat cameraMatrix = fillCameraMatrix(cameraMatrixFile);
+    if (cameraMatrix.empty()) {
+        return -1;
+    }
+
+    cameraMatrixFile.close();
     cap.open(path);
 
     if (!cap.isOpened()) {
@@ -82,11 +96,13 @@ int entryPoint(const std::string &path) {
     std::vector<cv::Mat> firstWindow = init(), secondWindow = init();
 
     int status = getFramesPull(firstWindow);
+    if (status == -1) {
+        return -1;
+    }
 
     cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
     cv::Mat image1 = firstWindow[0], image2;
     cv::Mat points3D;
-
 
 
     cv::Point2d start = cv::Point2d(0, 0);
@@ -101,7 +117,7 @@ int entryPoint(const std::string &path) {
 
     while (true) {
 
-        if(getFramesPull(secondWindow) == -1) {
+        if (getFramesPull(secondWindow) == -1) {
             break;
         }
 
@@ -110,19 +126,12 @@ int entryPoint(const std::string &path) {
         //cv::imshow(" ", image2);
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
-        //std::cout << P2 << std::endl;
-
-
-        //std::cout << points3D.size << std::endl;
-
-        //на первой итерации координаты мега кал
+        //на первой итерации координаты плохие
         if (fstOperation == 1) {
             fstOperation = 0;
         } else {
             map.addFeaturesPoint(points3D);
         }
-
-        //std::cout << P2 << std::endl;
 
         double y = -P2.at<double>(2, 3);
         double z = P2.at<double>(1, 3);
@@ -143,12 +152,7 @@ int entryPoint(const std::string &path) {
         map.showMap(1);
     }
 
-
     map.showMap(0);
-
-
-
-
     cap.release();
     cv::destroyAllWindows();
 

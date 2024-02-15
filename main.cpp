@@ -6,5 +6,5 @@
 int main() {
     int state = entryPoint("nsu.MOV");
 
-    return 0;
+    return state;
 }
