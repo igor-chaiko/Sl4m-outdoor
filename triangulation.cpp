@@ -1,30 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include "triangulation.h"
 
-std::vector<cv::KeyPoint> findIntersection(const std::vector<cv::KeyPoint>& keyPointsORB,
-                                           std::vector<cv::Point2d>& corners) {
-    std::vector<cv::KeyPoint> result;
-    cv::Point2d empty(0, 0);
-
-    for (const auto& keyPoint : keyPointsORB) {
-        cv::Point2d orbPoint(keyPoint.pt.x, keyPoint.pt.y);
-
-        for (int i = 0; i < corners.size(); i++) {
-            if (cv::norm(corners[i] - orbPoint) < EPS) {
-//                corners[i] = empty;
-                result.push_back(keyPoint);
-                break;
-            }
-        }
-    }
-
-    if (result.size() < MIN_SIZE) {
-        return keyPointsORB;
-    }
-
-    return result;
-}
-
 cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const cv::Mat &cameraMatrix,
                       const cv::Mat &P1, cv::Mat &P2) {
     cv::Mat firstGray, secondGray;
@@ -36,17 +12,6 @@ cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, con
     cv::Mat descriptors1, descriptors2;
     orb->detectAndCompute(firstGray, cv::noArray(), keyPoints1, descriptors1);
     orb->detectAndCompute(secondGray, cv::noArray(), keyPoints2, descriptors2);
-
-    std::vector<cv::Point2d> corners1;
-    cv::goodFeaturesToTrack(firstGray, corners1, 200, 0.03, 35);
-
-    std::vector<cv::Point2d> corners2;
-    cv::goodFeaturesToTrack(secondGray, corners2, 200, 0.03, 35);
-
-//    keyPoints1 = findIntersection(keyPoints1, corners1);
-//    keyPoints2 = findIntersection(keyPoints2, corners2);
-    corners1.clear();
-    corners2.clear();
 
     cv::BFMatcher bfMatcher(cv::NORM_HAMMING);
 
