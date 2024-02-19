@@ -6,32 +6,41 @@
 #include <vector>
 
 #define WINDOW_NAME "Map"
+#define WINDOW_SIZE_IN_PIXELS 700
+#define COEFFICIENT_FOR_SCALE 1.3
+#define POINT_RADIUS 3
 
-
+#define CONST_FOR_SCALE 10
 class Map {
+
 private:
-    std::vector<MapPoint> coordinates;
-    int canvasSize = 600;
+    std::vector<MapPoint> coordinatesOnMap; //Вектор хранящий все координаты
+    int canvasSize; //Размер выводимой карты
+    double maxCoordinate; //Максимальная по модулю координата среди всех координат на карте
+    std::vector<cv::Mat> features = std::vector<cv::Mat>();//массив фичей
+    long indexOfCurrentPointThatNeedsToBeDrawn;//Индекс последней нарисованной точки, для оптимизации вывода
+    bool isMaxCoordinateChange;//Изменилась ли максимальная координата с последней отрисовки true - да | false - нет
+    cv::Mat canvas;//Полотно, которое будет хранит уже отрисованную карту
 
-    double maxCoordinate = std::numeric_limits<double>::min();
 
-    void drawAxes(cv::Mat canvas);
+    void drawAxes(cv::Mat canvas) const;
 
-    cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point);
+    cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point) const;
 
-    std::vector<cv::Mat> feachures = std::vector<cv::Mat>();
+
+
+    void isCoordinateMoreThanMax(MapPoint point);
 public:
-    Map(std::vector<MapPoint> coordinates);
-
+    //Дефолтный конструткор
     Map();
 
+    //Метод добавляет фичи для отрисовки. (де факто будет отрисовываться окружение, ждём пока Рустам пофиксит, после тестим)
     void addFeaturesPoint(cv::Mat mat);
 
-    void addPoint(MapPoint point);
+    //Метод добавляет point для отрисовки
+    void addPoint(const MapPoint& point);
 
     void showMap(int delay);
-
-    void setCanvasSize(int size);
 };
 
 #endif //SL4M_OUTDOOR_MAP_H
