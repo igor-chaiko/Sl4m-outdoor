@@ -6,32 +6,37 @@
 #include "Map.h"
 #include "triangulation.h"
 
+
 /**
  * Глобальная переменная для захвата видео-потока.
  */
 cv::VideoCapture cap;
 
 /**
- * Инициализируем пустые пуллы.
+ * создаем новый массив, состоящий только из еще неиспользованных кадров.
  */
-std::vector<cv::Mat> init() {
-    std::vector<cv::Mat> frames;
-    frames.reserve(NUMBER_OF_FRAMES);
+std::vector<cv::Mat> shiftValues(std::vector<cv::Mat> &frames) {
+    std::vector<cv::Mat> shiftedValues;
 
-    for (int i = 0; i < NUMBER_OF_FRAMES; i++) {
-        frames.emplace_back();
+    for (int i = numOfFirstUnusedFromPool; i < frames.size(); i++) {
+        shiftedValues.push_back(frames[i]);
     }
 
-    return frames;
+    return shiftedValues;
 }
 
 /**
  * Получаем очередной пулл кадров.
+ * Начинаем заполнять с первого, неиспользуемого(следующий после secondFrame).
  */
-int getFramesPull(std::vector<cv::Mat> &frames) {
+int getFramesPool(std::vector<cv::Mat> &frames) {
     cv::Mat frame;
+    int last;
 
-    for (int i = 0; i < NUMBER_OF_FRAMES; i++) {
+    frames = shiftValues(frames);
+    last = frames.size();
+
+    for (int i = last; i < NUMBER_OF_FRAMES_IN_POOL; i++) {
         cap >> frame;
 
         if (frame.empty() && i == 0) {
@@ -39,7 +44,7 @@ int getFramesPull(std::vector<cv::Mat> &frames) {
             return -1;
         }
 
-        frames[i] = frame;
+        frames.push_back(frame);
     }
 
     return 0;
@@ -73,10 +78,11 @@ cv::Mat fillCameraMatrix(std::ifstream& inputFile) {
  * Точка входа в приложение.
  */
 int entryPoint(const std::string &path) {
+
     std::ifstream cameraMatrixFile("CalibratedCamera.txt");
 
     if (!cameraMatrixFile.is_open()) {
-        std::cerr << "Unable to open the file(" << std::endl;
+        std::cerr << "Unable to open the file" << std::endl;
         return -1;
     }
 
@@ -89,21 +95,17 @@ int entryPoint(const std::string &path) {
     cap.open(path);
 
     if (!cap.isOpened()) {
-        std::cerr << "Open video error!" << std::endl;
+        std::cerr << "Open video error" << std::endl;
         return -1;
     }
 
-    std::vector<cv::Mat> firstWindow = init(), secondWindow = init();
-
-    int status = getFramesPull(firstWindow);
-    if (status == -1) {
-        return -1;
-    }
+    std::vector<cv::Mat> framePool;
 
     cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
-    cv::Mat image1 = firstWindow[0], image2;
+    cv::Mat image1;
     cv::Mat points3D;
 
+    cap >> image1;
 
     cv::Point2d start = cv::Point2d(0, 0);
     cv::Point2d vector = cv::Point2d(1, 0);
@@ -117,14 +119,12 @@ int entryPoint(const std::string &path) {
 
     while (true) {
 
-        if (getFramesPull(secondWindow) == -1) {
+        if (getFramesPool(framePool) == -1) {
             break;
         }
 
-        image2 = secondWindow[0];
-
         //cv::imshow(" ", image2);
-        points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
+        points3D = triangulation(image1, framePool, cameraMatrix, P1, P2);
 
         //на первой итерации координаты плохие
         if (fstOperation == 1) {
@@ -142,14 +142,14 @@ int entryPoint(const std::string &path) {
 
         map.addPoint(currentMapPoint);
 
-        firstWindow = secondWindow;
-        image1 = image2;
+        image1 = secondFrame;
         P1 = P2;
 
         if (cv::waitKey(30) == 27) {
             break;
         }
         map.showMap(1);
+
     }
 
     map.showMap(0);
