@@ -3,10 +3,6 @@
 
 #define DEFAULT_THRESHOLD 0.85
 
-int currentFrameNumber;
-cv::Mat secondFrame;
-int numOfFirstUnusedFromPool;
-
 cv::Ptr<cv::ORB> orb = cv::ORB::create();
 cv::BFMatcher bfMatcher(cv::NORM_HAMMING);
 
@@ -26,35 +22,6 @@ void performFeatureMatching(const cv::Mat &descriptors1, const cv::Mat &descript
             goodMatches.push_back(match[0]);
         }
     }
-}
-
-// Function to check number of matches. If less than MIN_MATCHES, take next
-// if u delete function call, everything still will work
-std::vector<cv::DMatch> goodMatchesCheck(std::vector<cv::DMatch> &oldMatches, std::vector<cv::Mat> &framePool,
-                                         cv::Mat descriptors1,
-                                         std::vector<cv::KeyPoint> keyPoints2) {
-    std::vector<cv::DMatch> newMatches;
-    cv::Mat descriptors2, secondGray;
-
-    if (oldMatches.size() >= MIN_MATCHES) {
-        numOfFirstUnusedFromPool = framePool.size();
-        return oldMatches;
-    }
-
-    for (int i = framePool.size() - 2; i >= 0; i--) {
-        secondFrame = framePool[i];
-        cv::cvtColor(secondFrame, secondGray, cv::COLOR_BGR2GRAY);
-        extractKeyPointsAndDescriptors(secondGray, keyPoints2, descriptors2);
-        performFeatureMatching(descriptors1, descriptors2, newMatches);
-
-        numOfFirstUnusedFromPool = i + 1;
-        std::cout << i << std::endl;
-        if (newMatches.size() >= MIN_MATCHES) {
-            return newMatches;
-        }
-    }
-
-    return oldMatches;
 }
 
 // Function to draw and display matches
@@ -80,7 +47,6 @@ void matrixAddVector(cv::Mat &matrix, cv::Mat vector) {
         matrix.col(col) += vector;
     }
 }
-
 
 // Function to perform camera pose estimation and triangulation
 cv::Mat
@@ -115,11 +81,8 @@ performTriangulation(const std::vector<cv::Point2d> &matchedPoints1, const std::
 }
 
 // Main triangulation function
-cv::Mat triangulation(const cv::Mat &firstFrame, std::vector<cv::Mat> &framePool, const cv::Mat &cameraMatrix,
+cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const cv::Mat &cameraMatrix,
                       const cv::Mat &P1, cv::Mat &P2) {
-    secondFrame = framePool[framePool.size() - 1];
-    numOfFirstUnusedFromPool = framePool.size();
-
     cv::Mat firstGray, secondGray;
     cv::cvtColor(firstFrame, firstGray, cv::COLOR_BGR2GRAY);
     cv::cvtColor(secondFrame, secondGray, cv::COLOR_BGR2GRAY);
@@ -132,13 +95,6 @@ cv::Mat triangulation(const cv::Mat &firstFrame, std::vector<cv::Mat> &framePool
 
     std::vector<cv::DMatch> goodMatches;
     performFeatureMatching(descriptors1, descriptors2, goodMatches);
-
-    size_t was = goodMatches.size();
-    goodMatches = goodMatchesCheck(goodMatches, framePool, descriptors1, keyPoints2);
-    size_t become = goodMatches.size();
-    if (become > was) {
-        std::cout << "transform:" << was << " -> " << become << std::endl;
-    }
 
     drawAndDisplayMatches(firstGray, secondGray, keyPoints1, keyPoints2, goodMatches);
 
