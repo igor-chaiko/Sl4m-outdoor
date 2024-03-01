@@ -13,30 +13,13 @@
 cv::VideoCapture cap;
 
 /**
- * создаем новый массив, состоящий только из еще неиспользованных кадров.
- */
-std::vector<cv::Mat> shiftValues(std::vector<cv::Mat> &frames) {
-    std::vector<cv::Mat> shiftedValues;
-
-    for (int i = numOfFirstUnusedFromPool; i < frames.size(); i++) {
-        shiftedValues.push_back(frames[i]);
-    }
-
-    return shiftedValues;
-}
-
-/**
  * Получаем очередной пулл кадров.
  * Начинаем заполнять с первого, неиспользуемого(следующий после secondFrame).
  */
 int getFramesPool(std::vector<cv::Mat> &frames) {
     cv::Mat frame;
-    int last;
 
-    frames = shiftValues(frames);
-    last = frames.size();
-
-    for (int i = last; i < NUMBER_OF_FRAMES_IN_POOL; i++) {
+    for (int i = 0; i < NUMBER_OF_FRAMES_IN_POOL; i++) {
         cap >> frame;
 
         if (frame.empty() && i == 0) {
@@ -102,7 +85,7 @@ int entryPoint(const std::string &path) {
     std::vector<cv::Mat> framePool;
 
     cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
-    cv::Mat image1;
+    cv::Mat image1, image2;
     cv::Mat points3D;
 
     cap >> image1;
@@ -123,8 +106,10 @@ int entryPoint(const std::string &path) {
             break;
         }
 
+        image2 = framePool[framePool.size()-1];
+
         //cv::imshow(" ", image2);
-        points3D = triangulation(image1, framePool, cameraMatrix, P1, P2);
+        points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
         //на первой итерации координаты плохие
         if (fstOperation == 1) {
@@ -142,7 +127,7 @@ int entryPoint(const std::string &path) {
 
         map.addPoint(currentMapPoint);
 
-        image1 = secondFrame;
+        image1 = image2;
         P1 = P2;
 
         if (cv::waitKey(30) == 27) {
