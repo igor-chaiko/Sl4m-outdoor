@@ -22,7 +22,7 @@ int getFramesPool(std::vector<cv::Mat> &frames) {
     for (int i = 0; i < NUMBER_OF_FRAMES_IN_POOL; i++) {
         cap >> frame;
 
-        if (frame.empty() && i == 0) {
+        if (frame.empty()) {
             std::cerr << "No frame( " << std::endl;
             return -1;
         }
@@ -62,7 +62,7 @@ cv::Mat fillCameraMatrix(std::ifstream& inputFile) {
  */
 int entryPoint(const std::string &path) {
 
-    std::ifstream cameraMatrixFile("CalibratedCamera.txt");
+    std::ifstream cameraMatrixFile("C:\\Users\\chydi\\CLionProjects\\Sl4m-outdoor\\cmake-build-debug-visual-studio\\CalibratedCamera.txt");
 
     if (!cameraMatrixFile.is_open()) {
         std::cerr << "Unable to open the file" << std::endl;
@@ -118,7 +118,7 @@ int entryPoint(const std::string &path) {
             map.addFeaturesPoint(points3D);
         }
 
-        double y = -P2.at<double>(2, 3);
+        double y = P2.at<double>(2, 3);
         double z = P2.at<double>(1, 3);
         double x = P2.at<double>(0, 3);
 
