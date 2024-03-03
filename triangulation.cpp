@@ -55,7 +55,7 @@ performTriangulation(const std::vector<cv::Point2d> &matchedPoints1, const std::
     cv::Mat E = cv::findEssentialMat(matchedPoints1, matchedPoints2, cameraMatrix);
 
     cv::Mat R, t, triangulatedPoints;
-    cv::recoverPose(E, matchedPoints1, matchedPoints2, cameraMatrix, R, t, 50, cv::noArray(), triangulatedPoints);
+    cv::recoverPose(E, matchedPoints1, matchedPoints2, cameraMatrix, R, t, distanceTrash, cv::noArray(), triangulatedPoints);
 
     cv::Mat tmp;
     cv::hconcat(R, t, tmp);
