@@ -1,4 +1,4 @@
-#include "Map.h"
+#include "../headers/Map.h"
 
 Map::Map() {
     this->coordinatesOnMap = std::vector<MapPoint>();

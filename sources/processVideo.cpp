@@ -1,10 +1,10 @@
 #include <opencv2/opencv.hpp>
 #include <string>
 #include <fstream>
-#include "processVideo.h"
-#include "mapPoint.h"
-#include "Map.h"
-#include "triangulation.h"
+#include "../headers/processVideo.h"
+#include "../headers/mapPoint.h"
+#include "../headers/Map.h"
+#include "../headers/triangulation.h"
 
 
 /**
@@ -62,7 +62,7 @@ cv::Mat fillCameraMatrix(std::ifstream& inputFile) {
  */
 int entryPoint(const std::string &path) {
 
-    std::ifstream cameraMatrixFile("C:\\Users\\chydi\\CLionProjects\\Sl4m-outdoor\\cmake-build-debug-visual-studio\\CalibratedCamera.txt");
+    std::ifstream cameraMatrixFile("../resources/CalibratedCamera.txt");
 
     if (!cameraMatrixFile.is_open()) {
         std::cerr << "Unable to open the file" << std::endl;

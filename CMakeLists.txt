@@ -4,13 +4,13 @@ project(Sl4m_outdoor)
 set(CMAKE_CXX_STANDARD 17)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
-add_executable(Sl4m_outdoor main.cpp
-        triangulation.cpp
-        triangulation.h
-        mapPoint.h
-        mapPoint.cpp
-        Map.cpp
-        Map.h
-        processVideo.cpp
-        processVideo.h)
+add_executable(Sl4m_outdoor sources/main.cpp
+        sources/triangulation.cpp
+        headers/triangulation.h
+        headers/mapPoint.h
+        sources/mapPoint.cpp
+        sources/Map.cpp
+        headers/Map.h
+        sources/processVideo.cpp
+        headers/processVideo.h)
 target_link_libraries(Sl4m_outdoor ${OpenCV_LIBS})

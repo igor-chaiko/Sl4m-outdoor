@@ -6,7 +6,7 @@
 #define EPS 10
 #define MIN_SIZE 400
 #define MIN_MATCHES 125
-#define distanceTrash 40
+#define DISTANCE_THRESH 50
 
 //extern int numOfFirstUnusedFromPool;
 //extern cv::Mat secondFrame;

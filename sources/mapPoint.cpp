@@ -1,6 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <utility>
-#include "mapPoint.h"
+#include "../headers/mapPoint.h"
 
 MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Point2d vector) {
     this->globalCoordinate = globalCoordinate;
