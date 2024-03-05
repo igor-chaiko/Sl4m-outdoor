@@ -1,9 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include "../headers/triangulation.h"
 
-#define DEFAULT_THRESHOLD 0.65
-#define MAX_FEATURE_DISTANCE 15
-
 cv::Ptr<cv::ORB> orb = cv::ORB::create();
 cv::BFMatcher bfMatcher(cv::NORM_HAMMING);
 
@@ -12,7 +9,7 @@ void extractKeyPointsAndDescriptors(const cv::Mat &image, std::vector<cv::KeyPoi
 }
 
 void performFeatureMatching(const cv::Mat &descriptors1, const cv::Mat &descriptors2,
-                            std::vector<cv::DMatch> &goodMatches, double ratioThreshold = DEFAULT_THRESHOLD) {
+                            std::vector<cv::DMatch> &goodMatches, double ratioThreshold) {
     std::vector<std::vector<cv::DMatch>> matches;
     bfMatcher.knnMatch(descriptors1, descriptors2, matches, 2);
 
@@ -95,8 +92,8 @@ performTriangulation(const std::vector<cv::Point2d> &matchedPoints1, const std::
 
         matrixAddVector(globalTP, t1);
 
-        std::cout << P1 << std::endl;
-        std::cout << globalTP << std::endl;
+//        std::cout << P1 << std::endl;
+//        std::cout << globalTP << std::endl;
     }
 
     return globalTP;

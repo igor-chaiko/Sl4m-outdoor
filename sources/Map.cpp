@@ -50,7 +50,7 @@ void Map::addFeaturesPoint(cv::Mat mat) {
     //int weight = mat.rows;
     int height = mat.cols;
 
-    std::cout << mat << std::endl;
+//    std::cout << mat << std::endl;
 
     for (int i = 0; i < height; i++) {
         double y = mat.at<double>(2, i);
