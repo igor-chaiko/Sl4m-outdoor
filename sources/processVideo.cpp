@@ -6,11 +6,51 @@
 #include "../headers/Map.h"
 #include "../headers/triangulation.h"
 
-
 /**
  * Глобальная переменная для захвата видео-потока.
  */
 cv::VideoCapture cap;
+
+int numOfFirstUnusedFromPool;
+cv::Mat image2;
+
+// Function to check number of matches. If less than MIN_MATCHES, take next
+// if u delete function call, everything still will work
+void goodMatchesCheck(std::vector<cv::DMatch>& oldMatches, std::vector<cv::Mat> &framePool,
+                                         cv::Mat descriptors1) {
+    std::vector<cv::KeyPoint> keyPoints2;
+    std::vector<cv::DMatch> newMatches;
+    cv::Mat descriptors2, secondGray;
+
+    if (oldMatches.size() >= MIN_MATCHES) {
+        numOfFirstUnusedFromPool = framePool.size();
+        return;
+    }
+
+    for (int i = framePool.size() - 2; i >= 0; i--) {
+        image2 = framePool[i];
+        cv::cvtColor(image2, secondGray, cv::COLOR_BGR2GRAY);
+        extractKeyPointsAndDescriptors(secondGray, keyPoints2, descriptors2);
+        performFeatureMatching(descriptors1, descriptors2, newMatches);
+
+        numOfFirstUnusedFromPool = i + 1;
+//        std::cout << i << std::endl;
+        if (newMatches.size() >= MIN_MATCHES) {
+            return;
+        }
+    }
+
+}
+
+std::vector<cv::Mat> shiftValues(std::vector<cv::Mat> &frames) {
+    std::vector<cv::Mat> remainingFrames;
+
+    for (int i = numOfFirstUnusedFromPool; i < frames.size(); i++) {
+        remainingFrames.push_back(frames[i]);
+    }
+
+    return remainingFrames;
+}
 
 /**
  * Получаем очередной пулл кадров.
@@ -19,11 +59,13 @@ cv::VideoCapture cap;
 int getFramesPool(std::vector<cv::Mat> &frames) {
     cv::Mat frame;
 
-    for (int i = 0; i < NUMBER_OF_FRAMES_IN_POOL; i++) {
+    frames = shiftValues(frames);
+
+    for (int i = frames.size(); i < NUMBER_OF_FRAMES_IN_POOL; i++) {
         cap >> frame;
 
         if (frame.empty()) {
-            std::cerr << "No frame( " << std::endl;
+            std::cerr << "frames are over" << std::endl;
             return -1;
         }
 
@@ -85,10 +127,15 @@ int entryPoint(const std::string &path) {
     std::vector<cv::Mat> framePool;
 
     cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
-    cv::Mat image1, image2;
+    cv::Mat image1;
     cv::Mat points3D;
 
     cap >> image1;
+    std::vector<cv::KeyPoint> keyPoints1, keyPoints2;
+    cv::Mat descriptors1, descriptors2;
+    std::vector<cv::DMatch> oldMatches;
+
+    extractKeyPointsAndDescriptors(image1, keyPoints1, descriptors1);
 
     cv::Point2d start = cv::Point2d(0, 0);
     cv::Point2d vector = cv::Point2d(1, 0);
@@ -107,6 +154,10 @@ int entryPoint(const std::string &path) {
         }
 
         image2 = framePool[framePool.size()-1];
+        extractKeyPointsAndDescriptors(image2, keyPoints2, descriptors2);
+        performFeatureMatching(descriptors1, descriptors2, oldMatches);
+
+        auto b = goodMatchesCheck(oldMatches, framePool, descriptors1);
 
         //cv::imshow(" ", image2);
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
@@ -128,6 +179,7 @@ int entryPoint(const std::string &path) {
         map.addPoint(currentMapPoint);
 
         image1 = image2;
+        descriptors1 = descriptors2;
         P1 = P2;
 
         if (cv::waitKey(30) == 27) {
