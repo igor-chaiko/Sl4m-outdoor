@@ -5,7 +5,7 @@
  * Starting.
  */
 int main() {
-    int state = entryPoint("../resources/nsu.MOV");
+    int state = entryPoint("nsu.MOV");
 
 
 
