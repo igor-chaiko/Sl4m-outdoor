@@ -13,7 +13,7 @@ cv::Mat triangulation(const cv::Mat &firstFrame,  const cv::Mat &secondFrame, co
                    cv::Mat &P2);
 
 void performFeatureMatching(const cv::Mat &descriptors1, const cv::Mat &descriptors2,
-                            std::vector<cv::DMatch> &goodMatches, double ratioThreshold = DEFAULT_THRESHOLD);
+                            std::vector<cv::DMatch> &goodMatches);
 
 void extractKeyPointsAndDescriptors(const cv::Mat &image, std::vector<cv::KeyPoint> &keypoints, cv::Mat &descriptors);
 

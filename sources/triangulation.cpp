@@ -9,12 +9,12 @@ void extractKeyPointsAndDescriptors(const cv::Mat &image, std::vector<cv::KeyPoi
 }
 
 void performFeatureMatching(const cv::Mat &descriptors1, const cv::Mat &descriptors2,
-                            std::vector<cv::DMatch> &goodMatches, double ratioThreshold) {
+                            std::vector<cv::DMatch> &goodMatches) {
     std::vector<std::vector<cv::DMatch>> matches;
     bfMatcher.knnMatch(descriptors1, descriptors2, matches, 2);
 
     for (std::vector<cv::DMatch> &match: matches) {
-        if (match[0].distance < ratioThreshold * match[1].distance) {
+        if (match[0].distance < DEFAULT_THRESHOLD * match[1].distance) {
             goodMatches.push_back(match[0]);
         }
     }

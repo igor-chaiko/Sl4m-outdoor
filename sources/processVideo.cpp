@@ -104,7 +104,7 @@ cv::Mat fillCameraMatrix(std::ifstream& inputFile) {
  */
 int entryPoint(const std::string &path) {
 
-    std::ifstream cameraMatrixFile("../resources/CalibratedCamera.txt");
+    std::ifstream cameraMatrixFile("CalibratedCamera.txt");
 
     if (!cameraMatrixFile.is_open()) {
         std::cerr << "Unable to open the file" << std::endl;
@@ -156,8 +156,10 @@ int entryPoint(const std::string &path) {
         image2 = framePool[framePool.size()-1];
         extractKeyPointsAndDescriptors(image2, keyPoints2, descriptors2);
         performFeatureMatching(descriptors1, descriptors2, oldMatches);
+//        std::cout << oldMatches.size() << std::endl;
 
-        auto b = goodMatchesCheck(oldMatches, framePool, descriptors1);
+        goodMatchesCheck(oldMatches, framePool, descriptors1);
+        oldMatches.clear();
 
         //cv::imshow(" ", image2);
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
