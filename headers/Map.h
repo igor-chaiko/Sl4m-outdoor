@@ -6,10 +6,10 @@
 #include <vector>
 
 #define WINDOW_NAME "Map"
-#define WINDOW_SIZE_IN_PIXELS 700
+#define WINDOW_SIZE_IN_PIXELS 3000
 #define COEFFICIENT_FOR_SCALE 1.3
-#define POINT_RADIUS 3
-#define FEATURES_RADIUS 1
+#define POINT_RADIUS 5
+#define FEATURES_RADIUS 3
 
 #define CONST_FOR_SCALE 10
 class Map {

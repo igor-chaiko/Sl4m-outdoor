@@ -7,43 +7,41 @@
 #include "../headers/Map.h"
 #include "../headers/triangulation.h"
 
-
-
-int numOfFirstUnusedFromPool;
 cv::Mat image2;
 
-// Function to check number of matches. If less than MIN_MATCHES, take next
-// if u delete function call, everything still will work
-void goodMatchesCheck(std::vector<cv::DMatch>& oldMatches, std::vector<cv::Mat> &framePool,
-                                         cv::Mat descriptors1) {
+/**
+ * Метод проверяет количество мэтчей.
+ * Проверяем все кадры с конца.
+ * Если меньше чем MIN_MATCHES, берётся предыдущий.
+ */
+void goodMatchesCheck(const std::vector<cv::DMatch>& oldMatches,
+                        const std::vector<cv::Mat> &framePool,
+                        const cv::Mat& descriptors1) {
     std::vector<cv::KeyPoint> keyPoints2;
     std::vector<cv::DMatch> newMatches;
     cv::Mat descriptors2, secondGray;
 
     if (oldMatches.size() >= MIN_MATCHES) {
-        numOfFirstUnusedFromPool = framePool.size();
+        numOfFirstUnusedFramePool = static_cast<int>(framePool.size());
         return;
     }
 
-    for (int i = framePool.size() - 2; i >= 0; i--) {
+    for (int i = static_cast<int>(framePool.size()) - 2; i >= 0; i--) {
         image2 = framePool[i];
-        cv::cvtColor(image2, secondGray, cv::COLOR_BGR2GRAY);
+        cvtColor(image2, secondGray, cv::COLOR_BGR2GRAY);
         extractKeyPointsAndDescriptors(secondGray, keyPoints2, descriptors2);
         performFeatureMatching(descriptors1, descriptors2, newMatches);
-
-        numOfFirstUnusedFromPool = i + 1;
-//        std::cout << i << std::endl;
+        numOfFirstUnusedFramePool = i + 1;
         if (newMatches.size() >= MIN_MATCHES) {
             return;
         }
     }
-
 }
 
-std::vector<cv::Mat> shiftValues(std::vector<cv::Mat> &frames) {
+std::vector<cv::Mat> shiftValues(const std::vector<cv::Mat> &frames) {
     std::vector<cv::Mat> remainingFrames;
 
-    for (int i = numOfFirstUnusedFromPool; i < frames.size(); i++) {
+    for (int i = numOfFirstUnusedFramePool; i < frames.size(); i++) {
         remainingFrames.push_back(frames[i]);
     }
 
@@ -53,18 +51,21 @@ std::vector<cv::Mat> shiftValues(std::vector<cv::Mat> &frames) {
 /**
  * Получаем очередной пулл кадров.
  * Начинаем заполнять с первого, неиспользуемого(следующий после secondFrame).
+ *
+ * @param frames - Возвращаемое значение.
+ * @param cap - Завхат.
+ * @return -    0 - нашли пул кадров.
+ *              1 - не нашли.
  */
-
 int getFramesPool(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
     cv::Mat frame;
 
     frames = shiftValues(frames);
 
-    for (int i = frames.size(); i < NUMBER_OF_FRAMES_IN_POOL; i++) {
+    for (int i = static_cast<int>(frames.size()); i < NUMBER_OF_FRAMES_IN_POOL; i++) {
         cap >> frame;
 
         if (frame.empty()) {
-            std::cerr << "frames are over" << std::endl;
             return -1;
         }
 
@@ -85,7 +86,7 @@ cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
     std::ifstream cameraMatrixFile(pathToCalibrationCamera);
     //Проверка на удачное открытие файла.
     if (!cameraMatrixFile.is_open()) {
-        throw std::runtime_error("Path: " + pathToCalibrationCamera + '\n'
+        ("Path: " + pathToCalibrationCamera + '\n'
                                         + "Calibration file was not opened.");
     }
 
@@ -109,8 +110,6 @@ cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
 
 /**
  * Метод ответственные за начало обработки видео.
- *
- * @param pathToVidefile - путь к видеофайлу, который требуется обработать.
  */
 void startProcessing() {
     cv:: Mat cameraMatrix;
@@ -128,28 +127,32 @@ void startProcessing() {
         throw std::runtime_error("Open video error.");
     }
 
+    //Пошла лютая инициализация переменных//
+    //Вектор из которого будет производится выборка наилучшего кадра для триангуляции.
     std::vector<cv::Mat> framePool;
 
-    cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F), P2 = cv::Mat::zeros(3, 4, CV_64F);
+    //Это для триангуляции//
+    cv::Mat P1 = cv::Mat::eye(3, 4, CV_64F);
+    cv::Mat P2 = cv::Mat::zeros(3, 4, CV_64F);
     cv::Mat image1;
     cv::Mat points3D;
-
     cap >> image1;
+
     std::vector<cv::KeyPoint> keyPoints1, keyPoints2;
     cv::Mat descriptors1, descriptors2;
     std::vector<cv::DMatch> oldMatches;
 
     extractKeyPointsAndDescriptors(image1, keyPoints1, descriptors1);
 
+    //Это для карты//
     cv::Point2d start = cv::Point2d(0, 0);
     cv::Point2d vector = cv::Point2d(1, 0);
     std::vector<cv::Point2d> points;
-
     MapPoint firstPoint = MapPoint(start, points, vector);
     Map map = Map();
     map.addPoint(firstPoint);
 
-    int fstOperation = 1;
+    bool isFirstOperation = true;
 
     while (true) {
 
@@ -157,20 +160,18 @@ void startProcessing() {
             break;
         }
 
-        image2 = framePool[framePool.size()-1];
+        image2 = framePool[framePool.size() - 1];
         extractKeyPointsAndDescriptors(image2, keyPoints2, descriptors2);
         performFeatureMatching(descriptors1, descriptors2, oldMatches);
-//        std::cout << oldMatches.size() << std::endl;
 
         goodMatchesCheck(oldMatches, framePool, descriptors1);
         oldMatches.clear();
 
-        //cv::imshow(" ", image2);
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
-        //на первой итерации координаты плохие
-        if (fstOperation == 1) {
-            fstOperation = 0;
+        //Т.к. на первой итерации координаты плохие, пропускаем их.
+        if (isFirstOperation) {
+            isFirstOperation = false;
         } else {
             map.addFeaturesPoint(points3D);
         }
