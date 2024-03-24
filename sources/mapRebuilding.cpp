@@ -1,6 +1,4 @@
 #include <opencv2/core/types.hpp>
-#include <opencv2/imgproc.hpp>
-#include <iostream>
 #include "../headers/mapRebuilding.h"
 
 void closeLoopLine(std::vector<cv::Point2d> &loop) {
