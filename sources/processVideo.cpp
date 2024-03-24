@@ -7,10 +7,7 @@
 #include "../headers/Map.h"
 #include "../headers/triangulation.h"
 
-/**
- * Глобальная переменная для захвата видео-потока.
- */
-cv::VideoCapture cap;
+
 
 int numOfFirstUnusedFromPool;
 cv::Mat image2;
@@ -57,7 +54,8 @@ std::vector<cv::Mat> shiftValues(std::vector<cv::Mat> &frames) {
  * Получаем очередной пулл кадров.
  * Начинаем заполнять с первого, неиспользуемого(следующий после secondFrame).
  */
-int getFramesPool(std::vector<cv::Mat> &frames) {
+
+int getFramesPool(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
     cv::Mat frame;
 
     frames = shiftValues(frames);
@@ -77,55 +75,55 @@ int getFramesPool(std::vector<cv::Mat> &frames) {
 }
 
 /**
- * Данный метод считывает значения матрицы камеры из файла и записываем их.
+ * Данный метод считывает значения матрицы камеры из файла и записывает их.
  *
- * @param inputFile -
- * @return заполненная матрица.
+ * @param pathToCalibrationCamera - путь до матрциы камеры.
+ * @return - возвращает заполненную матрицу.
  */
-cv::Mat readCameraMatrix(std::ifstream& inputFile) {
-    cv::Mat cameraMatrix(3, 3, CV_64F);
+cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
+    //Пытаемся открыть файл с матрицой калибровки камеры.
+    std::ifstream cameraMatrixFile(pathToCalibrationCamera);
+    //Проверка на удачное открытие файла.
+    if (!cameraMatrixFile.is_open()) {
+        throw std::runtime_error("Path: " + pathToCalibrationCamera + '\n'
+                                        + "Calibration file was not opened.");
+    }
 
+    //Создаём новую матрицу.
+    cv::Mat cameraMatrix(3, 3, CV_64F);
+    //Пытаемся заполнить матрицу.
     for (int i = 0; i < cameraMatrix.rows; i++) {
         for (int j = 0; j < cameraMatrix.cols; j++) {
-            if (double value; inputFile >> value) {
+            if (double value; cameraMatrixFile >> value) {
                 cameraMatrix.at<double>(i, j) = value;
             } else {
-                throw std::runtime_error("Camera matrix is not full.");
+                cameraMatrixFile.close();
+                throw std::runtime_error("Camera matrix was not filled full.");
             }
         }
     }
+    cameraMatrixFile.close();
     return cameraMatrix;
 }
 
 
-cv::String calibrationCameraMatrixFileName = "CalibratedCamera.txt";
-
 /**
  * Метод ответственные за начало обработки видео.
  *
- * @param path - путь к видеофайлу, который требуется обработать.
+ * @param pathToVidefile - путь к видеофайлу, который требуется обработать.
  */
-void startProcessing(const std::string &path) {
-    //Пытаемся открыть файл с матрицой калибровки камеры.
-    std::ifstream cameraMatrixFile(calibrationCameraMatrixFileName);
-    //Проверка на удачное открытие файла.
-    if (!cameraMatrixFile.is_open()) {
-        throw std::runtime_error("Path: " + calibrationCameraMatrixFileName + '\n'
-                                        + "Calibration file was not opened.");
-    }
-
+void startProcessing() {
     cv:: Mat cameraMatrix;
     try {
         //Читаем камеру матрицы из файла.
-        cameraMatrix = readCameraMatrix(cameraMatrixFile);
+        cameraMatrix = readCameraMatrix(CALIBRATION_CAMERA_MATRIX_PATH);
     }catch (const std::runtime_error& e) {
         //В случае неудачи пробрасываем исключение на уровень выше.
         throw;
     }
 
-    cameraMatrixFile.close();
-    cap.open(path);
-
+    //Захват видеофайла и проверка на успешноое открытие файла.
+    cv::VideoCapture cap(PATH_TO_VIDEOFILE);
     if (!cap.isOpened()) {
         throw std::runtime_error("Open video error.");
     }
@@ -155,7 +153,7 @@ void startProcessing(const std::string &path) {
 
     while (true) {
 
-        if (getFramesPool(framePool) == -1) {
+        if (getFramesPool(framePool, cap) == -1) {
             break;
         }
 

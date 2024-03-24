@@ -4,7 +4,7 @@
 
 int main() {
     try {
-        startProcessing("testVideo1.MOV");
+        startProcessing();
     } catch (const std::runtime_error& e) {
         std::cerr << e.what() << std::endl;
     }

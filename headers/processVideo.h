@@ -2,8 +2,9 @@
 #define SL4M_OUTDOOR_PROCESSVIDEO_H
 
 #define NUMBER_OF_FRAMES_IN_POOL 24
+#define CALIBRATION_CAMERA_MATRIX_PATH "../resources/CalibratedCamera.txt"
+#define PATH_TO_VIDEOFILE "../resources/yourVideo.mp4"
 
-
-void startProcessing(const std::string &);
+void startProcessing();
 
 #endif //SL4M_OUTDOOR_PROCESSVIDEO_H
