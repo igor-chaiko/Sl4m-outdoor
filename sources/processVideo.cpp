@@ -1,5 +1,6 @@
 #include <opencv2/opencv.hpp>
 #include <string>
+#include <stdexcept>
 #include <fstream>
 #include "../headers/processVideo.h"
 #include "../headers/mapPoint.h"
@@ -76,52 +77,57 @@ int getFramesPool(std::vector<cv::Mat> &frames) {
 }
 
 /**
- * заполняем матрицу отколиброванными значениями.
- * @param inputFile заготовленный файл.
+ * Данный метод считывает значения матрицы камеры из файла и записываем их.
+ *
+ * @param inputFile -
  * @return заполненная матрица.
  */
-cv::Mat fillCameraMatrix(std::ifstream& inputFile) {
+cv::Mat readCameraMatrix(std::ifstream& inputFile) {
     cv::Mat cameraMatrix(3, 3, CV_64F);
-    cv::Mat empty;
 
     for (int i = 0; i < cameraMatrix.rows; i++) {
         for (int j = 0; j < cameraMatrix.cols; j++) {
-            double value;
-            if (inputFile >> value) {
+            if (double value; inputFile >> value) {
                 cameraMatrix.at<double>(i, j) = value;
             } else {
-                std::cerr << "No value" << std::endl;
-                return empty;
+                throw std::runtime_error("Camera matrix is not full.");
             }
         }
     }
-
     return cameraMatrix;
 }
 
+
+cv::String calibrationCameraMatrixFileName = "CalibratedCamera.txt";
+
 /**
- * Точка входа в приложение.
+ * Метод ответственные за начало обработки видео.
+ *
+ * @param path - путь к видеофайлу, который требуется обработать.
  */
-int entryPoint(const std::string &path) {
-
-    std::ifstream cameraMatrixFile("CalibratedCamera.txt");
-
+void startProcessing(const std::string &path) {
+    //Пытаемся открыть файл с матрицой калибровки камеры.
+    std::ifstream cameraMatrixFile(calibrationCameraMatrixFileName);
+    //Проверка на удачное открытие файла.
     if (!cameraMatrixFile.is_open()) {
-        std::cerr << "Unable to open the file" << std::endl;
-        return -1;
+        throw std::runtime_error("Path: " + calibrationCameraMatrixFileName + '\n'
+                                        + "Calibration file was not opened.");
     }
 
-    cv::Mat cameraMatrix = fillCameraMatrix(cameraMatrixFile);
-    if (cameraMatrix.empty()) {
-        return -1;
+    cv:: Mat cameraMatrix;
+    try {
+        //Читаем камеру матрицы из файла.
+        cameraMatrix = readCameraMatrix(cameraMatrixFile);
+    }catch (const std::runtime_error& e) {
+        //В случае неудачи пробрасываем исключение на уровень выше.
+        throw;
     }
 
     cameraMatrixFile.close();
     cap.open(path);
 
     if (!cap.isOpened()) {
-        std::cerr << "Open video error" << std::endl;
-        return -1;
+        throw std::runtime_error("Open video error.");
     }
 
     std::vector<cv::Mat> framePool;
@@ -194,6 +200,4 @@ int entryPoint(const std::string &path) {
     map.showMap(0);
     cap.release();
     cv::destroyAllWindows();
-
-    return 0;
 }

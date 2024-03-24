@@ -1,11 +1,13 @@
 #include <opencv2/opencv.hpp>
 #include "../headers/processVideo.h"
 
-/**
- * Starting.
- */
+
 int main() {
-    int state = entryPoint("nsu.MOV");
+    try {
+        startProcessing("testVideo1.MOV");
+    } catch (const std::runtime_error& e) {
+        std::cerr << e.what() << std::endl;
+    }
 
 
 

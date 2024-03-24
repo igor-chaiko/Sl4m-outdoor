@@ -14,7 +14,6 @@
 #define CONST_FOR_SCALE 10
 class Map {
 
-private:
     std::vector<MapPoint> coordinatesOnMap; //Вектор хранящий все координаты
 
     int canvasSize; //Размер выводимой карты
