@@ -1,4 +1,4 @@
-#include "../headers/Map.h"
+#include "../headers/map.h"
 
 Map::Map() {
     this->coordinatesOnMap = std::vector<MapPoint>();
@@ -44,13 +44,11 @@ void Map::isCoordinateMoreThanMax(double x, double y) {
 }
 
 
-void Map::addFeaturesPoint(cv::Mat mat) {
+void Map::addFeaturesPoint(const cv::Mat& mat) {
+    /*
     this->features.push_back(mat);
-
-    //int weight = mat.rows;
     int height = mat.cols;
 
-//    std::cout << mat << std::endl;
 
     for (int i = 0; i < height; i++) {
         double y = mat.at<double>(2, i);
@@ -59,9 +57,10 @@ void Map::addFeaturesPoint(cv::Mat mat) {
 
         //isCoordinateMoreThanMax(x, y);
     }
+    */
 }
 void Map::showMap(int delay) {
-    double coefficient = maxCoordinate * COEFFICIENT_FOR_SCALE / ((double)canvasSize / 2);
+    double coefficient = maxCoordinate * COEFFICIENT_FOR_SCALE / (static_cast<double>(canvasSize) / 2);
 
     if (isMaxCoordinateChange) {
         isMaxCoordinateChange = false;
@@ -76,7 +75,7 @@ void Map::showMap(int delay) {
             for (int i = 0; i < height; i++) {
 
                 double y = mat.at<double>(2, i);
-                double z = mat.at<double>(1, i);
+                //double z = mat.at<double>(1, i);
                 double x = mat.at<double>(0, i);
 
                 cv::Point2d tmpPoint = cv::Point2d(x, y);
@@ -89,7 +88,8 @@ void Map::showMap(int delay) {
         }
 
         ////РИСУЕМ КООРДИНАТЫ
-        cv::Point2d lastPoint = cv::Point2d((double)canvasSize / 2, (double)canvasSize / 2);//центр полотна
+        cv::Point2d lastPoint = cv::Point2d(static_cast<double>(canvasSize) / 2,
+            static_cast<double>(canvasSize) / 2);//центр полотна
         for (MapPoint mapPoint : this->coordinatesOnMap) {//наносим каждую точку из массива координат
             cv::Point2d tmpPoint = mapPoint.getGlobalCoordinates();
             tmpPoint.x = tmpPoint.x / coefficient;
@@ -110,14 +110,13 @@ void Map::showMap(int delay) {
 
         ///РИСУЕМ ФИЧИ
         for ( ; indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn < features.size(); indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn++) {
-            cv::Point2d lastPoint;
             cv::Mat mat = features[indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn];
 
             int height = mat.cols;
             for (int i = 0; i < height; i++) {
 
                 double y = mat.at<double>(2, i);
-                double z = mat.at<double>(1, i);
+                //double z = mat.at<double>(1, i);
                 double x = mat.at<double>(0, i);
 
                 cv::Point2d tmpPoint = cv::Point2d(x, y);
@@ -136,7 +135,8 @@ void Map::showMap(int delay) {
         for ( ; indexOfCurrentPointThatNeedsToBeDrawn < coordinatesOnMap.size(); indexOfCurrentPointThatNeedsToBeDrawn++) {
             cv::Point2d lastPoint;
             if (this->indexOfCurrentPointThatNeedsToBeDrawn == 0) {
-                lastPoint = cv::Point2d((double)canvasSize / 2, (double)canvasSize / 2);//центр полотна
+                lastPoint = cv::Point2d(static_cast<double>(canvasSize) / 2,
+                    static_cast<double>(canvasSize) / 2);//центр полотна
             } else {
                 lastPoint = this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn - 1].getGlobalCoordinates();
                 lastPoint.x = lastPoint.x / coefficient;
