@@ -5,7 +5,7 @@
 #include <vector>
 
 class MapPoint {
-
+private:
     // переменная для хранения координаты (x, y) в какой-то момент времени
     cv::Point2d globalCoordinate;
 
@@ -29,16 +29,19 @@ public:
 
     cv::Point2d getVector();
 
-    [[nodiscard]]double vectorLength() const;
+    double vectorLength() const;
 
     // угол в радианах
-    [[nodiscard]]double calculateAngle() const;
+    double calculateAngle() const;
 
     // вычисляем глобальные координаты точки, в которую ведет вектор
-    [[nodiscard]]cv::Point2d calculateNewCoords(const cv::Mat&, const cv::Mat&) const;
+    cv::Point2d calculateNewCoords(cv::Mat, cv::Mat);
 
     // вычисляем угол поворота камеры
     static cv::Point2d calculateRotationAngle(cv::Mat);
 };
+
+// тестирует calculateNewCoords из MapPoint
+int testCoordsFinder(int angleInDegrees, cv::Point2d startPoint, cv::Mat vector);
 
 #endif //SL4M_OUTDOOR_MAPPOINT_H

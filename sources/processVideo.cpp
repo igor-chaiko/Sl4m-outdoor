@@ -4,8 +4,10 @@
 #include <fstream>
 #include "../headers/processVideo.h"
 #include "../headers/mapPoint.h"
-#include "../headers/map.h"
+#include "../headers/Map.h"
 #include "../headers/triangulation.h"
+
+cv::Mat image2;
 
 /**
  * Метод проверяет количество мэтчей.
@@ -14,20 +16,16 @@
  */
 void goodMatchesCheck(const std::vector<cv::DMatch>& oldMatches,
                         const std::vector<cv::Mat> &framePool,
-                        const cv::Mat& descriptors1,
-                        cv::Mat image2) {
-    //Инициализация вспомогательных переменных.
+                        const cv::Mat& descriptors1) {
     std::vector<cv::KeyPoint> keyPoints2;
     std::vector<cv::DMatch> newMatches;
     cv::Mat descriptors2, secondGray;
 
-    //Если на кадре уже количество мэтчей больше, чем нам нужно, то выходим из метода.
     if (oldMatches.size() >= MIN_MATCHES) {
         numOfFirstUnusedFramePool = static_cast<int>(framePool.size());
         return;
     }
-    //Иначе начинаем перебор.
-    //Перебор идёт с конца до 0-ого кадра.
+
     for (int i = static_cast<int>(framePool.size()) - 2; i >= 0; i--) {
         image2 = framePool[i];
         cvtColor(image2, secondGray, cv::COLOR_BGR2GRAY);
@@ -118,7 +116,7 @@ void startProcessing() {
     try {
         //Читаем камеру матрицы из файла.
         cameraMatrix = readCameraMatrix(CALIBRATION_CAMERA_MATRIX_PATH);
-    }catch (const std::runtime_error&) {
+    }catch (const std::runtime_error& e) {
         //В случае неудачи пробрасываем исключение на уровень выше.
         throw;
     }
@@ -162,11 +160,11 @@ void startProcessing() {
             break;
         }
 
-        cv:: Mat image2 = framePool[framePool.size() - 1];
+        image2 = framePool[framePool.size() - 1];
         extractKeyPointsAndDescriptors(image2, keyPoints2, descriptors2);
         performFeatureMatching(descriptors1, descriptors2, oldMatches);
 
-        goodMatchesCheck(oldMatches, framePool, descriptors1, image2);
+        goodMatchesCheck(oldMatches, framePool, descriptors1);
         oldMatches.clear();
 
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
@@ -179,8 +177,7 @@ void startProcessing() {
         }
 
         double y = P2.at<double>(2, 3);
-        //Координату z отбрасывае т.к. на карте мы её не отображаем.
-        //double z = P2.at<double>(1, 3);
+        double z = P2.at<double>(1, 3);
         double x = P2.at<double>(0, 3);
 
         cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
