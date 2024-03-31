@@ -10,8 +10,8 @@
 #define COEFFICIENT_FOR_SCALE 1.3
 #define POINT_RADIUS 5
 #define FEATURES_RADIUS 3
-
 #define CONST_FOR_SCALE 10
+
 class Map {
 
     std::vector<MapPoint> coordinatesOnMap; //Вектор хранящий все координаты
@@ -27,7 +27,7 @@ class Map {
 
     void drawAxes(cv::Mat canvas) const;
 
-    cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point) const;
+    [[nodiscard]] cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point) const;
 
 
     void isCoordinateMoreThanMax(MapPoint point);
@@ -38,7 +38,7 @@ public:
     Map();
 
     //Метод добавляет фичи для отрисовки. (де факто будет отрисовываться окружение, ждём пока Рустам пофиксит, после тестим)
-    void addFeaturesPoint(cv::Mat mat);
+    void addFeaturesPoint(const cv::Mat& mat);
 
     //Метод добавляет point для отрисовки
     void addPoint(const MapPoint& point);

@@ -1,5 +1,4 @@
 #include <opencv2/opencv.hpp>
-#include <utility>
 #include "../headers/mapPoint.h"
 
 MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Point2d vector) {
@@ -40,11 +39,12 @@ double MapPoint::calculateAngle() const {
 }
 
 /**
- * фунция для нахождения координат с учетом вращения.
- * @return глобальные координаты.
+ * Фунция для нахождения координат с учетом вращения.
+ *
+ * @return - глобальные координаты.
  */
-cv::Point2d MapPoint::calculateNewCoords(cv::Mat displacementVector3D,
-                                         cv::Mat rotationMatrix3D) {
+cv::Point2d MapPoint::calculateNewCoords(const cv::Mat& displacementVector3D,
+                                         const cv::Mat& rotationMatrix3D) const {
     cv::Point2d globalCoords;
 
     // переход от 3х3 матрицы к 2х2, учитывая вращение только вдоль Z
