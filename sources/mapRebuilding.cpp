@@ -27,10 +27,10 @@ void closeLoopExp(std::vector<cv::Point2d> &loop) {
 
     for (int i = 1; i < loop.size(); i++) {
         cv::Point2d point = loop[i];
-        cv::Point2d movement =
-                (point - mainPoint) * std::pow(norm((point - mainPoint)), i / (double) num) / norm((point - mainPoint));
 
-        loop[i] -= movement;
+        cv::Point2d movement = (mainPoint - point) * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
+
+        loop[i] += movement;
     }
 }
 
@@ -47,22 +47,23 @@ void softenAngle(std::vector<cv::Point2d> &loop) {
     cv::Point2d vector = loop[size - 2] - loop[size - 1];
 
     double fixAngle = atan2(vector.y, vector.x) - atan2(vectorMain.y, vectorMain.x);
+    if (fixAngle > CV_PI) {
+        fixAngle -= 2 * CV_PI;
+    } else if (fixAngle < -CV_PI) {
+        fixAngle += 2 * CV_PI;
+    }
 
     size_t num = size - 1;
 
-    for (int i = 1; i < num; i++) {
-        cv::Point2d point = loop[i];
+    for (int i = 1; i <= num; i++) {
+        cv::Point2d point = loop[i] - mainPoint;
 
-        cv::Point2d rotated = point - mainPoint;
-        rotated = cv::Point2d(
-                rotated.x * std::cos(fixAngle) + rotated.y * std::sin(fixAngle),
-                -rotated.x * std::sin(fixAngle) + rotated.y * std::cos(fixAngle));
-        rotated += mainPoint;
+        double rotate = fixAngle * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
+        cv::Point2d rotated = cv::Point2d(
+                point.x * std::cos(rotate) + point.y * std::sin(rotate),
+                -point.x * std::sin(rotate) + point.y * std::cos(rotate));
 
-        cv::Point2d movement =
-                (point - rotated) * std::pow(norm((point - rotated)), i / (double) num) / norm((point - rotated));
-
-        loop[i] -= movement;
+        loop[i] = rotated + mainPoint ;
     }
 }
 
