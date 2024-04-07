@@ -2,10 +2,9 @@
 #include <utility>
 #include "../headers/mapPoint.h"
 
-MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Point2d vector) {
+MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates) {
     this->globalCoordinate = globalCoordinate;
     this->localCoordinates = std::move(localCoordinates);
-    this->vector = vector;
 }
 
 void MapPoint::setGlobalCoordinates(double x, double y) {
@@ -19,24 +18,6 @@ void MapPoint::setGlobalCoordinates(cv::Point2d newGlobalCoordinate) {
 
 cv::Point2d MapPoint::getGlobalCoordinates() {
     return this->globalCoordinate;
-}
-
-void MapPoint::setVector(double x, double y) {
-    vector.x = x;
-    vector.y = y;
-}
-
-cv::Point2d MapPoint::getVector() {
-    return this->vector;
-}
-
-double MapPoint::vectorLength() const {
-    double x = vector.x, y = vector.y;
-    return std::sqrt(x * x + y * y);
-}
-
-double MapPoint::calculateAngle() const {
-    return std::atan2(vector.y, vector.x);
 }
 
 /**

@@ -146,9 +146,8 @@ void startProcessing() {
 
     //Это для карты//
     cv::Point2d start = cv::Point2d(0, 0);
-    cv::Point2d vector = cv::Point2d(1, 0);
     std::vector<cv::Point2d> points;
-    MapPoint firstPoint = MapPoint(start, points, vector);
+    MapPoint firstPoint = MapPoint(start, points);
     Map map = Map();
     map.addPoint(firstPoint);
 
@@ -181,7 +180,7 @@ void startProcessing() {
         double x = P2.at<double>(0, 3);
 
         cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
-        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points, vector);
+        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points);
 
         map.addPoint(currentMapPoint);
 

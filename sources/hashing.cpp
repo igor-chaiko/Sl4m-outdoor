@@ -29,14 +29,13 @@ void Hashing::test1(const std::string& pathToVideoFile, long frameIndex) {
     int j = 0;
     while(cap.read(frameForComparing)) {
         double resultOfComparing = test_one(frame, frameForComparing);
-        if (resultOfComparing <= 11.5 && j - frameIndex >= 300) {
+        if (resultOfComparing <= 10 && j - frameIndex >= 300) {
             std::cout << j << std::endl;
 
             std::string filename = "../testResults/image_" + std::to_string(j) + ".jpg";
             if (!cv::imwrite(filename, frameForComparing)) {
                 std::cerr << "save error" << std::endl;
             }
-//~10 сек
 
         }
         j++;
@@ -52,6 +51,11 @@ double Hashing::test_one(const cv::Mat &a, const cv::Mat &b) {
     func->compute(a, hashA);
 
     func->compute(b, hashB);
+
     double resultOfComparing = func->compare(hashA, hashB);
     return resultOfComparing;
+}
+
+Hashing::Hashing() {
+
 }

@@ -12,12 +12,9 @@ private:
     // массив фичей, обнаруженных в этот момент времени (их 2D координаты)
     std::vector<cv::Point2d> localCoordinates;
 
-    // направление оси x в локальной системе координат (нормализованное, т.е. единичное)
-    cv::Point2d vector;
-
 public:
 
-    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Point2d vector);
+    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates);
 
     void setGlobalCoordinates(double x, double y);
 
@@ -25,14 +22,6 @@ public:
 
     cv::Point2d getGlobalCoordinates();
 
-    void setVector(double x, double y);
-
-    cv::Point2d getVector();
-
-    double vectorLength() const;
-
-    // угол в радианах
-    double calculateAngle() const;
 
     // вычисляем глобальные координаты точки, в которую ведет вектор
     cv::Point2d calculateNewCoords(cv::Mat, cv::Mat);

@@ -12,6 +12,8 @@ class Hashing {
 private:
     static double test_one(const cv::Mat &a, const cv::Mat &b);
 public:
+    Hashing();
+
     void test1(const std::string& pathToVideoFile, long frameIndex);
 };
 
