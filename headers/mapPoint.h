@@ -12,9 +12,11 @@ private:
     // массив фичей, обнаруженных в этот момент времени (их 2D координаты)
     std::vector<cv::Point2d> localCoordinates;
 
+    cv::Mat hash;
+
 public:
 
-    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates);
+    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Mat hash);
 
     void setGlobalCoordinates(double x, double y);
 

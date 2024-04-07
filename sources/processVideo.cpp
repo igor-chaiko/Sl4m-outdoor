@@ -145,9 +145,13 @@ void startProcessing() {
     extractKeyPointsAndDescriptors(image1, keyPoints1, descriptors1);
 
     //Это для карты//
+    cv::Ptr<cv::img_hash::ImgHashBase> func;
+    func = cv::img_hash::PHash::create();
     cv::Point2d start = cv::Point2d(0, 0);
     std::vector<cv::Point2d> points;
-    MapPoint firstPoint = MapPoint(start, points);
+    cv::Mat imageHash;
+    func->compute(image1, imageHash);
+    MapPoint firstPoint = MapPoint(start, points, imageHash);
     Map map = Map();
     map.addPoint(firstPoint);
 
@@ -180,7 +184,8 @@ void startProcessing() {
         double x = P2.at<double>(0, 3);
 
         cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
-        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points);
+        func->compute(image2, imageHash);
+        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points, imageHash);
 
         map.addPoint(currentMapPoint);
 

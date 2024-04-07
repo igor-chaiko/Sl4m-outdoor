@@ -2,9 +2,10 @@
 #include <utility>
 #include "../headers/mapPoint.h"
 
-MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates) {
+MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Mat hash) {
     this->globalCoordinate = globalCoordinate;
     this->localCoordinates = std::move(localCoordinates);
+    this->hash = std::move(hash);
 }
 
 void MapPoint::setGlobalCoordinates(double x, double y) {
