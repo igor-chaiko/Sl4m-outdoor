@@ -14,5 +14,7 @@ add_executable(Sl4m_outdoor sources/main.cpp
         sources/processVideo.cpp
         headers/processVideo.h
         sources/mapRebuilding.cpp
-        headers/mapRebuilding.h)
+        headers/mapRebuilding.h
+        headers/hashing.h
+        sources/hashing.cpp)
 target_link_libraries(Sl4m_outdoor ${OpenCV_LIBS})
