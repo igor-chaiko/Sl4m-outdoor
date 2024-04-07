@@ -63,7 +63,7 @@ void Map::addFeaturesPoint(cv::Mat mat) {
 void Map::showMap(int delay) {
     double coefficient = maxCoordinate * COEFFICIENT_FOR_SCALE / ((double)canvasSize / 2);
 
-    if (isMaxCoordinateChange) {
+    if (true) {
         isMaxCoordinateChange = false;
 
         this->canvas = cv::Mat::zeros(canvasSize, canvasSize, CV_8UC3);//заполняем чёрными пикселями
@@ -154,7 +154,6 @@ void Map::showMap(int delay) {
         indexOfCurrentPointThatNeedsToBeDrawn = static_cast<long>(this->coordinatesOnMap.size());
 
 
-
     }
 
 
@@ -213,3 +212,8 @@ cv::Point2d Map::transformationOfCoordinatesToMatrixView(cv::Point2d point) cons
     double coordinateY = static_cast<double>(canvasSize) / 2 - point.y;
     return {coordinateX, coordinateY};
 }
+
+std::vector<MapPoint> &Map::getMapPoints() {
+    return this->coordinatesOnMap;
+}
+

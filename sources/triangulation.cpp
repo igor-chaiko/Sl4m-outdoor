@@ -114,7 +114,7 @@ cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, con
     std::vector<cv::DMatch> goodMatches;
     performFeatureMatching(descriptors1, descriptors2, goodMatches);
 
-    drawAndDisplayMatches(firstGray, secondGray, keyPoints1, keyPoints2, goodMatches);
+    drawAndDisplayMatches(firstFrame, secondFrame, keyPoints1, keyPoints2, goodMatches);
 
     std::vector<cv::Point2d> matchedPoints1, matchedPoints2;
     for (const cv::DMatch &match: goodMatches) {
