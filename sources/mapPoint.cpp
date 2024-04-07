@@ -2,10 +2,13 @@
 #include <utility>
 #include "../headers/mapPoint.h"
 
-MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Mat hash) {
+MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates,
+                   cv::Mat hash, bool isRebuild, cv::Mat image) {
     this->globalCoordinate = globalCoordinate;
     this->localCoordinates = std::move(localCoordinates);
     this->hash = std::move(hash);
+    this->isRebuild = isRebuild;
+    this->image = image;
 }
 
 void MapPoint::setGlobalCoordinates(double x, double y) {
@@ -54,4 +57,20 @@ cv::Point2d MapPoint::calculateRotationAngle(cv::Mat rotationMatrix3D) {
     rotationAngle.y = rotationMatrix3D.at<double>(1, 0);
 
     return rotationAngle;
+}
+
+cv::Mat MapPoint::getHash() {
+    return this->hash;
+}
+
+bool MapPoint::getIsRebuild() {
+    return this->isRebuild;
+}
+
+cv::Mat MapPoint::getImage() {
+    return this->image;
+}
+
+void MapPoint::setIsRebuild(bool isRebuild) {
+    this->isRebuild = isRebuild;
 }

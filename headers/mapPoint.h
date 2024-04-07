@@ -14,9 +14,14 @@ private:
 
     cv::Mat hash;
 
+    bool isRebuild;
+
+    cv::Mat image;
+
 public:
 
-    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates, cv::Mat hash);
+    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates,
+             cv::Mat hash, bool isRebuild, cv::Mat image);
 
     void setGlobalCoordinates(double x, double y);
 
@@ -30,6 +35,14 @@ public:
 
     // вычисляем угол поворота камеры
     static cv::Point2d calculateRotationAngle(cv::Mat);
+
+    cv::Mat getHash();
+
+    bool getIsRebuild();
+
+    cv::Mat getImage();
+
+    void setIsRebuild(bool isRebuild);
 };
 
 // тестирует calculateNewCoords из MapPoint

@@ -2,11 +2,12 @@
 #include <string>
 #include <stdexcept>
 #include <fstream>
+#include <opencv2/img_hash.hpp>
 #include "../headers/processVideo.h"
 #include "../headers/mapPoint.h"
 #include "../headers/Map.h"
 #include "../headers/triangulation.h"
-
+#include "../headers/loopChecker.h"
 cv::Mat image2;
 
 /**
@@ -149,9 +150,10 @@ void startProcessing() {
     func = cv::img_hash::PHash::create();
     cv::Point2d start = cv::Point2d(0, 0);
     std::vector<cv::Point2d> points;
-    cv::Mat imageHash;
-    func->compute(image1, imageHash);
-    MapPoint firstPoint = MapPoint(start, points, imageHash);
+    cv::Mat imageHash1;
+    func->compute(image1, imageHash1);
+    MapPoint firstPoint = MapPoint(start, points, imageHash1,
+                                   false, image1);
     Map map = Map();
     map.addPoint(firstPoint);
 
@@ -176,7 +178,7 @@ void startProcessing() {
         if (isFirstOperation) {
             isFirstOperation = false;
         } else {
-            map.addFeaturesPoint(points3D);
+            //map.addFeaturesPoint(points3D);
         }
 
         double y = P2.at<double>(2, 3);
@@ -184,10 +186,18 @@ void startProcessing() {
         double x = P2.at<double>(0, 3);
 
         cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
-        func->compute(image2, imageHash);
-        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points, imageHash);
+        cv::Mat imageHash2;
+        func->compute(image2, imageHash2);
+        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points,
+                                            imageHash2, false, image2);
 
         map.addPoint(currentMapPoint);
+
+        loopCheck(map.getMapPoints());
+
+
+
+
 
         image1 = image2;
         descriptors1 = descriptors2;

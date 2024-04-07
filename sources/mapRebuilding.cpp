@@ -1,5 +1,6 @@
 #include <opencv2/core/types.hpp>
 #include "../headers/mapRebuilding.h"
+#include "../headers/mapPoint.h"
 
 void closeLoopLine(std::vector<cv::Point2d> &loop) {
     if (loop.size() < 2) {
@@ -14,6 +15,24 @@ void closeLoopLine(std::vector<cv::Point2d> &loop) {
         cv::Point2d movement = (point - mainPoint) * (i / (double) num);
 
         loop[i] -= movement;
+    }
+}
+
+void closeLoopLine(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
+    if (lastIndex - startIndex < 2 || startIndex > lastIndex) {
+        return;
+    }
+
+    size_t num = lastIndex - startIndex;
+    MapPoint& mainMapPoint = loop[startIndex];
+    mainMapPoint.setIsRebuild(true);
+    cv::Point2d mainPoint = mainMapPoint.getGlobalCoordinates();
+    for (int i = startIndex + 1; i <= lastIndex; i++) {
+        MapPoint& currentMapPoint = loop[i];
+        currentMapPoint.setIsRebuild(true);
+        cv::Point2d point = currentMapPoint.getGlobalCoordinates();
+        cv::Point2d movement = (point - mainPoint) * (i / (double) num);
+        currentMapPoint.setGlobalCoordinates(point - movement);
     }
 }
 

@@ -6,12 +6,12 @@
 #include <vector>
 
 #define WINDOW_NAME "Map"
-#define WINDOW_SIZE_IN_PIXELS 1000
+#define WINDOW_SIZE_IN_PIXELS 500
 #define COEFFICIENT_FOR_SCALE 1.3
-#define POINT_RADIUS 5
+#define POINT_RADIUS 3
 #define FEATURES_RADIUS 3
 
-#define CONST_FOR_SCALE 10
+#define CONST_FOR_SCALE 0
 class Map {
 
     std::vector<MapPoint> coordinatesOnMap; //Вектор хранящий все координаты
@@ -44,6 +44,8 @@ public:
     void addPoint(const MapPoint& point);
 
     void showMap(int delay);
+
+    std::vector<MapPoint>& getMapPoints();
 
 };
 
