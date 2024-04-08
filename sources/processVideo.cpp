@@ -161,6 +161,8 @@ void startProcessing() {
     Map map = Map();
     map.addPoint(firstPoint);
 
+    bool isFirstOperation = true;
+
     while (true) {
         cv::Mat descriptors2;
 
@@ -178,6 +180,13 @@ void startProcessing() {
 
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
+        //Т.к. на первой итерации координаты плохие, пропускаем их.
+        if (isFirstOperation) {
+            isFirstOperation = false;
+        } else {
+            //map.addFeaturesPoint(points3D);
+        }
+
         double y = P2.at<double>(2, 3);
         double z = P2.at<double>(1, 3);
         double x = P2.at<double>(0, 3);
@@ -191,7 +200,6 @@ void startProcessing() {
         map.addPoint(currentMapPoint);
 
         loopCheck(map.getMapPoints());
-
 
         image1 = image2;
         descriptors1 = descriptors2;
