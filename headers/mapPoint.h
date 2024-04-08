@@ -6,7 +6,7 @@
 
 class MapPoint {
 private:
-    // переменная для хранения координаты (x, y) в какой-то момент времени
+// переменная для хранения координаты (x, y) в какой-то момент времени
     cv::Point2d globalCoordinate;
 
     // массив фичей, обнаруженных в этот момент времени (их 2D координаты)
@@ -16,35 +16,26 @@ private:
 
     bool isRebuild;
 
-    cv::Mat image;
-
     cv::Mat P;
 
 public:
+    MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates, cv::Mat hash, bool isRebuild);
 
-    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates,
-             cv::Mat hash, bool isRebuild, cv::Mat image);
+    void setGlobalCoordinates(const cv::Mat &newP);
 
-    void setGlobalCoordinates(double x, double y);
+    cv::Mat getGlobalCoordinates();
 
-    void setGlobalCoordinates(cv::Point2d);
+    cv::Mat getR();
 
-    cv::Point2d getGlobalCoordinates();
+    cv::Mat getT();
 
-
-    // вычисляем глобальные координаты точки, в которую ведет вектор
-    cv::Point2d calculateNewCoords(cv::Mat, cv::Mat);
-
-    // вычисляем угол поворота камеры
-    static cv::Point2d calculateRotationAngle(cv::Mat);
+    cv::Point2d get2DCoordinates();
 
     cv::Mat getHash();
 
-    bool getIsRebuild();
+    bool getIsRebuild() const;
 
-    cv::Mat getImage();
-
-    void setIsRebuild(bool isRebuild);
+    void setIsRebuild(bool newIsRebuild);
 };
 
 // тестирует calculateNewCoords из MapPoint

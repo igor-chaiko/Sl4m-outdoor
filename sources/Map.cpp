@@ -16,13 +16,13 @@ void Map::addPoint(const MapPoint& point) {
 }
 
 void Map::isCoordinateMoreThanMax(MapPoint point) {
-    double currAbsX = abs(point.getGlobalCoordinates().x);
+    double currAbsX = abs(point.get2DCoordinates().x);
     if (currAbsX > maxCoordinate) {
         maxCoordinate = currAbsX + CONST_FOR_SCALE;
         isMaxCoordinateChange = true;
     }
 
-    double currAbsY = abs(point.getGlobalCoordinates().y);
+    double currAbsY = abs(point.get2DCoordinates().y);
     if (currAbsY > maxCoordinate) {
         maxCoordinate = currAbsY + CONST_FOR_SCALE;
         isMaxCoordinateChange = true;
@@ -91,7 +91,7 @@ void Map::showMap(int delay) {
         ////РИСУЕМ КООРДИНАТЫ
         cv::Point2d lastPoint = cv::Point2d((double)canvasSize / 2, (double)canvasSize / 2);//центр полотна
         for (MapPoint mapPoint : this->coordinatesOnMap) {//наносим каждую точку из массива координат
-            cv::Point2d tmpPoint = mapPoint.getGlobalCoordinates();
+            cv::Point2d tmpPoint = mapPoint.get2DCoordinates();
             tmpPoint.x = tmpPoint.x / coefficient;
             tmpPoint.y = tmpPoint.y / coefficient;
             tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
@@ -138,13 +138,13 @@ void Map::showMap(int delay) {
             if (this->indexOfCurrentPointThatNeedsToBeDrawn == 0) {
                 lastPoint = cv::Point2d((double)canvasSize / 2, (double)canvasSize / 2);//центр полотна
             } else {
-                lastPoint = this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn - 1].getGlobalCoordinates();
+                lastPoint = this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn - 1].get2DCoordinates();
                 lastPoint.x = lastPoint.x / coefficient;
                 lastPoint.y = lastPoint.y / coefficient;
             }
             lastPoint = transformationOfCoordinatesToMatrixView(lastPoint);
 
-            cv::Point2d tmpPoint = this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getGlobalCoordinates();
+            cv::Point2d tmpPoint = this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].get2DCoordinates();
             tmpPoint.x = tmpPoint.x / coefficient;
             tmpPoint.y = tmpPoint.y / coefficient;
             tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);

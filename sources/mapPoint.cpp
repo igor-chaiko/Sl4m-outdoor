@@ -2,75 +2,42 @@
 #include <utility>
 #include "../headers/mapPoint.h"
 
-MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates,
-                   cv::Mat hash, bool isRebuild, cv::Mat image) {
-    this->globalCoordinate = globalCoordinate;
+MapPoint::MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates,
+                   cv::Mat hash, bool isRebuild) {
+    setGlobalCoordinates(P);
     this->localCoordinates = std::move(localCoordinates);
     this->hash = std::move(hash);
     this->isRebuild = isRebuild;
-    this->image = image;
 }
 
-void MapPoint::setGlobalCoordinates(double x, double y) {
-    globalCoordinate.x = x;
-    globalCoordinate.y = y;
+void MapPoint::setGlobalCoordinates(const cv::Mat &newP) {
+    this->P = newP.clone();
+
+    double y = P.at<double>(2, 3);
+    double z = P.at<double>(1, 3);
+    double x = P.at<double>(0, 3);
+
+    this->globalCoordinate = cv::Point2d(x, y);
+}
+// todo get set P T
+cv::Mat MapPoint::getGlobalCoordinates() {
+    return this->P;
 }
 
-void MapPoint::setGlobalCoordinates(cv::Point2d newGlobalCoordinate) {
-    globalCoordinate = newGlobalCoordinate;
-}
-
-cv::Point2d MapPoint::getGlobalCoordinates() {
+cv::Point2d MapPoint::get2DCoordinates() {
     return this->globalCoordinate;
 }
 
-/**
- * фунция для нахождения координат с учетом вращения.
- * @return глобальные координаты.
- */
-cv::Point2d MapPoint::calculateNewCoords(cv::Mat displacementVector3D,
-                                         cv::Mat rotationMatrix3D) {
-    cv::Point2d globalCoords;
-
-    // переход от 3х3 матрицы к 2х2, учитывая вращение только вдоль Z
-    cv::Mat displacementVector2D = displacementVector3D(cv::Range(0, 2),
-                                                        cv::Range::all()
-                                                        );
-    // отрезаем у вектора координату Z
-    cv::Mat rotationMatrix2D = rotationMatrix3D(cv::Range(0, 2),
-                                                cv::Range(0, 2)
-                                                );
-
-    // повернутый вектор
-    cv::Mat inverseVector = rotationMatrix2D * displacementVector2D;
-
-    globalCoords.x = this->globalCoordinate.x + inverseVector.at<double>(0, 0);
-    globalCoords.y = this->globalCoordinate.y + inverseVector.at<double>(0, 1);
-
-    return globalCoords;
-}
-
-cv::Point2d MapPoint::calculateRotationAngle(cv::Mat rotationMatrix3D) {
-    cv::Point2d rotationAngle;
-
-    rotationAngle.x = rotationMatrix3D.at<double>(0, 0);
-    rotationAngle.y = rotationMatrix3D.at<double>(1, 0);
-
-    return rotationAngle;
-}
 
 cv::Mat MapPoint::getHash() {
     return this->hash;
 }
 
-bool MapPoint::getIsRebuild() {
+bool MapPoint::getIsRebuild() const {
     return this->isRebuild;
 }
 
-cv::Mat MapPoint::getImage() {
-    return this->image;
-}
 
-void MapPoint::setIsRebuild(bool isRebuild) {
-    this->isRebuild = isRebuild;
+void MapPoint::setIsRebuild(bool newIsRebuild) {
+    this->isRebuild = newIsRebuild;
 }
