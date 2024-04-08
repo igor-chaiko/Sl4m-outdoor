@@ -39,6 +39,10 @@ void goodMatchesCheck(const std::vector<cv::DMatch>& oldMatches,
     }
 }
 
+/**
+ * функция сдвига кадров на случай, если произошел сдвиг влево,
+ * то есть был недостаток матчей в какой-то момент.
+ */
 std::vector<cv::Mat> shiftValues(const std::vector<cv::Mat> &frames) {
     std::vector<cv::Mat> remainingFrames;
 
@@ -105,9 +109,9 @@ cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
         }
     }
     cameraMatrixFile.close();
+
     return cameraMatrix;
 }
-
 
 /**
  * Метод ответственные за начало обработки видео.
@@ -140,7 +144,7 @@ void startProcessing() {
     cap >> image1;
 
     std::vector<cv::KeyPoint> keyPoints1, keyPoints2;
-    cv::Mat descriptors1, descriptors2;
+    cv::Mat descriptors1;
     std::vector<cv::DMatch> oldMatches;
 
     extractKeyPointsAndDescriptors(image1, keyPoints1, descriptors1);
@@ -157,9 +161,8 @@ void startProcessing() {
     Map map = Map();
     map.addPoint(firstPoint);
 
-    bool isFirstOperation = true;
-
     while (true) {
+        cv::Mat descriptors2;
 
         if (getFramesPool(framePool, cap) == -1) {
             break;
@@ -171,15 +174,9 @@ void startProcessing() {
 
         goodMatchesCheck(oldMatches, framePool, descriptors1);
         oldMatches.clear();
+        keyPoints2.clear();
 
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
-
-        //Т.к. на первой итерации координаты плохие, пропускаем их.
-        if (isFirstOperation) {
-            isFirstOperation = false;
-        } else {
-            //map.addFeaturesPoint(points3D);
-        }
 
         double y = P2.at<double>(2, 3);
         double z = P2.at<double>(1, 3);
@@ -194,9 +191,6 @@ void startProcessing() {
         map.addPoint(currentMapPoint);
 
         loopCheck(map.getMapPoints());
-
-
-
 
 
         image1 = image2;
