@@ -18,6 +18,8 @@ private:
 
     cv::Mat image;
 
+    cv::Mat P;
+
 public:
 
     MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates,
