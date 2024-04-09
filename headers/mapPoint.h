@@ -27,7 +27,11 @@ public:
 
     cv::Mat getR();
 
-    cv::Mat getT();
+    void setR(const cv::Mat &newR);
+
+    cv::Point3d getT();
+
+    void setT(const cv::Point3d &newT);
 
     cv::Point2d get2DCoordinates();
 

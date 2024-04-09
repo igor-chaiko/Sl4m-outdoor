@@ -9,62 +9,64 @@ void rebuildPath(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
         return;
     }
 
-    softenAngle(loop, startIndex, lastIndex);
+    //softenAngle(loop, startIndex, lastIndex);
 
     closeLoopExp(loop, startIndex, lastIndex);
 
-    softenAngle(loop, startIndex, lastIndex);
+    //softenAngle(loop, startIndex, lastIndex);
 }
 
 
 void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
-    // todo
-//    if (lastIndex - startIndex < 3
-//        || startIndex < 0
-//        || lastIndex >= loop.size()) {
-//        return;
-//    }
-//
-//    size_t num = lastIndex - startIndex;
-//    cv::Point2d mainPoint = loop[startIndex].get2DCoordinates();
-//
-//    for (int i = startIndex + 1; i <= lastIndex; i++) {
-//        cv::Point2d point = loop[i].get2DCoordinates();
-//        cv::Point2d movement = (mainPoint - point) * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
-//        loop[i].setGlobalCoordinates(point + movement);
-//    }
+    if (lastIndex - startIndex < 3
+        || startIndex < 0
+        || lastIndex >= loop.size()) {
+        return;
+    }
+
+    size_t num = lastIndex - startIndex;
+    cv::Point3d mainPoint = loop[startIndex].getT();
+
+    for (int i = 1; i <= num; i++) {
+        if (i == lastIndex) {
+            i = lastIndex;
+        }
+
+        cv::Point3d point = loop[startIndex + i].getT();
+        cv::Point3d movement = (mainPoint - point) * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
+        loop[startIndex + i].setT(point + movement);
+    }
 }
 
 void softenAngle(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
-    // todo
-//    size_t size = loop.size();
-//    if (loop.size() < 4) {
-//        return;
-//    }
-//
-//    cv::Point2d mainPoint = loop[startIndex].get2DCoordinates();
-//    cv::Point2d vectorMain = mainPoint - loop[1].get2DCoordinates();
-//    cv::Point2d vector = loop[lastIndex - 1].get2DCoordinates() - loop[lastIndex].get2DCoordinates();
-//
-//    double fixAngle = atan2(vector.y, vector.x) - atan2(vectorMain.y, vectorMain.x);
-//    if (fixAngle > CV_PI) {
-//        fixAngle -= 2 * CV_PI;
-//    } else if (fixAngle < -CV_PI) {
-//        fixAngle += 2 * CV_PI;
-//    }
-//
-//    size_t num = size - 1;
-//
-//    for (int i = startIndex + 1; i <= lastIndex; i++) {
-//        cv::Point2d point = loop[i].get2DCoordinates() - mainPoint;
-//
-//        double rotate = fixAngle * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
-//        cv::Point2d rotated = cv::Point2d(
-//                point.x * std::cos(rotate) + point.y * std::sin(rotate),
-//                -point.x * std::sin(rotate) + point.y * std::cos(rotate));
-//
-//        loop[i].setGlobalCoordinates(rotated + mainPoint);
-//    }
+    if (lastIndex - startIndex < 3
+        || startIndex < 0
+        || lastIndex >= loop.size()) {
+        return;
+    }
+
+    size_t num = lastIndex - startIndex;
+
+    cv::Mat mainR = loop[startIndex].getR(), lastR = loop[lastIndex].getR();
+    cv::Point3d mainPoint = loop[startIndex].getT();
+
+    cv::Mat rvec1, rvec2;
+    cv::Rodrigues(mainR, rvec1);
+    cv::Rodrigues(lastR, rvec2);
+
+    cv::Mat delta_rvec = rvec2 - rvec1;
+
+    for (int i = 1; i <= num; i++) {
+        MapPoint point = loop[i + startIndex];
+        point.setT(point.getT() - mainPoint);
+
+        cv::Mat rotate = delta_rvec * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
+        cv::Mat R;
+        cv::Rodrigues(rotate, R);
+
+        point.setGlobalCoordinates(R * point.getGlobalCoordinates());
+        point.setT(point.getT() + mainPoint);
+    }
 }
 
 void softenAngle(std::vector<cv::Point2d> &loop) {
