@@ -159,7 +159,6 @@ void startProcessing() {
     bool isFirstOperation = true;
 
     while (true) {
-
         if (getFramesPool(framePool, cap) == -1) {
             break;
         }
@@ -190,12 +189,9 @@ void startProcessing() {
         loopCheck(map.getMapPoints());
 
 
-
-
-
         image1 = image2;
         descriptors1 = descriptors2;
-        P1 = P2;
+        P1 = currentMapPoint.getGlobalCoordinates();
 
         if (cv::waitKey(30) == 27) {
             break;

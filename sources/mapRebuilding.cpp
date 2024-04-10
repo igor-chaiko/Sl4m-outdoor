@@ -9,11 +9,11 @@ void rebuildPath(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
         return;
     }
 
-    //softenAngle(loop, startIndex, lastIndex);
+    softenAngle(loop, startIndex, lastIndex);
 
     closeLoopExp(loop, startIndex, lastIndex);
 
-    //softenAngle(loop, startIndex, lastIndex);
+    softenAngle(loop, startIndex, lastIndex);
 }
 
 
@@ -48,24 +48,21 @@ void softenAngle(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
     size_t num = lastIndex - startIndex;
 
     cv::Mat mainR = loop[startIndex].getR(), lastR = loop[lastIndex].getR();
-    cv::Point3d mainPoint = loop[startIndex].getT();
 
     cv::Mat rvec1, rvec2;
     cv::Rodrigues(mainR, rvec1);
     cv::Rodrigues(lastR, rvec2);
 
-    cv::Mat delta_rvec = rvec2 - rvec1;
+    cv::Mat delta_rvec = rvec1 - rvec2;
 
     for (int i = 1; i <= num; i++) {
         MapPoint point = loop[i + startIndex];
-        point.setT(point.getT() - mainPoint);
 
         cv::Mat rotate = delta_rvec * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
         cv::Mat R;
         cv::Rodrigues(rotate, R);
 
-        point.setGlobalCoordinates(R * point.getGlobalCoordinates());
-        point.setT(point.getT() + mainPoint);
+        point.setR(R * point.getR());
     }
 }
 
