@@ -8,9 +8,7 @@ void rebuildPath(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
         || lastIndex >= loop.size()) {
         return;
     }
-
-    softenAngle(loop, startIndex, lastIndex);
-
+    
     closeLoopExp(loop, startIndex, lastIndex);
 
     softenAngle(loop, startIndex, lastIndex);
@@ -28,10 +26,6 @@ void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
     cv::Point3d mainPoint = loop[startIndex].getT();
 
     for (int i = 1; i <= num; i++) {
-        if (i == lastIndex) {
-            i = lastIndex;
-        }
-
         cv::Point3d point = loop[startIndex + i].getT();
         cv::Point3d movement = (mainPoint - point) * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
         loop[startIndex + i].setT(point + movement);
