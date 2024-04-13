@@ -5,7 +5,7 @@
 #include <fstream>
 
 #define BOARD_WIDTH 5
-#define BOARD_HEIGHT 7
+#define BOARD_HEIGHT 5
 
 int calibration() {
     //Координаты квадратиков на шахматной доске в системе координат самой шахаматной доски(z == 0)
@@ -23,7 +23,7 @@ int calibration() {
     //Вектор названий изображения
     std::vector<cv::String> images;
     //Получаем пути изображений по которым будем калиброваться
-    cv::glob("../CalibImg/*.jpg", images);
+    cv::glob("../resources/chessboard/camera2/*.jpeg", images);
 
     //Матрица для хранения изображения в серых тонах
     cv::Mat gray;
@@ -55,6 +55,13 @@ int calibration() {
             //Метод увеличивает точность найденных координат углов
             cv::cornerSubPix(gray, corners, cv::Size(11, 11), cv::Size(-1, -1), criteria);
             imgPoints.push_back(corners);
+
+            // Рисуем сетку
+            cv::drawChessboardCorners(img, cv::Size(BOARD_HEIGHT, BOARD_WIDTH), corners, ret);
+
+            // Показываем изображение с нарисованной сеткой
+            cv::imshow("Chessboard Corners", img);
+            cv::waitKey(0); // Ждем нажатия клавиши, чтобы закрыть окно
         }
     }
 
@@ -71,7 +78,7 @@ int calibration() {
     std::cout << "Distortion Coefficients:\n" << distCoefficients << "\n";
 
     //Открытие файла на запись
-    std::ofstream calib("CalibratedCamera.txt");
+    std::ofstream calib("../resources/CalibratedCamera2.txt");
     if (calib.is_open()) {
         //Записываем Матрицу
         calib << "Camera Matrix: ";
@@ -96,4 +103,3 @@ int calibration() {
 
     return 0;
 }
-
