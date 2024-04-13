@@ -1,0 +1,9 @@
+#include "opencv2/opencv.hpp"
+
+#ifndef SL4M_OUTDOOR_TRAFICSIGNSDETECTION_H
+#define SL4M_OUTDOOR_TRAFICSIGNSDETECTION_H
+
+void findSigns(cv::Mat image);
+#define AREA_LOWER_BOUND 10000
+
+#endif //SL4M_OUTDOOR_TRAFICSIGNSDETECTION_H
