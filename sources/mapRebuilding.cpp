@@ -2,33 +2,65 @@
 #include "../headers/mapRebuilding.h"
 
 
-void rebuildPath(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
-    if (lastIndex - startIndex < 4
-        || startIndex < 0
-        || lastIndex >= loop.size()) {
+void rebuildPath(std::vector<MapPoint> &loop, int mainIndex) {
+    if (loop.size() < 4) {
         return;
     }
-    
-    closeLoopExp(loop, startIndex, lastIndex);
 
-    softenAngle(loop, startIndex, lastIndex);
+    int startIndex = mainIndex;
+
+    if (loop[mainIndex].getRebuiltOn() > mainIndex) {
+        loop[mainIndex].setRebuiltOn(mainIndex);
+    }
+
+    for (size_t i = loop.size() - 1; i > mainIndex; i--) {
+        if (loop[i].getRebuiltOn() < mainIndex) {
+            startIndex = (int) i;
+            break;
+        } else {
+            loop[i].setRebuiltOn(mainIndex);
+        }
+    }
+
+    closeLoopExp(loop, startIndex, mainIndex);
+
+    //softenAngle(loop, startIndex, lastIndex);
 }
 
 
-void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
+void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int mainIndex) {
+    size_t lastIndex = loop.size() - 1;
+
     if (lastIndex - startIndex < 3
-        || startIndex < 0
-        || lastIndex >= loop.size()) {
+        || startIndex < mainIndex
+        || mainIndex < 0) {
         return;
     }
 
     size_t num = lastIndex - startIndex;
-    cv::Point3d mainPoint = loop[startIndex].getT();
+
+    cv::Point3d mainT = loop[mainIndex].getT();
+    cv::Mat mainR = loop[mainIndex].getR(), lastR = loop[lastIndex].getR();
+
+    cv::Mat rVec1, rVec2;
+    cv::Rodrigues(mainR, rVec1);
+    cv::Rodrigues(lastR, rVec2);
+    cv::Mat deltaRVec = rVec1 - rVec2;
 
     for (int i = 1; i <= num; i++) {
-        cv::Point3d point = loop[startIndex + i].getT();
-        cv::Point3d movement = (mainPoint - point) * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
-        loop[startIndex + i].setT(point + movement);
+        MapPoint point = loop[i + startIndex];
+
+        cv::Point3d pointT = loop[startIndex + i].getT();
+        cv::Mat pointR = loop[startIndex + i].getR();
+
+        cv::Point3d movement = (mainT - pointT) * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
+        cv::Mat rotate = deltaRVec * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
+
+        cv::Mat R;
+        cv::Rodrigues(rotate, R);
+
+        loop[startIndex + i].setT(pointT + movement);
+        point.setR(R * pointR);
     }
 }
 

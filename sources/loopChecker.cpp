@@ -25,7 +25,7 @@ void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
             if (lengthBetweenTwoPoint(lastFrameCoordinates, currentFrameCoordinates) >= 5
             && checkThatCoordinatesArentRebuild(coordinatesOnMap, i, length - 1)) {
                 std::cout << "distance > 5" << std::endl;
-                rebuildPath(coordinatesOnMap, i, length - 1);
+                rebuildPath(coordinatesOnMap, i);
                 std::cout << i << std::endl;
                 std::cout << length - 1 << std::endl;
 
@@ -39,7 +39,7 @@ void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
 
 bool checkThatCoordinatesArentRebuild(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
     for (int i = startIndex; i <= lastIndex; i++) {
-        if (loop[i].getIsRebuild()) {
+        if (loop[i].getRebuiltOn() != -1) {
             return false;
         }
     }

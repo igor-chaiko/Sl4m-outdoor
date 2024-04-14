@@ -7,7 +7,7 @@
 
 #include "mapPoint.h"
 
-void rebuildPath(std::vector<MapPoint> &loop, int startIndex, int lastIndex);
+void rebuildPath(std::vector<MapPoint> &loop, int mainIndex) ;
 
 void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int lastIndex);
 

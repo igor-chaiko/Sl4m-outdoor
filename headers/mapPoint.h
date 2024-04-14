@@ -14,12 +14,12 @@ private:
 
     cv::Mat hash;
 
-    bool isRebuild;
+    size_t rebuiltOn;
 
     cv::Mat P;
 
 public:
-    MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates, cv::Mat hash, bool isRebuild);
+    MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates, cv::Mat hash);
 
     void setGlobalCoordinates(const cv::Mat &newP);
 
@@ -37,9 +37,9 @@ public:
 
     cv::Mat getHash();
 
-    bool getIsRebuild() const;
+    size_t getRebuiltOn() const;
 
-    void setIsRebuild(bool newIsRebuild);
+    void setRebuiltOn(size_t newIsRebuild);
 };
 
 // тестирует calculateNewCoords из MapPoint

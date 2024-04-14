@@ -152,7 +152,7 @@ void startProcessing() {
     std::vector<cv::Point2d> points;
     cv::Mat imageHash1;
     func->compute(image1, imageHash1);
-    MapPoint firstPoint = MapPoint(P1, points, imageHash1,false);
+    MapPoint firstPoint = MapPoint(P1, points, imageHash1);
     Map map = Map();
     map.addPoint(firstPoint);
 
@@ -182,7 +182,7 @@ void startProcessing() {
         cv::Mat imageHash2;
         func->compute(image2, imageHash2);
         MapPoint currentMapPoint = MapPoint(P2, points,
-                                            imageHash2, false);
+                                            imageHash2);
 
         map.addPoint(currentMapPoint);
 

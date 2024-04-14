@@ -3,11 +3,11 @@
 #include "../headers/mapPoint.h"
 
 MapPoint::MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates,
-                   cv::Mat hash, bool isRebuild) {
+                   cv::Mat hash) {
     setGlobalCoordinates(P);
     this->localCoordinates = std::move(localCoordinates);
     this->hash = std::move(hash);
-    this->isRebuild = isRebuild;
+    this->rebuiltOn = -1;
 }
 
 void MapPoint::setGlobalCoordinates(const cv::Mat &newP) {
@@ -56,10 +56,10 @@ cv::Mat MapPoint::getHash() {
     return this->hash;
 }
 
-bool MapPoint::getIsRebuild() const {
-    return this->isRebuild;
+size_t MapPoint::getRebuiltOn() const {
+    return this->rebuiltOn;
 }
 
-void MapPoint::setIsRebuild(bool newIsRebuild) {
-    this->isRebuild = newIsRebuild;
+void MapPoint::setRebuiltOn(size_t newIsRebuild) {
+    this->rebuiltOn = newIsRebuild;
 }
