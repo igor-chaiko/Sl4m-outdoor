@@ -20,12 +20,12 @@ void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
         double resultOfComparing = func->compare(lastFrameHash, currentFrameHash);
         //std::cout << resultOfComparing << std::endl;
         if (resultOfComparing <= 10) {
-            cv::Point2d lastFrameCoordinates = lastFrameMapPoint.getGlobalCoordinates();
-            cv::Point2d currentFrameCoordinates = currentFrameMapPoint.getGlobalCoordinates();
+            cv::Point2d lastFrameCoordinates = lastFrameMapPoint.get2DCoordinates();
+            cv::Point2d currentFrameCoordinates = currentFrameMapPoint.get2DCoordinates();
             if (lengthBetweenTwoPoint(lastFrameCoordinates, currentFrameCoordinates) >= 5
             && checkThatCoordinatesArentRebuild(coordinatesOnMap, i, length - 1)) {
                 std::cout << "distance > 5" << std::endl;
-                closeLoopLine(coordinatesOnMap, i, length - 1);
+                rebuildPath(coordinatesOnMap, i);
                 std::cout << i << std::endl;
                 std::cout << length - 1 << std::endl;
 
@@ -39,7 +39,7 @@ void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
 
 bool checkThatCoordinatesArentRebuild(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
     for (int i = startIndex; i <= lastIndex; i++) {
-        if (loop[i].getIsRebuild()) {
+        if (loop[i].getRebuiltOn() != -1) {
             return false;
         }
     }

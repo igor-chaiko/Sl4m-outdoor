@@ -144,7 +144,7 @@ void startProcessing() {
     cap >> image1;
 
     std::vector<cv::KeyPoint> keyPoints1, keyPoints2;
-    cv::Mat descriptors1;
+    cv::Mat descriptors1, descriptors2;
     std::vector<cv::DMatch> oldMatches;
 
     extractKeyPointsAndDescriptors(image1, keyPoints1, descriptors1);
@@ -156,16 +156,13 @@ void startProcessing() {
     std::vector<cv::Point2d> points;
     cv::Mat imageHash1;
     func->compute(image1, imageHash1);
-    MapPoint firstPoint = MapPoint(start, points, imageHash1,
-                                   false, image1);
+    MapPoint firstPoint = MapPoint(P1, points, imageHash1);
     Map map = Map();
     map.addPoint(firstPoint);
 
     bool isFirstOperation = true;
 
     while (true) {
-        cv::Mat descriptors2;
-
         if (getFramesPool(framePool, cap) == -1) {
             break;
         }
@@ -176,7 +173,6 @@ void startProcessing() {
 
         goodMatchesCheck(oldMatches, framePool, descriptors1);
         oldMatches.clear();
-        keyPoints2.clear();
 
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
@@ -187,23 +183,19 @@ void startProcessing() {
             //map.addFeaturesPoint(points3D);
         }
 
-        double y = P2.at<double>(2, 3);
-        double z = P2.at<double>(1, 3);
-        double x = P2.at<double>(0, 3);
-
-        cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
         cv::Mat imageHash2;
         func->compute(image2, imageHash2);
-        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points,
-                                            imageHash2, false, image2);
+        MapPoint currentMapPoint = MapPoint(P2, points,
+                                            imageHash2);
 
         map.addPoint(currentMapPoint);
 
         loopCheck(map.getMapPoints());
 
+
         image1 = image2;
         descriptors1 = descriptors2;
-        P1 = P2;
+        P1 = currentMapPoint.getGlobalCoordinates();
 
         if (cv::waitKey(30) == 27) {
             break;
