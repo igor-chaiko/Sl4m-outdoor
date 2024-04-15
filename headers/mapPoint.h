@@ -33,6 +33,10 @@ public:
 
     void setT(const cv::Point3d &newT);
 
+    cv::Mat getMatT();
+
+    void setMatT(const cv::Mat &newT);
+
     cv::Point2d get2DCoordinates();
 
     cv::Mat getHash();

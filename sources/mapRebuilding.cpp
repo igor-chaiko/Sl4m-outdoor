@@ -24,7 +24,7 @@ void rebuildPath(std::vector<MapPoint> &loop, int mainIndex) {
 
     closeLoopExp(loop, startIndex, mainIndex);
 
-    //softenAngle(loop, startIndex, lastIndex);
+    //softenAngle(loop, startIndex, mainIndex);
 }
 
 
@@ -64,31 +64,40 @@ void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int mainIndex) {
     }
 }
 
-void softenAngle(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
-    if (lastIndex - startIndex < 3
-        || startIndex < 0
-        || lastIndex >= loop.size()) {
+void softenAngle(std::vector<MapPoint> &loop, int startIndex, int mainIndex) {
+    size_t size = loop.size();
+
+    if (size < 4) {
         return;
     }
 
-    size_t num = lastIndex - startIndex;
+    cv::Mat mainPoint = loop[startIndex].getMatT();
+    cv::Mat vectorMain = mainPoint - loop[startIndex + 1].getMatT();
+    cv::Mat vector = loop[size - 2].getMatT() - loop[size - 1].getMatT();
 
-    cv::Mat mainR = loop[startIndex].getR(), lastR = loop[lastIndex].getR();
+    cv::Mat normalizedVectorMain = vectorMain / cv::norm(vectorMain);
+    cv::Mat normalizedVector = vector / cv::norm(vector);
 
-    cv::Mat rvec1, rvec2;
-    cv::Rodrigues(mainR, rvec1);
-    cv::Rodrigues(lastR, rvec2);
+    double angle = acos(normalizedVectorMain.dot(normalizedVector));
 
-    cv::Mat delta_rvec = rvec1 - rvec2;
+    cv::Mat prod = vectorMain.cross(vector);
+    cv::Mat axis = prod / cv::norm(prod);
+
+    cv::Mat rVec = cv::Mat(axis * angle);
+
+    cv::Mat R;
+
+    size_t num = size - startIndex - 1;
 
     for (int i = 1; i <= num; i++) {
-        MapPoint point = loop[i + startIndex];
+        cv::Mat pointT = loop[i + startIndex].getMatT() - mainPoint;
 
-        cv::Mat rotate = delta_rvec * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
-        cv::Mat R;
+        cv::Mat rotate = rVec * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
         cv::Rodrigues(rotate, R);
 
-        point.setR(R * point.getR());
+        pointT = R * pointT;
+
+        loop[i + startIndex].setMatT(pointT + mainPoint);
     }
 }
 

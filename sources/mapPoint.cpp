@@ -40,12 +40,26 @@ cv::Point3d MapPoint::getT() {
     return {x, y, z};
 }
 
+cv::Mat MapPoint::getMatT() {
+    return P.col(3).clone();
+}
+
 void MapPoint::setT(const cv::Point3d &newT) {
     P.at<double>(2, 3) = newT.y;
     P.at<double>(1, 3) = newT.z;
     P.at<double>(0, 3) = newT.x;
 
     this->globalCoordinate = cv::Point2d(newT.x, newT.y);
+}
+
+void MapPoint::setMatT(const cv::Mat &newT) {
+    newT.copyTo(P.col(3));
+
+    double y = newT.at<double>(2, 0);
+    double z = newT.at<double>(1, 0);
+    double x = newT.at<double>(0, 0);
+
+    this->globalCoordinate = cv::Point2d(x, y);
 }
 
 cv::Point2d MapPoint::get2DCoordinates() {
