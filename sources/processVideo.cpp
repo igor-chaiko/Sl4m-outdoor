@@ -39,6 +39,10 @@ void goodMatchesCheck(const std::vector<cv::DMatch>& oldMatches,
     }
 }
 
+/**
+ * функция сдвига кадров на случай, если произошел сдвиг влево,
+ * то есть был недостаток матчей в какой-то момент.
+ */
 std::vector<cv::Mat> shiftValues(const std::vector<cv::Mat> &frames) {
     std::vector<cv::Mat> remainingFrames;
 
@@ -105,9 +109,9 @@ cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
         }
     }
     cameraMatrixFile.close();
+
     return cameraMatrix;
 }
-
 
 /**
  * Метод ответственные за начало обработки видео.
