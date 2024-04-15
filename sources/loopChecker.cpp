@@ -3,7 +3,7 @@
 #include "../headers/mapRebuilding.h"
 
 
-void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
+void loopCheck(std::vector<MapPoint>& coordinatesOnMap, bool& isRebuild) {
     cv::Ptr<cv::img_hash::ImgHashBase> func;
     func = cv::img_hash::PHash::create();
 
@@ -19,16 +19,16 @@ void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
 
         double resultOfComparing = func->compare(lastFrameHash, currentFrameHash);
         //std::cout << resultOfComparing << std::endl;
-        if (resultOfComparing <= 10) {
+        if (resultOfComparing <= HAMMING_DISTANCE) {
             cv::Point2d lastFrameCoordinates = lastFrameMapPoint.get2DCoordinates();
             cv::Point2d currentFrameCoordinates = currentFrameMapPoint.get2DCoordinates();
-            if (lengthBetweenTwoPoint(lastFrameCoordinates, currentFrameCoordinates) >= 5
-            && checkThatCoordinatesArentRebuild(coordinatesOnMap, i, length - 1)) {
+            if (lengthBetweenTwoPoint(lastFrameCoordinates, currentFrameCoordinates) >= TRASH_HOLD_FOR_DISTANCE) {
                 std::cout << "distance > 5" << std::endl;
+                isRebuild = true;
                 rebuildPath(coordinatesOnMap, i);
                 std::cout << i << std::endl;
                 std::cout << length - 1 << std::endl;
-
+                break;
             }
         }
     }

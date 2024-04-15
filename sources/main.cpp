@@ -2,15 +2,6 @@
 #include "../headers/processVideo.h"
 
 int main() {
-
-//    Hashing hashing = Hashing();
-//    try {
-//        hashing.test1("../resources/testVideo2.MOV", 200);
-//    } catch (const std::runtime_error& e) {
-//        std::cerr << e.what() << std::endl;
-//    }
-
-
     try {
         startProcessing();
     } catch (const std::runtime_error& e) {

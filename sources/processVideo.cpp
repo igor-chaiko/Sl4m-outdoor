@@ -190,7 +190,7 @@ void startProcessing() {
 
         map.addPoint(currentMapPoint);
 
-        loopCheck(map.getMapPoints());
+        loopCheck(map.getMapPoints(), map.getIsRebuild());
 
 
         image1 = image2;

@@ -53,8 +53,10 @@ void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int mainIndex) {
         cv::Point3d pointT = loop[startIndex + i].getT();
         cv::Mat pointR = loop[startIndex + i].getR();
 
-        cv::Point3d movement = (mainT - pointT) * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
-        cv::Mat rotate = deltaRVec * (std::pow(num + 1, i / (double) num) - 1) / (double) num;
+        cv::Point3d movement = (mainT - pointT) *
+                (std::pow(num * 10 + 1, i / (double) num) - 1) / ((double) num * 10);
+        cv::Mat rotate = deltaRVec *
+                (std::pow(num * 10 + 1, i / (double) num) - 1) / ((double) num * 10);
 
         cv::Mat R;
         cv::Rodrigues(rotate, R);

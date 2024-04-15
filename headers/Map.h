@@ -11,7 +11,7 @@
 #define POINT_RADIUS 3
 #define FEATURES_RADIUS 3
 
-#define CONST_FOR_SCALE 0
+#define CONST_FOR_SCALE 5
 class Map {
 
     std::vector<MapPoint> coordinatesOnMap; //Вектор хранящий все координаты
@@ -21,7 +21,7 @@ class Map {
     std::vector<cv::Mat> features = std::vector<cv::Mat>();//массив фичей
     long indexOfCurrentPointThatNeedsToBeDrawn;//Индекс последней нарисованной точки, для оптимизации вывода
     long indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn;//Индекс последнего нарисованного массива фичей
-    bool isMaxCoordinateChange;//Изменилась ли максимальная координата с последней отрисовки true - да | false - нет
+    bool isRebuild;//Изменилась ли максимальная координата с последней отрисовки true - да | false - нет
     cv::Mat canvas;//Полотно, которое будет хранит уже отрисованную карту
 
 
@@ -47,6 +47,7 @@ public:
 
     std::vector<MapPoint>& getMapPoints();
 
+    bool& getIsRebuild();
 };
 
 #endif //SL4M_OUTDOOR_MAP_H

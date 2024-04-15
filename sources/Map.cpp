@@ -6,7 +6,7 @@ Map::Map() {
     this->maxCoordinate = std::numeric_limits<double>::min();
     this->indexOfCurrentPointThatNeedsToBeDrawn = 0;
     this->indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn = 0;
-    this->isMaxCoordinateChange = false;
+    this->isRebuild = false;
     this->canvas = cv::Mat::zeros(canvasSize, canvasSize, CV_8UC3); // байт на канал, 3 канала цвета (ргб вообщем)
 }
 
@@ -19,13 +19,13 @@ void Map::isCoordinateMoreThanMax(MapPoint point) {
     double currAbsX = abs(point.get2DCoordinates().x);
     if (currAbsX > maxCoordinate) {
         maxCoordinate = currAbsX + CONST_FOR_SCALE;
-        isMaxCoordinateChange = true;
+        isRebuild = true;
     }
 
     double currAbsY = abs(point.get2DCoordinates().y);
     if (currAbsY > maxCoordinate) {
         maxCoordinate = currAbsY + CONST_FOR_SCALE;
-        isMaxCoordinateChange = true;
+        isRebuild = true;
     }
 }
 
@@ -33,13 +33,13 @@ void Map::isCoordinateMoreThanMax(double x, double y) {
     double currAbsX = abs(x);
     if (currAbsX > maxCoordinate && currAbsX < 10) {
         maxCoordinate = currAbsX + CONST_FOR_SCALE;
-        isMaxCoordinateChange = true;
+        isRebuild = true;
     }
 
     double currAbsY = abs(y);
     if (currAbsY > maxCoordinate && currAbsX < 10) {
         maxCoordinate = currAbsY + CONST_FOR_SCALE;
-        isMaxCoordinateChange = true;
+        isRebuild = true;
     }
 }
 
@@ -63,8 +63,8 @@ void Map::addFeaturesPoint(cv::Mat mat) {
 void Map::showMap(int delay) {
     double coefficient = maxCoordinate * COEFFICIENT_FOR_SCALE / ((double)canvasSize / 2);
 
-    if (true) {
-        isMaxCoordinateChange = false;
+    if (isRebuild) {
+        isRebuild = false;
 
         this->canvas = cv::Mat::zeros(canvasSize, canvasSize, CV_8UC3);//заполняем чёрными пикселями
         drawAxes(this->canvas);//рисуем стрелочки
@@ -215,5 +215,9 @@ cv::Point2d Map::transformationOfCoordinatesToMatrixView(cv::Point2d point) cons
 
 std::vector<MapPoint> &Map::getMapPoints() {
     return this->coordinatesOnMap;
+}
+
+bool &Map::getIsRebuild() {
+    return this->isRebuild;
 }
 
