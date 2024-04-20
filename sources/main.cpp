@@ -1,11 +1,55 @@
 #include <opencv2/opencv.hpp>
-#include "../headers/processVideo.h"
 #include "../headers/trafficSignsDetection.h"
+#include <opencv2/img_hash.hpp>
 
 int main() {
+    cv::VideoCapture cap("test3.MOV");
+    cv::Ptr<cv::img_hash::ImgHashBase> func;
+    func = cv::img_hash::PHash::create();
+    std::vector<cv::Mat> total;
+    std::vector<cv::Mat> hashes;
+    double similarity;
+    bool flag;
 
-    cv::Mat image = cv::imread("1.jpg");
-    findSigns(image);
+    while (true) {
+        cv::Mat image;
+        cap >> image;
+
+        if (image.empty()) {
+            for (int i = 0; i < total.size(); i++) {
+                cv::imshow("image" + std::to_string(i+1), total[i]);
+            }
+
+            if (cv::waitKey(0) == 27) {
+                break;
+            }
+        }
+
+        std::vector<cv::Mat> res = findSigns(image);
+
+        for (cv::Mat img : res) {
+            cv::Mat currHash;
+            func->compute(img, currHash);
+            flag = true;
+
+            for (cv::Mat hash : hashes) {
+                similarity = func->compare(hash, currHash);
+
+                if (similarity < 30) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag) {
+                total.push_back(img);
+                hashes.push_back(currHash);
+            }
+        }
+    }
+
+//    cv::Mat image = cv::imread("1.jpg");
+//    findSigns(image);
 
 //    Hashing hashing = Hashing();
 //    try {
