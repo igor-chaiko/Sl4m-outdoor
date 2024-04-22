@@ -3,14 +3,14 @@
 #include "../headers/mapRebuilding.h"
 
 
-void loopCheck(std::vector<MapPoint>& coordinatesOnMap, bool& isRebuild) {
+void loopCheck(std::vector<MapPoint> &coordinatesOnMap, bool &isRebuild) {
     cv::Ptr<cv::img_hash::ImgHashBase> func;
     func = cv::img_hash::PHash::create();
 
 
     int length = static_cast<int>(coordinatesOnMap.size());
     MapPoint lastFrameMapPoint = coordinatesOnMap[length - 1];
-    cv::Mat lastFrameHash  = lastFrameMapPoint.getHash();
+    cv::Mat lastFrameHash = lastFrameMapPoint.getHash();
 
     //std::cout << "start" << std::endl;
     for (int i = length - 2; i >= 0; i--) {

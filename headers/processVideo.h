@@ -6,6 +6,7 @@
 #define PATH_TO_VIDEOFILE "../resources/circle.MOV"
 
 inline int numOfFirstUnusedFramePool;
+
 void startProcessing();
 
 #endif //SL4M_OUTDOOR_PROCESSVIDEO_H

@@ -52,7 +52,7 @@ void filterTriangulatedPoints(cv::Mat &points) {
             & abs(points.at<double>(2, j)) < MAX_FEATURE_DISTANCE
             & points.at<double>(2, j) > 0) {
             cv::Mat newCol = points.col(j);
-            newCol.at<double>(2,0) = -newCol.at<double>(2,0);
+            newCol.at<double>(2, 0) = -newCol.at<double>(2, 0);
             hconcat(result, newCol, result);
 
         }

@@ -12,6 +12,7 @@
 #define FEATURES_RADIUS 3
 
 #define CONST_FOR_SCALE 5
+
 class Map {
 
     std::vector<MapPoint> coordinatesOnMap; //Вектор хранящий все координаты
@@ -33,6 +34,7 @@ class Map {
     void isCoordinateMoreThanMax(MapPoint point);
 
     void isCoordinateMoreThanMax(double x, double y);
+
 public:
     //Дефолтный конструткор
     Map();
@@ -41,13 +43,13 @@ public:
     void addFeaturesPoint(cv::Mat mat);
 
     //Метод добавляет point для отрисовки
-    void addPoint(const MapPoint& point);
+    void addPoint(const MapPoint &point);
 
     void showMap(int delay);
 
-    std::vector<MapPoint>& getMapPoints();
+    std::vector<MapPoint> &getMapPoints();
 
-    bool& getIsRebuild();
+    bool &getIsRebuild();
 };
 
 #endif //SL4M_OUTDOOR_MAP_H
