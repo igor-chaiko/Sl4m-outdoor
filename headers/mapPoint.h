@@ -6,9 +6,6 @@
 
 class MapPoint {
 private:
-// переменная для хранения координаты (x, y) в какой-то момент времени
-    cv::Point2d globalCoordinate;
-
     // массив фичей, обнаруженных в этот момент времени (их 2D координаты)
     std::vector<cv::Point2d> localCoordinates;
 

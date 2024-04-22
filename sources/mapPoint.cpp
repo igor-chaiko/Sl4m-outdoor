@@ -12,12 +12,6 @@ MapPoint::MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates,
 
 void MapPoint::setGlobalCoordinates(const cv::Mat &newP) {
     this->P = newP.clone();
-
-    double y = P.at<double>(2, 3);
-    double z = P.at<double>(1, 3);
-    double x = P.at<double>(0, 3);
-
-    this->globalCoordinate = cv::Point2d(x, y);
 }
 
 cv::Mat MapPoint::getGlobalCoordinates() {
@@ -48,22 +42,18 @@ void MapPoint::setT(const cv::Point3d &newT) {
     P.at<double>(2, 3) = newT.y;
     P.at<double>(1, 3) = newT.z;
     P.at<double>(0, 3) = newT.x;
-
-    this->globalCoordinate = cv::Point2d(newT.x, newT.y);
 }
 
 void MapPoint::setMatT(const cv::Mat &newT) {
     newT.copyTo(P.col(3));
-
-    double y = newT.at<double>(2, 0);
-    double z = newT.at<double>(1, 0);
-    double x = newT.at<double>(0, 0);
-
-    this->globalCoordinate = cv::Point2d(x, y);
 }
 
 cv::Point2d MapPoint::get2DCoordinates() {
-    return this->globalCoordinate;
+    double y = P.at<double>(2, 3);
+    double z = P.at<double>(1, 3);
+    double x = P.at<double>(0, 3);
+
+    return {x, y};
 }
 
 cv::Mat MapPoint::getHash() {
