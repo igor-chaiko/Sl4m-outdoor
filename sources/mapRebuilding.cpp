@@ -1,6 +1,8 @@
 #include <opencv2/core/types.hpp>
 #include "../headers/mapRebuilding.h"
 
+#define AVERAGE_POINT 5
+
 
 void rebuildPath(std::vector<MapPoint> &loop, int mainIndex) {
     if (loop.size() < 4) {
@@ -21,10 +23,11 @@ void rebuildPath(std::vector<MapPoint> &loop, int mainIndex) {
             loop[i].setRebuiltOn(mainIndex);
         }
     }
+    softenAngle(loop, startIndex, mainIndex);
 
     closeLoopExp(loop, startIndex, mainIndex);
 
-    //softenAngle(loop, startIndex, mainIndex);
+    softenAngle(loop, startIndex, mainIndex);
 }
 
 
@@ -69,20 +72,20 @@ void closeLoopExp(std::vector<MapPoint> &loop, int startIndex, int mainIndex) {
 void softenAngle(std::vector<MapPoint> &loop, int startIndex, int mainIndex) {
     size_t size = loop.size();
 
-    if (size < 4) {
+    if (size < AVERAGE_POINT + 2) {
         return;
     }
 
-    cv::Mat mainPoint = loop[startIndex].getMatT();
-    cv::Mat vectorMain = mainPoint - loop[startIndex + 1].getMatT();
+    cv::Mat mainPoint = loop[mainIndex].getMatT();
+    cv::Mat vectorMain = mainPoint - loop[mainIndex + 1].getMatT();
     cv::Mat vector = loop[size - 2].getMatT() - loop[size - 1].getMatT();
 
     cv::Mat normalizedVectorMain = vectorMain / cv::norm(vectorMain);
     cv::Mat normalizedVector = vector / cv::norm(vector);
 
-    double angle = acos(normalizedVectorMain.dot(normalizedVector));
+    double angle = acos(normalizedVector.dot(normalizedVectorMain));
 
-    cv::Mat prod = vectorMain.cross(vector);
+    cv::Mat prod = vector.cross(vectorMain);
     cv::Mat axis = prod / cv::norm(prod);
 
     cv::Mat rVec = cv::Mat(axis * angle);
