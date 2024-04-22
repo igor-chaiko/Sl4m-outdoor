@@ -3,8 +3,8 @@
 #ifndef SL4M_OUTDOOR_TRAFICSIGNSDETECTION_H
 #define SL4M_OUTDOOR_TRAFICSIGNSDETECTION_H
 
-std::vector<cv::Mat> findSigns(cv::Mat image);
-#define AREA_LOWER_BOUND 6000
+std::vector<cv::Mat> findSigns(const cv::Mat& image);
+#define AREA_LOWER_BOUND 7100
 #define AREA_UPPER_BOUND 40000
 
 #endif //SL4M_OUTDOOR_TRAFICSIGNSDETECTION_H

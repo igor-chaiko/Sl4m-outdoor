@@ -2,8 +2,8 @@
 #include "../headers/trafficSignsDetection.h"
 cv::Mat image_hsv, image_mask, image_dilate;
 
-std::vector<cv::Mat> findSigns(cv::Mat image) {
-    std::vector<cv::Mat> res;
+std::vector<cv::Mat> findSigns(const cv::Mat& image) {
+    std::vector<cv::Mat> res(0);
         // переход в hsv
 //        cv::Mat image_hsv;
         cv::cvtColor(image, image_hsv, cv::COLOR_BGR2HSV);
@@ -11,7 +11,7 @@ std::vector<cv::Mat> findSigns(cv::Mat image) {
 
         // создание маски
 //        cv::Mat image_mask;
-        cv::Scalar lower_bound(0, 122, 50);
+        cv::Scalar lower_bound(0, 72, 20);
         cv::Scalar upper_bound(255, 255, 255);
         cv::inRange(image_hsv, lower_bound, upper_bound, image_mask);
 //        cv::imshow("mask", image_mask);
@@ -26,9 +26,11 @@ std::vector<cv::Mat> findSigns(cv::Mat image) {
         std::vector<cv::Vec4i> hierarchy;
         cv::findContours(image_dilate.clone(), contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
+//        cv::imshow("mask", image_dilate);
+//        cv::waitKey(0);
         // отрисовка + фильтрация
-        std::vector<std::vector<cv::Point>> sortedContours;
         int i = 0;
+        cv::imshow("mask", image_dilate);
         for (const auto & contour : contours) {
             double area = cv::contourArea(contour);
 //            std::cout << area << std::endl;
@@ -47,39 +49,28 @@ std::vector<cv::Mat> findSigns(cv::Mat image) {
                 double k2 = ( b * b * sqrt(3) / 4) / area;
 
                 if ((approx.size() == 4 && k1 > 0.8 && k1 < 1.2) || (approx.size() == 3 && k2 > 0.8 && k2 < 1.2)
-                || (circularity > 0.7 && circularity < 1.2)) {
-                    cv::destroyAllWindows();
+                || (circularity > 0.75 && circularity < 1.2)) {
 
-                    sortedContours.push_back(contour);
                     cv::Rect bounding_rect = cv::boundingRect(contour);
                     cv::Mat contour_image = image(bounding_rect).clone();
-//                    cv::imshow("mask", image_dilate);
 //                    cv::imshow("contour_" + std::to_string(++i), contour_image);
                     res.push_back(contour_image);
-//                    std::cout << circularity << std::endl;
-//                    std::cout << approx.size() << std::endl;
-//                    std::cout << k1 << std::endl;
-//                    std::cout << k2 << std::endl;
-//                    std::cout << area << std::endl;
-//                    std::cout << "-----------------\n";
+                    std::cout << circularity << std::endl;
+                    std::cout << approx.size() << std::endl;
+                    std::cout << k1 << std::endl;
+                    std::cout << k2 << std::endl;
+                    std::cout << area << std::endl;
+                    std::cout << "-----------------\n";
 
 //                    if (cv::waitKey(0) == 27) {
 //                        continue;
 //                    }
                 }
 
-                // выводим по контуру на изображение
-//                cv::Rect bounding_rect = cv::boundingRect(contour);
-//                cv::Mat contour_image = image(bounding_rect).clone();
-//                cv::imshow("contour_" + std::to_string(i++), contour_image);
+
             }
         }
         contours.clear();
         hierarchy.clear();
     return res;
-
-//        cv::drawContours(image, sortedContours, -1, cv::Scalar(70, 100, 50), 3);
-//        cv::imshow("result", image);
-
-
 }
