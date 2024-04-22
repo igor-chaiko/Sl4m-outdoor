@@ -1,11 +1,65 @@
 #include <opencv2/opencv.hpp>
-#include "../headers/processVideo.h"
 #include "../headers/trafficSignsDetection.h"
+#include <opencv2/img_hash.hpp>
 
 int main() {
 
-    cv::Mat image = cv::imread("1.jpg");
-    findSigns(image);
+    cv::VideoCapture cap("test5.MOV");
+    cv::Ptr<cv::img_hash::ImgHashBase> func;
+    func = cv::img_hash::PHash::create();
+    std::vector<cv::Mat> total;
+    std::vector<cv::Mat> hashes;
+    std::vector<std::pair<int, cv::Mat>> hashes2;
+    double similarity;
+    bool flag;
+    int j = 0, z = 0;
+    cv::Mat image;
+
+    while (true) {
+        j++;
+        cap >> image;
+//        image = image + cv::Scalar(5, 5, 5);
+
+        if (image.empty()) {
+//            for (int i = 0; i < total.size(); i++) {
+//                cv::imshow("image" + std::to_string(i+1), total[i]);
+//            }
+
+            if (cv::waitKey(0) == 27) {
+                break;
+            }
+        }
+
+        cv::imshow("image", image);
+        std::vector<cv::Mat> res = findSigns(image);
+
+        for (const cv::Mat& img : res) {
+            cv::Mat currHash;
+            func->compute(img, currHash);
+            flag = true;
+
+            for (const std::pair<int, cv::Mat>& pair : hashes2) {
+                int pairJ = pair.first;
+                similarity = func->compare(pair.second, currHash);
+                if (similarity < 35 && j - pairJ < 100) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if (flag) {
+                total.push_back(img);
+                std::pair<int, cv::Mat> pair(j, currHash);
+                cv::imshow("contour_" + std::to_string(++z), img);
+                if (cv::waitKey(0) == 27){
+                    hashes2.push_back(pair);
+                }
+            }
+        }
+
+        cv::waitKey(1);
+        cv::destroyWindow("image");
+    }
 
 //    Hashing hashing = Hashing();
 //    try {
