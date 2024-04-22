@@ -9,8 +9,9 @@
 #define MIN_MATCHES 250
 #define DISTANCE_THRESH 50
 
-cv::Mat triangulation(const cv::Mat &firstFrame,  const cv::Mat &secondFrame, const cv::Mat &cameraMatrix, const cv::Mat &P1,
-                   cv::Mat &P2);
+cv::Mat
+triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, const cv::Mat &cameraMatrix, const cv::Mat &P1,
+              cv::Mat &P2);
 
 void performFeatureMatching(const cv::Mat &descriptors1, const cv::Mat &descriptors2,
                             std::vector<cv::DMatch> &goodMatches);

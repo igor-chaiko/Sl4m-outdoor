@@ -4,7 +4,7 @@
 int main() {
     try {
         startProcessing();
-    } catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error &e) {
         std::cerr << e.what() << std::endl;
     }
 

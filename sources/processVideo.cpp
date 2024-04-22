@@ -8,6 +8,7 @@
 #include "../headers/Map.h"
 #include "../headers/triangulation.h"
 #include "../headers/loopChecker.h"
+
 cv::Mat image2;
 
 /**
@@ -15,9 +16,9 @@ cv::Mat image2;
  * Проверяем все кадры с конца.
  * Если меньше чем MIN_MATCHES, берётся предыдущий.
  */
-void goodMatchesCheck(const std::vector<cv::DMatch>& oldMatches,
-                        const std::vector<cv::Mat> &framePool,
-                        const cv::Mat& descriptors1) {
+void goodMatchesCheck(const std::vector<cv::DMatch> &oldMatches,
+                      const std::vector<cv::Mat> &framePool,
+                      const cv::Mat &descriptors1) {
     std::vector<cv::KeyPoint> keyPoints2;
     std::vector<cv::DMatch> newMatches;
     cv::Mat descriptors2, secondGray;
@@ -86,13 +87,13 @@ int getFramesPool(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
  * @param pathToCalibrationCamera - путь до матрциы камеры.
  * @return - возвращает заполненную матрицу.
  */
-cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
+cv::Mat readCameraMatrix(const cv::String &pathToCalibrationCamera) {
     //Пытаемся открыть файл с матрицой калибровки камеры.
     std::ifstream cameraMatrixFile(pathToCalibrationCamera);
     //Проверка на удачное открытие файла.
     if (!cameraMatrixFile.is_open()) {
         ("Path: " + pathToCalibrationCamera + '\n'
-                                        + "Calibration file was not opened.");
+         + "Calibration file was not opened.");
     }
 
     //Создаём новую матрицу.
@@ -117,11 +118,11 @@ cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
  * Метод ответственные за начало обработки видео.
  */
 void startProcessing() {
-    cv:: Mat cameraMatrix;
+    cv::Mat cameraMatrix;
     try {
         //Читаем камеру матрицы из файла.
         cameraMatrix = readCameraMatrix(CALIBRATION_CAMERA_MATRIX_PATH);
-    }catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error &e) {
         //В случае неудачи пробрасываем исключение на уровень выше.
         throw;
     }
