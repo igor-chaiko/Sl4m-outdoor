@@ -1,24 +1,25 @@
 #include <opencv2/opencv.hpp>
 #include "../headers/trafficSignsDetection.h"
 #include <opencv2/img_hash.hpp>
+#include "../headers/triangulation.h"
 
 int main() {
-
-    cv::VideoCapture cap("test5.MOV");
-    cv::Ptr<cv::img_hash::ImgHashBase> func;
-    func = cv::img_hash::PHash::create();
+    cv::VideoCapture cap("test7.MOV");
+    cv::Ptr<cv::img_hash::ImgHashBase> hashFunc;
+    hashFunc = cv::img_hash::PHash::create();
     std::vector<cv::Mat> total;
     std::vector<cv::Mat> hashes;
     std::vector<std::pair<int, cv::Mat>> hashes2;
     double similarity;
-    bool flag;
-    int j = 0, z = 0;
-    cv::Mat image;
+    bool differentFrame;
+    int frameNum = 0, z = 0;
+    cv::Mat image, hsv;
+
+//    std::vector<std::pair<cv::Mat, cv::Mat>> signsDB = createDB("sample");
 
     while (true) {
-        j++;
+        frameNum++;
         cap >> image;
-//        image = image + cv::Scalar(5, 5, 5);
 
         if (image.empty()) {
 //            for (int i = 0; i < total.size(); i++) {
@@ -30,29 +31,35 @@ int main() {
             }
         }
 
-        cv::imshow("image", image);
+//        cv::imshow("image", image);
+
         std::vector<cv::Mat> res = findSigns(image);
 
-        for (const cv::Mat& img : res) {
+        for (const cv::Mat& currSign : res) {
             cv::Mat currHash;
-            func->compute(img, currHash);
-            flag = true;
+            hashFunc->compute(currSign, currHash);
+            differentFrame = true;
 
+            std::cout << hashes2.size() << ": ";
             for (const std::pair<int, cv::Mat>& pair : hashes2) {
-                int pairJ = pair.first;
-                similarity = func->compare(pair.second, currHash);
-                if (similarity < 35 && j - pairJ < 100) {
-                    flag = false;
+                int frameNumInPair = pair.first;
+                similarity = hashFunc->compare(pair.second, currHash);
+                std::cout << similarity << " ";
+                if (similarity < 26 && frameNum - frameNumInPair < 150) {
+                    differentFrame = false;
                     break;
                 }
             }
+            std::cout << std::endl;
 
-            if (flag) {
-                total.push_back(img);
-                std::pair<int, cv::Mat> pair(j, currHash);
-                cv::imshow("contour_" + std::to_string(++z), img);
+            if (differentFrame) {
+                total.push_back(currSign);
+                std::pair<int, cv::Mat> pair(frameNum, currHash);
+                cv::imshow("contour_" + std::to_string(++z), currSign);
+                hashes2.push_back(pair);
+
                 if (cv::waitKey(0) == 27){
-                    hashes2.push_back(pair);
+
                 }
             }
         }
