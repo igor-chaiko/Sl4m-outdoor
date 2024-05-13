@@ -5,7 +5,7 @@
 #include "../headers/mapPoint.h"
 
 #define HAMMING_DISTANCE 12
-#define TRASH_HOLD_FOR_DISTANCE 8
+#define TRASH_HOLD_FOR_DISTANCE 5
 
 void loopCheck(std::vector<MapPoint> &coordinatesOnMap, bool &isRebuild);
 
