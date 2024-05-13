@@ -204,6 +204,7 @@ void startProcessing() {
         map.showMap(1);
 
     }
+    map.saveMap("../resources/map.jpg");
 
     map.showMap(0);
     cap.release();

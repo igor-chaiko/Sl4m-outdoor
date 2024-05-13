@@ -2,7 +2,7 @@
 
 Map::Map() {
     this->coordinatesOnMap = std::vector<MapPoint>();
-    this->canvasSize = WINDOW_SIZE_IN_PIXELS;
+    this->canvasSize = WINDOW_SIZE_IN_PIXELS_SAVE;
     this->maxCoordinate = std::numeric_limits<double>::min();
     this->indexOfCurrentPointThatNeedsToBeDrawn = 0;
     this->indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn = 0;
@@ -158,8 +158,9 @@ void Map::showMap(int delay) {
 
     }
 
-
-    cv::imshow(WINDOW_NAME, this->canvas);
+    cv::Mat showMap;
+    cv::resize(this->canvas, showMap, cv::Size(WINDOW_SIZE_IN_PIXELS_SHOW, WINDOW_SIZE_IN_PIXELS_SHOW));
+    cv::imshow(WINDOW_NAME, showMap);
     cv::waitKey(delay);
 }
 
@@ -219,5 +220,10 @@ std::vector<MapPoint> &Map::getMapPoints() {
 
 bool &Map::getIsRebuild() {
     return this->isRebuild;
+}
+
+void Map::saveMap(const std::string &path) {
+    // Сохранение изображения в файле с именем "my_image.jpg"
+    cv::imwrite(path, canvas);
 }
 
