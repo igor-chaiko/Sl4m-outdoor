@@ -6,13 +6,13 @@
 #define SL4M_OUTDOOR_TRAFFICSIGN_H
 
 class trafficSign {
-    bool isLeft;
-    bool isRight;
-    int id;
+
 
 public:
+    bool isLeft;
+    bool isRight;
     trafficSign();
-    trafficSign(bool isLeft, bool isRight, int id);
+    trafficSign(bool isLeft, bool isRight);
 };
 
 

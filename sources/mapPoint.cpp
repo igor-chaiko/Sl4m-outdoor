@@ -67,3 +67,20 @@ size_t MapPoint::getRebuiltOn() const {
 void MapPoint::setRebuiltOn(size_t newIsRebuild) {
     this->rebuiltOn = newIsRebuild;
 }
+
+void MapPoint::setLeftSign(bool value) {
+    sign.isRight = value;
+}
+
+void MapPoint::setRightSign(bool value) {
+    sign.isLeft = value;
+}
+
+bool MapPoint::getRightSign() {
+    return sign.isRight;
+}
+
+bool MapPoint::getLeftSign() {
+    return sign.isLeft;
+}
+

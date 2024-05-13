@@ -7,9 +7,8 @@ trafficSign::trafficSign() {
 
 }
 
-trafficSign::trafficSign(bool isLeft, bool isRight, int id) {
+trafficSign::trafficSign(bool isLeft, bool isRight) {
     this->isLeft = isLeft;
     this->isRight = isRight;
-    this->id = id;
 }
 

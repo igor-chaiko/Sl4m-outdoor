@@ -16,7 +16,7 @@ private:
 
     cv::Mat P;
 
-    std::vector<trafficSign> signs;
+    trafficSign sign = trafficSign(false, false);
 
 
 public:
@@ -45,6 +45,14 @@ public:
     size_t getRebuiltOn() const;
 
     void setRebuiltOn(size_t newIsRebuild);
+
+    void setLeftSign(bool value);
+
+    void setRightSign(bool value);
+
+    bool getRightSign();
+
+    bool getLeftSign();
 };
 
 // тестирует calculateNewCoords из MapPoint

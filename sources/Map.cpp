@@ -99,6 +99,18 @@ void Map::showMap(int delay) {
 
             cv::circle(this->canvas, tmpPoint, POINT_RADIUS, cv::Scalar(255, 0, 255), AXES_THICKNESS);
             cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), AXES_THICKNESS);
+
+            /////РИСУЕМ ЗНАКИ
+            double deltaX = abs(tmpPoint.x - lastPoint.x);
+            double deltaY = abs(tmpPoint.y - lastPoint.y);
+            cv::Point2d signPoint;
+            if (mapPoint.)
+
+
+
+
+
+
             lastPoint = tmpPoint;
         }
 

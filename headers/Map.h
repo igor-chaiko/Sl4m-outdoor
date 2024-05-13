@@ -13,6 +13,7 @@
 #define POINT_RADIUS 3
 #define FEATURES_RADIUS 3
 
+
 #define CONST_FOR_SCALE 5
 
 class Map {
