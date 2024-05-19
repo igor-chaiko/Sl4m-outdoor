@@ -17,6 +17,8 @@ int main() {
     cv::Mat kernel = (cv::Mat_<double>(3, 3) << 1, 1, 1, 1, 1, 1, 1, 1, 1) / 16.0;
     ex1.convertTo(ex1, CV_64F, 1, 0);
 
+    std::cout << "kernel: " << kernel << std::endl;
+
     while (true) {
         frameNum++;
         cap >> image;
@@ -58,6 +60,7 @@ int main() {
                 cv::imshow("contour_" + std::to_string(++z), currSign);
                 hashes2.push_back(pair);
                 cv::Mat clone = currSign.clone();
+                std::cout << clone << std::endl;
 
                 clone = convolution(clone, kernel);
 

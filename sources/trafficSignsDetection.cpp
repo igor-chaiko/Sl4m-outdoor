@@ -98,28 +98,24 @@ std::vector<cv::Mat> findSigns(const cv::Mat& image) {
 }
 
 cv::Mat convolution(cv::Mat& source, const cv::Mat& kernel) {
-    cv::Mat res(source.rows-2, source.cols-2, CV_64F);
-    int sum = 0;
+    cv::Mat res(source.rows-kernel.rows+1, source.cols-kernel.cols+1, CV_64F);
+    double sum = 0;
+//    source.convertTo(source, CV_64F, 1, 0);
 
-    for (int i = 1; i < source.rows - 1; i++) {
-        for (int j = 1; j < source.cols - 1; j++) {
-            for (int n = -1; n < kernel.rows - 1; n++) {
-                for (int m = -1; m < kernel.cols - 1; m++) {
-                    sum += (source.at<int>(i+n,j+m) * kernel.at<int>(n+1, m+1));
+    std::cout << source.type() << std::endl;
+
+    for (int i = 0; i < res.rows; i++) {
+        for (int j = 0; j < res.cols; j++) {
+            for (int n = 0; n < kernel.rows; n++) {
+                for (int m = 0; m < kernel.cols; m++) {
+                    double kernelV = kernel.at<double>(n, m), sourceV = source.at<double>(i+n, j+m);
+                    double subt = kernelV * sourceV;
+
+                    sum += kernel.at<double>(n, m) * source.at<double>(i+n, j+m);
                 }
             }
 
-//            sum += (source.at<int>(i-1, j-1) * kernel.at<int>(0, 0));
-//            sum += (source.at<int>(i-1, j) * kernel.at<int>(0, 1));
-//            sum += (source.at<int>(i-1, j+1) * kernel.at<int>(0, 2));
-//            sum += (source.at<int>(i, j-1) * kernel.at<int>(1, 0));
-//            sum += (source.at<int>(i, j) * kernel.at<int>(1, 1));
-//            sum += (source.at<int>(i, j+1) * kernel.at<int>(1, 2));
-//            sum += (source.at<int>(i+1, j-1) * kernel.at<int>(2, 0));
-//            sum += (source.at<int>(i+1, j) * kernel.at<int>(2, 1));
-//            sum += (source.at<int>(i+1, j+1) * kernel.at<int>(2, 2));
-
-            res.at<int>(i-1, j-1) = sum;
+            res.at<double>(i, j) = sum;
             sum = 0;
         }
     }
@@ -139,10 +135,10 @@ double euclideanDistance(const cv::Mat& A, const cv::Mat& B) {
             vecB.at<double>(0, (i+1)*j) = B.at<double>(i, j);
         }
     }
-    std::cout << vecA << std::endl;
-    std::cout << vecB << std::endl;
+//    std::cout << vecA << std::endl;
+//    std::cout << vecB << std::endl;
 
-    std::cout << vecA.size << " " << vecB.size << std::endl;
+//    std::cout << vecA.size << " " << vecB.size << std::endl;
 
     assert(vecA.size() == vecB.size());
     double distance = cv::norm(vecA, vecB, cv::NORM_L2); // cv::NORM_L2 - Евклидово расстояние
