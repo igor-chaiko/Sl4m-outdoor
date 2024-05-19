@@ -4,7 +4,8 @@
 #define SL4M_OUTDOOR_TRAFICSIGNSDETECTION_H
 
 std::vector<cv::Mat> findSigns(const cv::Mat& image);
-std::vector<std::pair<cv::Mat, cv::Mat>> createDB(const std::string& name);
+cv::Mat convolution(cv::Mat& source, const cv::Mat& kernel);
+double euclideanDistance(const cv::Mat& A, const cv::Mat& B);
 #define AREA_LOWER_BOUND 7500
 #define AREA_UPPER_BOUND 40000
 

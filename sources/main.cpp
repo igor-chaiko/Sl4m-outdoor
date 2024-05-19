@@ -13,9 +13,9 @@ int main() {
     double similarity;
     bool differentFrame;
     int frameNum = 0, z = 0;
-    cv::Mat image, hsv;
-
-//    std::vector<std::pair<cv::Mat, cv::Mat>> signsDB = createDB("sample");
+    cv::Mat image, hsv, ex1 = cv::imread("ex1.jpg"); // 1, 2, 1, 2, 4, 2, 1, 2, 1) / 16.0
+    cv::Mat kernel = (cv::Mat_<double>(3, 3) << 1, 1, 1, 1, 1, 1, 1, 1, 1) / 16.0;
+    ex1.convertTo(ex1, CV_64F, 1, 0);
 
     while (true) {
         frameNum++;
@@ -45,7 +45,7 @@ int main() {
                 int frameNumInPair = pair.first;
                 similarity = hashFunc->compare(pair.second, currHash);
                 std::cout << similarity << " ";
-                if (similarity < 26 && frameNum - frameNumInPair < 150) {
+                if (similarity < 26 && frameNum - frameNumInPair < 210) {
                     differentFrame = false;
                     break;
                 }
@@ -57,6 +57,15 @@ int main() {
                 std::pair<int, cv::Mat> pair(frameNum, currHash);
                 cv::imshow("contour_" + std::to_string(++z), currSign);
                 hashes2.push_back(pair);
+                cv::Mat clone = currSign.clone();
+
+                clone = convolution(clone, kernel);
+
+                cv::resize(ex1, ex1, clone.size());
+
+                double dist = euclideanDistance(clone, ex1);
+
+                std::cout << "db2: " << dist << std::endl;
 
                 if (cv::waitKey(0) == 27){
 
@@ -64,6 +73,7 @@ int main() {
             }
         }
 
+//        cv::imshow("video", image);
         cv::waitKey(1);
         cv::destroyWindow("image");
     }

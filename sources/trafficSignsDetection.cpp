@@ -3,18 +3,18 @@
 #include "../headers/triangulation.h"
 
 std::vector<cv::Mat> findSigns(const cv::Mat& image) {
-    std::vector<cv::Mat> res(0);
+    std::vector<cv::Mat> res;
     cv::Mat image_hsv, dilateMask;
     std::vector<cv::Mat> masks;
 
     // переход в hsv
     cv::cvtColor(image, image_hsv, cv::COLOR_BGR2HSV);
 
-    cv::Scalar lower_red(0, 70, 50);
+    cv::Scalar lower_red(0, 10, 10);
     cv::Scalar upper_red(10, 255, 255);
     cv::Mat mask1, mask2;
     cv::inRange(image_hsv, lower_red, upper_red, mask1);
-    cv::Scalar lower_red2(170, 70, 50);
+    cv::Scalar lower_red2(170, 10, 10);
     cv::Scalar upper_red2(180, 255, 255);
     cv::inRange(image_hsv, lower_red2, upper_red2, mask2);
     cv::Mat red_mask;
@@ -32,6 +32,7 @@ std::vector<cv::Mat> findSigns(const cv::Mat& image) {
     cv::Mat blue_mask;
     cv::inRange(image_hsv, lower_blue, upper_blue, blue_mask);
     masks.push_back(blue_mask);
+    cv::imshow("video_r", red_mask);
 
     for (const cv::Mat& mask : masks) {
         // "расширение" маски - нужно для заполнения разрывов, не факт, что нам нужно
@@ -63,6 +64,18 @@ std::vector<cv::Mat> findSigns(const cv::Mat& image) {
                     || (circularity > 0.75 && circularity < 1.2)) {
 
                     cv::Rect bounding_rect = cv::boundingRect(contour);
+                    cv::Rect bounding_rect_s = bounding_rect;
+                    if (bounding_rect_s.width > bounding_rect_s.height) {
+                        bounding_rect_s.height += (bounding_rect_s.width-bounding_rect_s.height);
+                    } else if (bounding_rect_s.width < bounding_rect_s.height) {
+                        bounding_rect_s.width += (bounding_rect_s.height-bounding_rect_s.width);
+                    }
+
+                    if (bounding_rect_s.width % 2 != 0) {
+                        bounding_rect_s.width++;
+                        bounding_rect_s.height++;
+                    }
+
                     cv::Mat contour_image = image(bounding_rect).clone();
 //                cv::imshow("contour_" + std::to_string(++i), contour_image);
                     res.push_back(contour_image);
@@ -82,4 +95,57 @@ std::vector<cv::Mat> findSigns(const cv::Mat& image) {
     }
 
     return res;
+}
+
+cv::Mat convolution(cv::Mat& source, const cv::Mat& kernel) {
+    cv::Mat res(source.rows-2, source.cols-2, CV_64F);
+    int sum = 0;
+
+    for (int i = 1; i < source.rows - 1; i++) {
+        for (int j = 1; j < source.cols - 1; j++) {
+            for (int n = -1; n < kernel.rows - 1; n++) {
+                for (int m = -1; m < kernel.cols - 1; m++) {
+                    sum += (source.at<int>(i+n,j+m) * kernel.at<int>(n+1, m+1));
+                }
+            }
+
+//            sum += (source.at<int>(i-1, j-1) * kernel.at<int>(0, 0));
+//            sum += (source.at<int>(i-1, j) * kernel.at<int>(0, 1));
+//            sum += (source.at<int>(i-1, j+1) * kernel.at<int>(0, 2));
+//            sum += (source.at<int>(i, j-1) * kernel.at<int>(1, 0));
+//            sum += (source.at<int>(i, j) * kernel.at<int>(1, 1));
+//            sum += (source.at<int>(i, j+1) * kernel.at<int>(1, 2));
+//            sum += (source.at<int>(i+1, j-1) * kernel.at<int>(2, 0));
+//            sum += (source.at<int>(i+1, j) * kernel.at<int>(2, 1));
+//            sum += (source.at<int>(i+1, j+1) * kernel.at<int>(2, 2));
+
+            res.at<int>(i-1, j-1) = sum;
+            sum = 0;
+        }
+    }
+
+    return res;
+}
+
+double euclideanDistance(const cv::Mat& A, const cv::Mat& B) {
+    assert(A.size() == B.size());
+
+    cv::Mat vecA(1, A.cols * A.rows, CV_64F);
+    cv::Mat vecB(1, A.cols * A.rows, CV_64F);
+
+    for (int i = 0; i < A.rows; i++) {
+        for (int j = 0; j < A.cols; j++) {
+            vecA.at<double>(0, (i+1)*j) = A.at<double>(i, j);
+            vecB.at<double>(0, (i+1)*j) = B.at<double>(i, j);
+        }
+    }
+    std::cout << vecA << std::endl;
+    std::cout << vecB << std::endl;
+
+    std::cout << vecA.size << " " << vecB.size << std::endl;
+
+    assert(vecA.size() == vecB.size());
+    double distance = cv::norm(vecA, vecB, cv::NORM_L2); // cv::NORM_L2 - Евклидово расстояние
+
+    return distance;
 }
