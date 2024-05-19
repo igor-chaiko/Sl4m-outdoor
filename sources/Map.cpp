@@ -101,15 +101,19 @@ void Map::showMap(int delay) {
             cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), AXES_THICKNESS);
 
             /////РИСУЕМ ЗНАКИ
-            double deltaX = abs(tmpPoint.x - lastPoint.x);
-            double deltaY = abs(tmpPoint.y - lastPoint.y);
+            double deltaX = tmpPoint.x - lastPoint.x;
+            double deltaY = tmpPoint.y - lastPoint.y;
             cv::Point2d signPoint;
-            if (mapPoint.)
 
-
-
-
-
+            //Должно быть наоборот но так работает
+            if (mapPoint.getLeftSign()) {
+                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
+            if (mapPoint.getRightSign()) {
+                signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
 
             lastPoint = tmpPoint;
         }
@@ -164,6 +168,22 @@ void Map::showMap(int delay) {
             tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
             cv::circle(this->canvas, tmpPoint, POINT_RADIUS, cv::Scalar(255, 0, 255), AXES_THICKNESS);
             cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), AXES_THICKNESS);
+
+
+            /////РИСУЕМ ЗНАКИ
+            double deltaX = tmpPoint.x - lastPoint.x;
+            double deltaY = tmpPoint.y - lastPoint.y;
+            cv::Point2d signPoint;
+            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getLeftSign()) {
+                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
+            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getRightSign()) {
+                signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
+
+
         }
         indexOfCurrentPointThatNeedsToBeDrawn = static_cast<long>(this->coordinatesOnMap.size());
 
