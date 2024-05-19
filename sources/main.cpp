@@ -13,11 +13,8 @@ int main() {
     double similarity;
     bool differentFrame;
     int frameNum = 0, z = 0;
-    cv::Mat image, hsv, ex1 = cv::imread("ex1.jpg"); // 1, 2, 1, 2, 4, 2, 1, 2, 1) / 16.0
-    cv::Mat kernel = (cv::Mat_<double>(3, 3) << 1, 1, 1, 1, 1, 1, 1, 1, 1) / 16.0;
-//    ex1.convertTo(ex1, CV_64F, 1, 0);
-
-    std::cout << "kernel: " << kernel << std::endl;
+    cv::Mat image, hsv, ex1 = cv::imread("ex3.jpg"); // 1, 2, 1, 2, 4, 2, 1, 2, 1) / 16.0
+    cv::Mat kernel = (cv::Mat_<double>(3, 3) << -1, -1, -1, -1, 8, -1, -1, -1, -1) / 1.0;
 
     while (true) {
         frameNum++;
@@ -42,35 +39,45 @@ int main() {
             hashFunc->compute(currSign, currHash);
             differentFrame = true;
 
-//            std::cout << hashes2.size() << ": ";
+            std::cout << hashes2.size() << ": ";
             for (const std::pair<int, cv::Mat>& pair : hashes2) {
                 int frameNumInPair = pair.first;
                 similarity = hashFunc->compare(pair.second, currHash);
-//                std::cout << similarity << " ";
+                std::cout << similarity << " ";
                 if (similarity < 26 && frameNum - frameNumInPair < 210) {
                     differentFrame = false;
                     break;
                 }
             }
-//            std::cout << std::endl;
+            std::cout << std::endl;
 
             if (differentFrame) {
+                cv::Mat resizedSample;
                 total.push_back(currSign);
-                cv::resize(ex1, ex1, currSign.size());
+
+                cv::resize(ex1, resizedSample, currSign.size());
+
                 std::pair<int, cv::Mat> pair(frameNum, currHash);
                 cv::imshow("contour_" + std::to_string(++z), currSign);
                 hashes2.push_back(pair);
                 cv::cvtColor(currSign, currSign, cv::COLOR_BGR2GRAY);
-                cv::cvtColor(ex1, ex1, cv::COLOR_BGR2GRAY);
+                cv::cvtColor(resizedSample, resizedSample, cv::COLOR_BGR2GRAY);
 
-                currSign = convolution(currSign, kernel);
-                ex1 = convolution(ex1, kernel);
+                cv::Mat dst1, dst2;
+                cv::filter2D(currSign, dst1, -1, kernel);
+                cv::imshow("currSign", dst1);
+//                std::cout <<"1: " << dst1 << std::endl;
+//                currSign = convolution(currSign, kernel);
+                cv::filter2D(resizedSample, dst2, -1, kernel);
+//                std::cout <<"2: " << dst2 << std::endl;
+                cv::imshow("resizedSample", dst2);
+//                resizedSample = convolution(resizedSample, kernel);
 
-                double dist = euclideanDistance(currSign, ex1);
+                double dist = euclideanDistance(dst1, dst2);
 
                 std::cout << "db2: " << dist << std::endl;
 
-                if (cv::waitKey(0) == 27){
+                if (cv::waitKey(0) == 27) {
 
                 }
             }

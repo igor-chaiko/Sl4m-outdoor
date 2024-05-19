@@ -7,10 +7,8 @@ std::vector<cv::Mat> findSigns(const cv::Mat& image) {
     cv::Mat image_hsv, dilateMask;
     std::vector<cv::Mat> masks;
 
-    std::cout << image.at<double>(0, 0) << " " << image.at<double>(0, 1) << std::endl;
     // переход в hsv
     cv::cvtColor(image, image_hsv, cv::COLOR_BGR2HSV);
-    std::cout << image_hsv.at<double>(0, 0) << " " << image_hsv.at<double>(0, 1) << std::endl;
 
     cv::Scalar lower_red(0, 10, 10);
     cv::Scalar upper_red(10, 255, 255);
@@ -108,7 +106,7 @@ cv::Mat convolution(cv::Mat& source, const cv::Mat& kernel) {
             for (int n = 0; n < kernel.rows; n++) {
                 for (int m = 0; m < kernel.cols; m++) {
                     double kernelV = kernel.at<double>(n, m);
-                    double sourceV = static_cast <double >(source.at<int>(i+n, j+m));
+                    double sourceV = static_cast <double >(source.at<uchar>(i+n, j+m));
 
                     sum += kernelV * sourceV;
                 }
@@ -130,15 +128,15 @@ double euclideanDistance(const cv::Mat& A, const cv::Mat& B) {
 
     for (int i = 0; i < A.rows; i++) {
         for (int j = 0; j < A.cols; j++) {
-            vecA.at<double>(0, i*A.cols+j) = A.at<double>(i, j);
-            vecB.at<double>(0, i*A.cols+j) = B.at<double>(i, j);
+            vecA.at<double>(0, i*A.cols+j) = static_cast <double > (A.at<uchar>(i, j));
+            vecB.at<double>(0, i*A.cols+j) = static_cast <double > (B.at<uchar>(i, j));
         }
     }
 
-    std::cout << "A: " << vecA << std::endl;
-    std::cout << "B: " << vecB << std::endl;
+//    std::cout << "A: " << vecA << std::endl;
+//    std::cout << "B: " << vecB << std::endl;
     double distance = cv::norm(vecA, vecB, cv::NORM_L2); // cv::NORM_L2 - Евклидово расстояние
-    std::cout << distance << std::endl;
+//    std::cout << distance << std::endl;
 
     return distance;
 }
