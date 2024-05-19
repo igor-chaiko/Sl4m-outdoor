@@ -7,8 +7,10 @@ std::vector<cv::Mat> findSigns(const cv::Mat& image) {
     cv::Mat image_hsv, dilateMask;
     std::vector<cv::Mat> masks;
 
+    std::cout << image.at<double>(0, 0) << " " << image.at<double>(0, 1) << std::endl;
     // переход в hsv
     cv::cvtColor(image, image_hsv, cv::COLOR_BGR2HSV);
+    std::cout << image_hsv.at<double>(0, 0) << " " << image_hsv.at<double>(0, 1) << std::endl;
 
     cv::Scalar lower_red(0, 10, 10);
     cv::Scalar upper_red(10, 255, 255);
@@ -100,18 +102,15 @@ std::vector<cv::Mat> findSigns(const cv::Mat& image) {
 cv::Mat convolution(cv::Mat& source, const cv::Mat& kernel) {
     cv::Mat res(source.rows-kernel.rows+1, source.cols-kernel.cols+1, CV_64F);
     double sum = 0;
-//    source.convertTo(source, CV_64F, 1, 0);
-
-    std::cout << source.type() << std::endl;
 
     for (int i = 0; i < res.rows; i++) {
         for (int j = 0; j < res.cols; j++) {
             for (int n = 0; n < kernel.rows; n++) {
                 for (int m = 0; m < kernel.cols; m++) {
-                    double kernelV = kernel.at<double>(n, m), sourceV = source.at<double>(i+n, j+m);
-                    double subt = kernelV * sourceV;
+                    double kernelV = kernel.at<double>(n, m);
+                    double sourceV = static_cast <double >(source.at<int>(i+n, j+m));
 
-                    sum += kernel.at<double>(n, m) * source.at<double>(i+n, j+m);
+                    sum += kernelV * sourceV;
                 }
             }
 
@@ -131,17 +130,15 @@ double euclideanDistance(const cv::Mat& A, const cv::Mat& B) {
 
     for (int i = 0; i < A.rows; i++) {
         for (int j = 0; j < A.cols; j++) {
-            vecA.at<double>(0, (i+1)*j) = A.at<double>(i, j);
-            vecB.at<double>(0, (i+1)*j) = B.at<double>(i, j);
+            vecA.at<double>(0, i*A.cols+j) = A.at<double>(i, j);
+            vecB.at<double>(0, i*A.cols+j) = B.at<double>(i, j);
         }
     }
-//    std::cout << vecA << std::endl;
-//    std::cout << vecB << std::endl;
 
-//    std::cout << vecA.size << " " << vecB.size << std::endl;
-
-    assert(vecA.size() == vecB.size());
+    std::cout << "A: " << vecA << std::endl;
+    std::cout << "B: " << vecB << std::endl;
     double distance = cv::norm(vecA, vecB, cv::NORM_L2); // cv::NORM_L2 - Евклидово расстояние
+    std::cout << distance << std::endl;
 
     return distance;
 }

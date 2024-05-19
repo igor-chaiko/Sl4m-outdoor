@@ -15,7 +15,7 @@ int main() {
     int frameNum = 0, z = 0;
     cv::Mat image, hsv, ex1 = cv::imread("ex1.jpg"); // 1, 2, 1, 2, 4, 2, 1, 2, 1) / 16.0
     cv::Mat kernel = (cv::Mat_<double>(3, 3) << 1, 1, 1, 1, 1, 1, 1, 1, 1) / 16.0;
-    ex1.convertTo(ex1, CV_64F, 1, 0);
+//    ex1.convertTo(ex1, CV_64F, 1, 0);
 
     std::cout << "kernel: " << kernel << std::endl;
 
@@ -37,36 +37,36 @@ int main() {
 
         std::vector<cv::Mat> res = findSigns(image);
 
-        for (const cv::Mat& currSign : res) {
+        for (cv::Mat& currSign : res) {
             cv::Mat currHash;
             hashFunc->compute(currSign, currHash);
             differentFrame = true;
 
-            std::cout << hashes2.size() << ": ";
+//            std::cout << hashes2.size() << ": ";
             for (const std::pair<int, cv::Mat>& pair : hashes2) {
                 int frameNumInPair = pair.first;
                 similarity = hashFunc->compare(pair.second, currHash);
-                std::cout << similarity << " ";
+//                std::cout << similarity << " ";
                 if (similarity < 26 && frameNum - frameNumInPair < 210) {
                     differentFrame = false;
                     break;
                 }
             }
-            std::cout << std::endl;
+//            std::cout << std::endl;
 
             if (differentFrame) {
                 total.push_back(currSign);
+                cv::resize(ex1, ex1, currSign.size());
                 std::pair<int, cv::Mat> pair(frameNum, currHash);
                 cv::imshow("contour_" + std::to_string(++z), currSign);
                 hashes2.push_back(pair);
-                cv::Mat clone = currSign.clone();
-                std::cout << clone << std::endl;
+                cv::cvtColor(currSign, currSign, cv::COLOR_BGR2GRAY);
+                cv::cvtColor(ex1, ex1, cv::COLOR_BGR2GRAY);
 
-                clone = convolution(clone, kernel);
+                currSign = convolution(currSign, kernel);
+                ex1 = convolution(ex1, kernel);
 
-                cv::resize(ex1, ex1, clone.size());
-
-                double dist = euclideanDistance(clone, ex1);
+                double dist = euclideanDistance(currSign, ex1);
 
                 std::cout << "db2: " << dist << std::endl;
 
