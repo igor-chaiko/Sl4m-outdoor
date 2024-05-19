@@ -162,6 +162,7 @@ void startProcessing() {
     map.addPoint(firstPoint);
 
     bool isFirstOperation = true;
+    int i = 0;
 
     while (true) {
         if (getFramesPool(framePool, cap) == -1) {
@@ -188,6 +189,12 @@ void startProcessing() {
         func->compute(image2, imageHash2);
         MapPoint currentMapPoint = MapPoint(P2, points,
                                             imageHash2);
+        if (i % 10 == 0){
+            currentMapPoint.setLeftSign(true);
+        }
+        if (i % 15 == 0) {
+            currentMapPoint.setRightSign(true);
+        }
 
         map.addPoint(currentMapPoint);
 
@@ -202,7 +209,9 @@ void startProcessing() {
             break;
         }
         map.showMap(1);
+        map.saveMap("../resources/map.jpg");
 
+        i++;
     }
 
     map.showMap(0);

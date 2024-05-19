@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include "trafficSign.h"
 
 class MapPoint {
 private:
@@ -14,6 +15,9 @@ private:
     size_t rebuiltOn;
 
     cv::Mat P;
+
+    trafficSign sign = trafficSign(false, false);
+
 
 public:
     MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates, cv::Mat hash);
@@ -41,6 +45,14 @@ public:
     size_t getRebuiltOn() const;
 
     void setRebuiltOn(size_t newIsRebuild);
+
+    void setLeftSign(bool value);
+
+    void setRightSign(bool value);
+
+    bool getRightSign();
+
+    bool getLeftSign();
 };
 
 // тестирует calculateNewCoords из MapPoint

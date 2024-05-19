@@ -2,7 +2,7 @@
 
 Map::Map() {
     this->coordinatesOnMap = std::vector<MapPoint>();
-    this->canvasSize = WINDOW_SIZE_IN_PIXELS;
+    this->canvasSize = WINDOW_SIZE_IN_PIXELS_SAVE;
     this->maxCoordinate = std::numeric_limits<double>::min();
     this->indexOfCurrentPointThatNeedsToBeDrawn = 0;
     this->indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn = 0;
@@ -85,7 +85,7 @@ void Map::showMap(int delay) {
                 tmpPoint.y = tmpPoint.y / coefficient;
                 tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
 
-                cv::circle(this->canvas, tmpPoint, FEATURES_RADIUS, cv::Scalar(0, 0, 255), 1);
+                cv::circle(this->canvas, tmpPoint, FEATURES_RADIUS, cv::Scalar(0, 0, 255), AXES_THICKNESS);
             }
         }
 
@@ -97,8 +97,24 @@ void Map::showMap(int delay) {
             tmpPoint.y = tmpPoint.y / coefficient;
             tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
 
-            cv::circle(this->canvas, tmpPoint, POINT_RADIUS, cv::Scalar(255, 0, 255), 1);
-            cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), 1);
+            cv::circle(this->canvas, tmpPoint, POINT_RADIUS, cv::Scalar(255, 0, 255), AXES_THICKNESS);
+            cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), AXES_THICKNESS);
+
+            /////РИСУЕМ ЗНАКИ
+            double deltaX = tmpPoint.x - lastPoint.x;
+            double deltaY = tmpPoint.y - lastPoint.y;
+            cv::Point2d signPoint;
+
+            //Должно быть наоборот но так работает
+            if (mapPoint.getLeftSign()) {
+                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
+            if (mapPoint.getRightSign()) {
+                signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
+
             lastPoint = tmpPoint;
         }
 
@@ -126,7 +142,7 @@ void Map::showMap(int delay) {
                 tmpPoint.y = tmpPoint.y / coefficient;
                 tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
 
-                cv::circle(this->canvas, tmpPoint, FEATURES_RADIUS, cv::Scalar(0, 0, 255), 1);
+                cv::circle(this->canvas, tmpPoint, FEATURES_RADIUS, cv::Scalar(0, 0, 255), AXES_THICKNESS);
             }
 
         }
@@ -150,61 +166,78 @@ void Map::showMap(int delay) {
             tmpPoint.x = tmpPoint.x / coefficient;
             tmpPoint.y = tmpPoint.y / coefficient;
             tmpPoint = transformationOfCoordinatesToMatrixView(tmpPoint);
-            cv::circle(this->canvas, tmpPoint, POINT_RADIUS, cv::Scalar(255, 0, 255), 1);
-            cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), 1);
+            cv::circle(this->canvas, tmpPoint, POINT_RADIUS, cv::Scalar(255, 0, 255), AXES_THICKNESS);
+            cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), AXES_THICKNESS);
+
+
+            /////РИСУЕМ ЗНАКИ
+            double deltaX = tmpPoint.x - lastPoint.x;
+            double deltaY = tmpPoint.y - lastPoint.y;
+            cv::Point2d signPoint;
+            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getLeftSign()) {
+                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
+            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getRightSign()) {
+                signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            }
+
+
         }
         indexOfCurrentPointThatNeedsToBeDrawn = static_cast<long>(this->coordinatesOnMap.size());
 
 
     }
 
-
-    cv::imshow(WINDOW_NAME, this->canvas);
+    cv::Mat showMap;
+    cv::resize(this->canvas, showMap, cv::Size(WINDOW_SIZE_IN_PIXELS_SHOW, WINDOW_SIZE_IN_PIXELS_SHOW));
+    cv::imshow(WINDOW_NAME, showMap);
     cv::waitKey(delay);
 }
 
 void Map::drawAxes(cv::Mat canvas) const {
     cv::Point2d start_x(0, static_cast<double>(canvasSize) / 2);
     cv::Point2d finish_x(canvasSize, static_cast<double>(canvasSize) / 2);
-    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 
     start_x.x = canvasSize - 10;
     start_x.y = static_cast<double>(canvasSize) / 2 - 10;
-    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), AXES_THICKNESS);
     start_x.y = static_cast<double>(canvasSize) / 2 + 10;
-    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 
     start_x.x = canvasSize - 15;
     start_x.y = static_cast<double>(canvasSize) / 2 - 20;
     finish_x.x = canvasSize - 5;
     finish_x.y = static_cast<double>(canvasSize) / 2 - 10;
-    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 
     start_x.y = static_cast<double>(canvasSize) / 2 - 10;
     finish_x.y = static_cast<double>(canvasSize) / 2 - 20;
-    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_x, finish_x, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 
 
     cv::Point2d start_y(static_cast<double>(canvasSize) / 2, canvasSize);
     cv::Point2d finish_y(static_cast<double>(canvasSize) / 2, 0);
-    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 
     start_y.x = static_cast<double>(canvasSize) / 2 - 10;
     start_y.y = 10;
-    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), AXES_THICKNESS);
     start_y.x = static_cast<double>(canvasSize) / 2 + 10;
-    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 
     start_y.y = 15;
     finish_y.x = static_cast<double>(canvasSize) / 2 + 5;
     finish_y.y = 10;
-    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 
     start_y.x = static_cast<double>(canvasSize) / 2 + 15;
     start_y.y = 10;
     finish_y.x = static_cast<double>(canvasSize) / 2 + 5;
     finish_y.y = 20;
-    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), 1);
+    cv::line(canvas, start_y, finish_y, cv::Scalar(255, 255, 255), AXES_THICKNESS);
 }
 
 cv::Point2d Map::transformationOfCoordinatesToMatrixView(cv::Point2d point) const {
@@ -219,5 +252,10 @@ std::vector<MapPoint> &Map::getMapPoints() {
 
 bool &Map::getIsRebuild() {
     return this->isRebuild;
+}
+
+void Map::saveMap(const std::string &path) {
+    // Сохранение изображения в файле с именем "my_image.jpg"
+    cv::imwrite(path, canvas);
 }
 

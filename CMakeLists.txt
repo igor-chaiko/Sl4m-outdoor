@@ -19,5 +19,7 @@ add_executable(Sl4m_outdoor sources/main.cpp
         headers/mapRebuilding.h
         headers/loopChecker.h
         sources/loopChecker.cpp
+        sources/trafficSign.cpp
+        headers/trafficSign.h
 )
 target_link_libraries(Sl4m_outdoor ${OpenCV_LIBS})
