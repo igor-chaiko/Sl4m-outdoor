@@ -59,7 +59,6 @@ std::vector<std::pair<cv::Mat, std::string>> TrafficSigns::findSigns(const cv::M
 
                 double b = perimeter / 3;
                 double k2 = ( b * b * sqrt(3) / 4) / area;
-
                 if ((k1 > 0.8 && k1 < 1.2) || (k2 > 0.8 && k2 < 1.2)
                     || (circularity > 0.75 && circularity < 1.2)) {
 
@@ -67,7 +66,8 @@ std::vector<std::pair<cv::Mat, std::string>> TrafficSigns::findSigns(const cv::M
 
                     cv::Mat contour_image = image(bounding_rect).clone();
                     std::string location;
-                    if (bounding_rect.x + bounding_rect.width/2 < image.cols) {
+
+                    if (bounding_rect.x + bounding_rect.width/2 < image.cols/2) {
                         location = "left";
                     } else {
                         location = "right";

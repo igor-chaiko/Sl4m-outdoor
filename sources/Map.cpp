@@ -104,7 +104,6 @@ void Map::showMap(int delay) {
             double deltaX = tmpPoint.x - lastPoint.x;
             double deltaY = tmpPoint.y - lastPoint.y;
             cv::Point2d signPoint;
-            std::cout << mapPoint.signs.size() << std::endl;
             int right_counter = 1;
             int left_counter = 1;
             for (std::pair<cv::Mat, std::string> pair : mapPoint.signs) {
@@ -120,6 +119,7 @@ void Map::showMap(int delay) {
                                                   SIGN_SIZE, SIGN_SIZE));
                     sign.copyTo(roi);
                     left_counter++;
+                    //std::cout << "left" ;
                 }
                 if (pair.second == "right") {
                     signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
@@ -131,13 +131,15 @@ void Map::showMap(int delay) {
                                                   SIGN_SIZE, SIGN_SIZE));
                     sign.copyTo(roi);
                     right_counter++;
+                    //std::cout << "right";
                 }
+
 
             }
 
+
             lastPoint = tmpPoint;
         }
-
 
         indexOfCurrentPointThatNeedsToBeDrawn = static_cast<long>(this->coordinatesOnMap.size());
         indexOfCurrentFeaturesMatrixThatNeedsToBeDrawn = static_cast<long>(this->features.size());
