@@ -119,6 +119,7 @@ void Map::showMap(int delay) {
                                                   tmpPoint.y + vector.y * SIGN_SIZE * left_counter,
                                                   SIGN_SIZE, SIGN_SIZE));
                     sign.copyTo(roi);
+                    left_counter++;
                 }
                 if (pair.second == "right") {
                     signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
@@ -129,7 +130,7 @@ void Map::showMap(int delay) {
                                                   tmpPoint.y + vector.y * SIGN_SIZE * right_counter,
                                                   SIGN_SIZE, SIGN_SIZE));
                     sign.copyTo(roi);
-
+                    right_counter++;
                 }
 
             }
