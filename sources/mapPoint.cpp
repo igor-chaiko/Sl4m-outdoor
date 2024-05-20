@@ -2,75 +2,85 @@
 #include <utility>
 #include "../headers/mapPoint.h"
 
-MapPoint::MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates,
-                   cv::Mat hash, bool isRebuild, cv::Mat image) {
-    this->globalCoordinate = globalCoordinate;
+MapPoint::MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates,
+                   cv::Mat hash) {
+    setGlobalCoordinates(P);
     this->localCoordinates = std::move(localCoordinates);
     this->hash = std::move(hash);
-    this->isRebuild = isRebuild;
-    this->image = image;
+    this->rebuiltOn = -1;
 }
 
-void MapPoint::setGlobalCoordinates(double x, double y) {
-    globalCoordinate.x = x;
-    globalCoordinate.y = y;
+void MapPoint::setGlobalCoordinates(const cv::Mat &newP) {
+    this->P = newP.clone();
 }
 
-void MapPoint::setGlobalCoordinates(cv::Point2d newGlobalCoordinate) {
-    globalCoordinate = newGlobalCoordinate;
+cv::Mat MapPoint::getGlobalCoordinates() {
+    return this->P.clone();
 }
 
-cv::Point2d MapPoint::getGlobalCoordinates() {
-    return this->globalCoordinate;
+cv::Mat MapPoint::getR() {
+    return P.colRange(0, 3).clone();
 }
 
-/**
- * фунция для нахождения координат с учетом вращения.
- * @return глобальные координаты.
- */
-cv::Point2d MapPoint::calculateNewCoords(cv::Mat displacementVector3D,
-                                         cv::Mat rotationMatrix3D) {
-    cv::Point2d globalCoords;
-
-    // переход от 3х3 матрицы к 2х2, учитывая вращение только вдоль Z
-    cv::Mat displacementVector2D = displacementVector3D(cv::Range(0, 2),
-                                                        cv::Range::all()
-                                                        );
-    // отрезаем у вектора координату Z
-    cv::Mat rotationMatrix2D = rotationMatrix3D(cv::Range(0, 2),
-                                                cv::Range(0, 2)
-                                                );
-
-    // повернутый вектор
-    cv::Mat inverseVector = rotationMatrix2D * displacementVector2D;
-
-    globalCoords.x = this->globalCoordinate.x + inverseVector.at<double>(0, 0);
-    globalCoords.y = this->globalCoordinate.y + inverseVector.at<double>(0, 1);
-
-    return globalCoords;
+void MapPoint::setR(const cv::Mat &newR) {
+    newR.copyTo(P.colRange(0, 3));
 }
 
-cv::Point2d MapPoint::calculateRotationAngle(cv::Mat rotationMatrix3D) {
-    cv::Point2d rotationAngle;
+cv::Point3d MapPoint::getT() {
+    double y = P.at<double>(2, 3);
+    double z = P.at<double>(1, 3);
+    double x = P.at<double>(0, 3);
 
-    rotationAngle.x = rotationMatrix3D.at<double>(0, 0);
-    rotationAngle.y = rotationMatrix3D.at<double>(1, 0);
+    return {x, y, z};
+}
 
-    return rotationAngle;
+cv::Mat MapPoint::getMatT() {
+    return P.col(3).clone();
+}
+
+void MapPoint::setT(const cv::Point3d &newT) {
+    P.at<double>(2, 3) = newT.y;
+    P.at<double>(1, 3) = newT.z;
+    P.at<double>(0, 3) = newT.x;
+}
+
+void MapPoint::setMatT(const cv::Mat &newT) {
+    newT.copyTo(P.col(3));
+}
+
+cv::Point2d MapPoint::get2DCoordinates() {
+    double y = P.at<double>(2, 3);
+    double z = P.at<double>(1, 3);
+    double x = P.at<double>(0, 3);
+
+    return {x, y};
 }
 
 cv::Mat MapPoint::getHash() {
     return this->hash;
 }
 
-bool MapPoint::getIsRebuild() {
-    return this->isRebuild;
+size_t MapPoint::getRebuiltOn() const {
+    return this->rebuiltOn;
 }
 
-cv::Mat MapPoint::getImage() {
-    return this->image;
+void MapPoint::setRebuiltOn(size_t newIsRebuild) {
+    this->rebuiltOn = newIsRebuild;
 }
 
-void MapPoint::setIsRebuild(bool isRebuild) {
-    this->isRebuild = isRebuild;
+void MapPoint::setLeftSign(bool value) {
+    sign.isRight = value;
 }
+
+void MapPoint::setRightSign(bool value) {
+    sign.isLeft = value;
+}
+
+bool MapPoint::getRightSign() {
+    return sign.isRight;
+}
+
+bool MapPoint::getLeftSign() {
+    return sign.isLeft;
+}
+

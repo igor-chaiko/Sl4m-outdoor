@@ -3,14 +3,14 @@
 #include "../headers/mapRebuilding.h"
 
 
-void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
+void loopCheck(std::vector<MapPoint> &coordinatesOnMap, bool &isRebuild) {
     cv::Ptr<cv::img_hash::ImgHashBase> func;
     func = cv::img_hash::PHash::create();
 
 
     int length = static_cast<int>(coordinatesOnMap.size());
     MapPoint lastFrameMapPoint = coordinatesOnMap[length - 1];
-    cv::Mat lastFrameHash  = lastFrameMapPoint.getHash();
+    cv::Mat lastFrameHash = lastFrameMapPoint.getHash();
 
     //std::cout << "start" << std::endl;
     for (int i = length - 2; i >= 0; i--) {
@@ -19,16 +19,16 @@ void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
 
         double resultOfComparing = func->compare(lastFrameHash, currentFrameHash);
         //std::cout << resultOfComparing << std::endl;
-        if (resultOfComparing <= 10) {
-            cv::Point2d lastFrameCoordinates = lastFrameMapPoint.getGlobalCoordinates();
-            cv::Point2d currentFrameCoordinates = currentFrameMapPoint.getGlobalCoordinates();
-            if (lengthBetweenTwoPoint(lastFrameCoordinates, currentFrameCoordinates) >= 5
-            && checkThatCoordinatesArentRebuild(coordinatesOnMap, i, length - 1)) {
-                std::cout << "distance > 5" << std::endl;
-                closeLoopLine(coordinatesOnMap, i, length - 1);
+        if (resultOfComparing <= HAMMING_DISTANCE) {
+            cv::Point2d lastFrameCoordinates = lastFrameMapPoint.get2DCoordinates();
+            cv::Point2d currentFrameCoordinates = currentFrameMapPoint.get2DCoordinates();
+            if (lengthBetweenTwoPoint(lastFrameCoordinates, currentFrameCoordinates) >= TRASH_HOLD_FOR_DISTANCE) {
+                std::cout << &"distance >= " [TRASH_HOLD_FOR_DISTANCE] << std::endl;
+                isRebuild = true;
+                rebuildPath(coordinatesOnMap, i);
                 std::cout << i << std::endl;
                 std::cout << length - 1 << std::endl;
-
+                break;
             }
         }
     }
@@ -39,7 +39,7 @@ void loopCheck(std::vector<MapPoint>& coordinatesOnMap) {
 
 bool checkThatCoordinatesArentRebuild(std::vector<MapPoint> &loop, int startIndex, int lastIndex) {
     for (int i = startIndex; i <= lastIndex; i++) {
-        if (loop[i].getIsRebuild()) {
+        if (loop[i].getRebuiltOn() != -1) {
             return false;
         }
     }

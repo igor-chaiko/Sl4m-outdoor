@@ -3,46 +3,56 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include "trafficSign.h"
 
 class MapPoint {
 private:
-    // переменная для хранения координаты (x, y) в какой-то момент времени
-    cv::Point2d globalCoordinate;
-
     // массив фичей, обнаруженных в этот момент времени (их 2D координаты)
     std::vector<cv::Point2d> localCoordinates;
 
     cv::Mat hash;
 
-    bool isRebuild;
+    size_t rebuiltOn;
 
-    cv::Mat image;
+    cv::Mat P;
+
+    trafficSign sign = trafficSign(false, false);
+
 
 public:
+    MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates, cv::Mat hash);
 
-    MapPoint(cv::Point2d globalCoordinate, std::vector<cv::Point2d> localCoordinates,
-             cv::Mat hash, bool isRebuild, cv::Mat image);
+    void setGlobalCoordinates(const cv::Mat &newP);
 
-    void setGlobalCoordinates(double x, double y);
+    cv::Mat getGlobalCoordinates();
 
-    void setGlobalCoordinates(cv::Point2d);
+    cv::Mat getR();
 
-    cv::Point2d getGlobalCoordinates();
+    void setR(const cv::Mat &newR);
 
+    cv::Point3d getT();
 
-    // вычисляем глобальные координаты точки, в которую ведет вектор
-    cv::Point2d calculateNewCoords(cv::Mat, cv::Mat);
+    void setT(const cv::Point3d &newT);
 
-    // вычисляем угол поворота камеры
-    static cv::Point2d calculateRotationAngle(cv::Mat);
+    cv::Mat getMatT();
+
+    void setMatT(const cv::Mat &newT);
+
+    cv::Point2d get2DCoordinates();
 
     cv::Mat getHash();
 
-    bool getIsRebuild();
+    size_t getRebuiltOn() const;
 
-    cv::Mat getImage();
+    void setRebuiltOn(size_t newIsRebuild);
 
-    void setIsRebuild(bool isRebuild);
+    void setLeftSign(bool value);
+
+    void setRightSign(bool value);
+
+    bool getRightSign();
+
+    bool getLeftSign();
 };
 
 // тестирует calculateNewCoords из MapPoint

@@ -8,6 +8,7 @@
 #include "../headers/Map.h"
 #include "../headers/triangulation.h"
 #include "../headers/loopChecker.h"
+
 cv::Mat image2;
 
 /**
@@ -15,9 +16,9 @@ cv::Mat image2;
  * Проверяем все кадры с конца.
  * Если меньше чем MIN_MATCHES, берётся предыдущий.
  */
-void goodMatchesCheck(const std::vector<cv::DMatch>& oldMatches,
-                        const std::vector<cv::Mat> &framePool,
-                        const cv::Mat& descriptors1) {
+void goodMatchesCheck(const std::vector<cv::DMatch> &oldMatches,
+                      const std::vector<cv::Mat> &framePool,
+                      const cv::Mat &descriptors1) {
     std::vector<cv::KeyPoint> keyPoints2;
     std::vector<cv::DMatch> newMatches;
     cv::Mat descriptors2, secondGray;
@@ -86,13 +87,13 @@ int getFramesPool(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
  * @param pathToCalibrationCamera - путь до матрциы камеры.
  * @return - возвращает заполненную матрицу.
  */
-cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
+cv::Mat readCameraMatrix(const cv::String &pathToCalibrationCamera) {
     //Пытаемся открыть файл с матрицой калибровки камеры.
     std::ifstream cameraMatrixFile(pathToCalibrationCamera);
     //Проверка на удачное открытие файла.
     if (!cameraMatrixFile.is_open()) {
         ("Path: " + pathToCalibrationCamera + '\n'
-                                        + "Calibration file was not opened.");
+         + "Calibration file was not opened.");
     }
 
     //Создаём новую матрицу.
@@ -117,11 +118,11 @@ cv::Mat readCameraMatrix(const cv::String& pathToCalibrationCamera) {
  * Метод ответственные за начало обработки видео.
  */
 void startProcessing() {
-    cv:: Mat cameraMatrix;
+    cv::Mat cameraMatrix;
     try {
         //Читаем камеру матрицы из файла.
         cameraMatrix = readCameraMatrix(CALIBRATION_CAMERA_MATRIX_PATH);
-    }catch (const std::runtime_error& e) {
+    } catch (const std::runtime_error &e) {
         //В случае неудачи пробрасываем исключение на уровень выше.
         throw;
     }
@@ -144,7 +145,7 @@ void startProcessing() {
     cap >> image1;
 
     std::vector<cv::KeyPoint> keyPoints1, keyPoints2;
-    cv::Mat descriptors1;
+    cv::Mat descriptors1, descriptors2;
     std::vector<cv::DMatch> oldMatches;
 
     extractKeyPointsAndDescriptors(image1, keyPoints1, descriptors1);
@@ -156,16 +157,14 @@ void startProcessing() {
     std::vector<cv::Point2d> points;
     cv::Mat imageHash1;
     func->compute(image1, imageHash1);
-    MapPoint firstPoint = MapPoint(start, points, imageHash1,
-                                   false, image1);
+    MapPoint firstPoint = MapPoint(P1, points, imageHash1);
     Map map = Map();
     map.addPoint(firstPoint);
 
     bool isFirstOperation = true;
+    int i = 0;
 
     while (true) {
-        cv::Mat descriptors2;
-
         if (getFramesPool(framePool, cap) == -1) {
             break;
         }
@@ -176,7 +175,6 @@ void startProcessing() {
 
         goodMatchesCheck(oldMatches, framePool, descriptors1);
         oldMatches.clear();
-        keyPoints2.clear();
 
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
@@ -187,29 +185,33 @@ void startProcessing() {
             //map.addFeaturesPoint(points3D);
         }
 
-        double y = P2.at<double>(2, 3);
-        double z = P2.at<double>(1, 3);
-        double x = P2.at<double>(0, 3);
-
-        cv::Point2d currentPositionInSpace = cv::Point2d(x, y);
         cv::Mat imageHash2;
         func->compute(image2, imageHash2);
-        MapPoint currentMapPoint = MapPoint(currentPositionInSpace, points,
-                                            imageHash2, false, image2);
+        MapPoint currentMapPoint = MapPoint(P2, points,
+                                            imageHash2);
+        if (i % 10 == 0){
+            currentMapPoint.setLeftSign(true);
+        }
+        if (i % 15 == 0) {
+            currentMapPoint.setRightSign(true);
+        }
 
         map.addPoint(currentMapPoint);
 
-        loopCheck(map.getMapPoints());
+        loopCheck(map.getMapPoints(), map.getIsRebuild());
+
 
         image1 = image2;
         descriptors1 = descriptors2;
-        P1 = P2;
+        P1 = currentMapPoint.getGlobalCoordinates();
 
         if (cv::waitKey(30) == 27) {
             break;
         }
         map.showMap(1);
+        map.saveMap("../resources/map.jpg");
 
+        i++;
     }
 
     map.showMap(0);
