@@ -23,11 +23,8 @@ void loopCheck(std::vector<MapPoint> &coordinatesOnMap, bool &isRebuild) {
             cv::Point2d lastFrameCoordinates = lastFrameMapPoint.get2DCoordinates();
             cv::Point2d currentFrameCoordinates = currentFrameMapPoint.get2DCoordinates();
             if (lengthBetweenTwoPoint(lastFrameCoordinates, currentFrameCoordinates) >= TRASH_HOLD_FOR_DISTANCE) {
-                std::cout << &"distance >= " [TRASH_HOLD_FOR_DISTANCE] << std::endl;
                 isRebuild = true;
                 rebuildPath(coordinatesOnMap, i);
-                std::cout << i << std::endl;
-                std::cout << length - 1 << std::endl;
                 break;
             }
         }

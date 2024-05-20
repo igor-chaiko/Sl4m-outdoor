@@ -1,8 +1,10 @@
 #include "../headers/TrafficSigns.h"
 #include <opencv2/img_hash.hpp>
 
-std::vector<cv::Mat> TrafficSigns::findSigns(const cv::Mat &image) {
-    std::vector<cv::Mat> res;
+TrafficSigns::TrafficSigns() = default;
+
+std::vector<std::pair<cv::Mat, std::string>> TrafficSigns::findSigns(const cv::Mat &image) {
+    std::vector<std::pair<cv::Mat, std::string>> res;
     cv::Mat image_hsv, dilateMask;
     std::vector<cv::Mat> masks;
 
@@ -19,6 +21,8 @@ std::vector<cv::Mat> TrafficSigns::findSigns(const cv::Mat &image) {
     cv::Mat red_mask;
     cv::addWeighted(mask1, 1.0, mask2, 1.0, 0.0, red_mask);
     masks.push_back(red_mask);
+    cv::imshow("r_mask", red_mask);
+    cv::waitKey(1);
 
     cv::Scalar lower_yellow(35, 70, 50);
     cv::Scalar upper_yellow(40, 255, 255);
@@ -63,7 +67,14 @@ std::vector<cv::Mat> TrafficSigns::findSigns(const cv::Mat &image) {
                     cv::Rect bounding_rect = cv::boundingRect(contour);
 
                     cv::Mat contour_image = image(bounding_rect).clone();
-                    res.push_back(contour_image);
+                    std::string location;
+                    if (bounding_rect.x + bounding_rect.width/2 < image.cols) {
+                        location = "left";
+                    } else {
+                        location = "right";
+                    }
+
+                    res.emplace_back(contour_image, location);
                 }
             }
         }
@@ -77,16 +88,17 @@ std::vector<std::pair<cv::Mat, std::string>> TrafficSigns::processSigns(const cv
     double currentSimilarity;
     cv::Ptr<cv::img_hash::ImgHashBase> hashFunc;
     hashFunc = cv::img_hash::PHash::create();
-    TrafficSigns::frameNum++;
-    std::vector<cv::Mat> subTotal = TrafficSigns::findSigns(image);
+    frameNum++;
+    std::vector<std::pair<cv::Mat, std::string>> subTotal = TrafficSigns::findSigns(image);
     std::vector<std::pair<cv::Mat, std::string>> result;
 
-    for (cv::Mat& sign : subTotal) {
+    for (const std::pair<cv::Mat, std::string>& signPair : subTotal) {
+        cv::Mat sign = signPair.first;
         newSign = true;
         cv::Mat currHash;
         hashFunc->compute(sign, currHash);
 
-        for (const std::pair<int, cv::Mat>& pair : TrafficSigns::metSigns) {
+        for (const std::pair<int, cv::Mat>& pair : metSigns) {
             int frameNumInPair = pair.first;
             currentSimilarity = hashFunc->compare(pair.second, currHash);
             if (currentSimilarity < SIMILARITY && frameNum - frameNumInPair < DISTANCE_BETWEEN_TWO) {
@@ -96,15 +108,8 @@ std::vector<std::pair<cv::Mat, std::string>> TrafficSigns::processSigns(const cv
         }
 
         if (newSign) {
-            cv::Rect bounding_rect = cv::boundingRect(sign);
-            std::string location;
-            if (bounding_rect.x < (sign.cols / 2)) {
-                location = "left";
-            } else {
-                location = "right";
-            }
-
-            result.emplace_back(sign, location);
+            metSigns.emplace_back(frameNum, currHash);
+            result.emplace_back(sign, signPair.second);
         }
     }
 
