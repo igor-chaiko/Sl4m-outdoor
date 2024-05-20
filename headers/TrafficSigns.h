@@ -4,7 +4,7 @@
 #include "opencv2/opencv.hpp"
 #define AREA_LOWER_BOUND 10000
 #define AREA_UPPER_BOUND 40000
-#define SIMILARITY 26
+#define SIMILARITY 30
 #define DISTANCE_BETWEEN_TWO 250
 
 class TrafficSigns {

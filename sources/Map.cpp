@@ -65,7 +65,7 @@ void Map::showMap(int delay) {
     double coefficient = maxCoordinate * COEFFICIENT_FOR_SCALE / ((double) canvasSize / 2);
 
     if (isRebuild) {
-        isRebuild = false;
+        isRebuild = true;
 
         this->canvas = cv::Mat::zeros(canvasSize, canvasSize, CV_8UC3);//заполняем чёрными пикселями
         drawAxes(this->canvas);//рисуем стрелочки
@@ -104,16 +104,6 @@ void Map::showMap(int delay) {
             double deltaX = tmpPoint.x - lastPoint.x;
             double deltaY = tmpPoint.y - lastPoint.y;
             cv::Point2d signPoint;
-
-            //Должно быть наоборот но так работает
-            if (mapPoint.getLeftSign()) {
-                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
-                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
-            }
-            if (mapPoint.getRightSign()) {
-                signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
-                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
-            }
 
             lastPoint = tmpPoint;
         }
@@ -170,18 +160,39 @@ void Map::showMap(int delay) {
             cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), AXES_THICKNESS);
 
 
-            /////РИСУЕМ ЗНАКИ
             double deltaX = tmpPoint.x - lastPoint.x;
             double deltaY = tmpPoint.y - lastPoint.y;
             cv::Point2d signPoint;
-            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getLeftSign()) {
-                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
-                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+            for (std::pair<cv::Mat, std::string> pair : this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].signs) {
+                if (pair.second == "left"){
+                    signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+                    cv::Point2d vector = signPoint - tmpPoint;
+                    vector = vector / cv::norm(vector);
+                    signPoint = cv::Point2d(tmpPoint.x + vector.x, tmpPoint.y + vector.y);
+                    cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+
+                }
+                if (pair.second == "right") {
+                    signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+                    cv::Point2d vector = signPoint - tmpPoint;
+                    vector = vector / cv::norm(vector);
+                    signPoint = cv::Point2d(tmpPoint.x + vector.x, tmpPoint.y + vector.y);
+                    cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+
+                }
+
             }
-            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getRightSign()) {
-                signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
-                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
-            }
+            /////РИСУЕМ ЗНАКИ
+
+
+//            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn]) {
+//                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+//                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+//            }
+//            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].getRightSign()) {
+//                signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+//                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
+//            }
 
 
         }
