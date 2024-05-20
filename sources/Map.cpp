@@ -104,6 +104,35 @@ void Map::showMap(int delay) {
             double deltaX = tmpPoint.x - lastPoint.x;
             double deltaY = tmpPoint.y - lastPoint.y;
             cv::Point2d signPoint;
+            std::cout << mapPoint.signs.size() << std::endl;
+            int right_counter = 1;
+            int left_counter = 1;
+            for (std::pair<cv::Mat, std::string> pair : mapPoint.signs) {
+                cv::Mat sign = pair.first;
+                cv::resize(sign, sign, cv::Size(SIGN_SIZE, SIGN_SIZE));
+                if (pair.second == "left"){
+                    signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+                    cv::Point2d vector = signPoint - tmpPoint;
+                    vector = vector / cv::norm(vector);
+                    signPoint = cv::Point2d(tmpPoint.x + vector.x * SIGN_SIZE * left_counter, tmpPoint.y + vector.y * SIGN_SIZE * left_counter);
+                    cv::Mat roi = canvas(cv::Rect(tmpPoint.x + vector.x * SIGN_SIZE * left_counter,
+                                                  tmpPoint.y + vector.y * SIGN_SIZE * left_counter,
+                                                  SIGN_SIZE, SIGN_SIZE));
+                    sign.copyTo(roi);
+                }
+                if (pair.second == "right") {
+                    signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+                    cv::Point2d vector = signPoint - tmpPoint;
+                    vector = vector / cv::norm(vector);
+                    signPoint = cv::Point2d(tmpPoint.x + vector.x * SIGN_SIZE * right_counter, tmpPoint.y + vector.y * SIGN_SIZE * right_counter);
+                    cv::Mat roi = canvas(cv::Rect(tmpPoint.x + vector.x * SIGN_SIZE * right_counter,
+                                                  tmpPoint.y + vector.y * SIGN_SIZE * right_counter,
+                                                  SIGN_SIZE, SIGN_SIZE));
+                    sign.copyTo(roi);
+
+                }
+
+            }
 
             lastPoint = tmpPoint;
         }
@@ -159,32 +188,32 @@ void Map::showMap(int delay) {
             cv::circle(this->canvas, tmpPoint, POINT_RADIUS, cv::Scalar(255, 0, 255), AXES_THICKNESS);
             cv::arrowedLine(this->canvas, lastPoint, tmpPoint, cv::Scalar(0, 255, 255), AXES_THICKNESS);
 
-
-            double deltaX = tmpPoint.x - lastPoint.x;
-            double deltaY = tmpPoint.y - lastPoint.y;
-            cv::Point2d signPoint;
-            for (std::pair<cv::Mat, std::string> pair : this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].signs) {
-                if (pair.second == "left"){
-                    signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
-                    cv::Point2d vector = signPoint - tmpPoint;
-                    vector = vector / cv::norm(vector);
-                    signPoint = cv::Point2d(tmpPoint.x + vector.x, tmpPoint.y + vector.y);
-                    cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
-
-                }
-                if (pair.second == "right") {
-                    signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
-                    cv::Point2d vector = signPoint - tmpPoint;
-                    vector = vector / cv::norm(vector);
-                    signPoint = cv::Point2d(tmpPoint.x + vector.x, tmpPoint.y + vector.y);
-                    cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
-
-                }
-
-            }
             /////РИСУЕМ ЗНАКИ
+//            double deltaX = tmpPoint.x - lastPoint.x;
+//            double deltaY = tmpPoint.y - lastPoint.y;
+//            cv::Point2d signPoint;
+//            std::cout << this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].signs.size() << std::endl;
+//            for (std::pair<cv::Mat, std::string> pair : this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn].signs) {
+//                if (pair.second == "left"){
+//                    signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
+//                    cv::Point2d vector = signPoint - tmpPoint;
+//                    vector = vector / cv::norm(vector);
+//                    signPoint = cv::Point2d(tmpPoint.x + vector.x, tmpPoint.y + vector.y);
+//                    cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 100);
+//
+//                }
+//                if (pair.second == "right") {
+//                    signPoint = cv::Point2d(tmpPoint.x + deltaY, tmpPoint.y - deltaX);
+//                    cv::Point2d vector = signPoint - tmpPoint;
+//                    vector = vector / cv::norm(vector);
+//                    signPoint = cv::Point2d(tmpPoint.x + vector.x, tmpPoint.y + vector.y);
+//                    cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 100);
+//
+//                }
+//
+//            }
 
-
+//????????????????????
 //            if (this->coordinatesOnMap[indexOfCurrentPointThatNeedsToBeDrawn]) {
 //                signPoint = cv::Point2d(tmpPoint.x - deltaY, tmpPoint.y + deltaX);
 //                cv::circle(this->canvas, signPoint, POINT_RADIUS, cv::Scalar(255, 255, 255), 5);
