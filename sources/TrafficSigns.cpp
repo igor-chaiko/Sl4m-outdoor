@@ -21,7 +21,6 @@ std::vector<std::pair<cv::Mat, std::string>> TrafficSigns::findSigns(const cv::M
     cv::Mat red_mask;
     cv::addWeighted(mask1, 1.0, mask2, 1.0, 0.0, red_mask);
     masks.push_back(red_mask);
-    cv::imshow("r_mask", red_mask);
     cv::waitKey(1);
 
     cv::Scalar lower_yellow(35, 70, 50);

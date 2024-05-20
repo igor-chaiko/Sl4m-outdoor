@@ -203,11 +203,16 @@ void startProcessing() {
         if (i % 15 == 0) {
             currentMapPoint.setRightSign(true);
         }
-
+        //signsForDrawing
         map.addPoint(currentMapPoint);
 
         loopCheck(map.getMapPoints(), map.getIsRebuild());
-
+        for (std::pair<cv::Mat, std::string> pair : signsForDrawing) {
+            cv::Mat image = pair.first;
+            std::string direction = pair.second;
+            cv::imshow("sign", image);
+            std::cout << direction << std::endl;
+        }
 
         image1 = image2;
         descriptors1 = descriptors2;
