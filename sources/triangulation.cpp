@@ -1,7 +1,8 @@
 #include <opencv2/opencv.hpp>
 #include "../headers/triangulation.h"
+#include "../headers/adaptRecoverPose.h"
 
-cv::Ptr<cv::ORB> orb = cv::ORB::create();
+cv::Ptr<cv::ORB> orb = cv::ORB::create(1000);
 cv::BFMatcher bfMatcher(cv::NORM_HAMMING);
 
 void extractKeyPointsAndDescriptors(const cv::Mat &image, std::vector<cv::KeyPoint> &keypoints, cv::Mat &descriptors) {
@@ -25,76 +26,81 @@ void drawAndDisplayMatches(const cv::Mat &firstFrame, const cv::Mat &secondFrame
                            const std::vector<cv::DMatch> &goodMatches) {
     cv::Mat imgMatches;
     cv::drawMatches(firstFrame, keyPoints1, secondFrame, keyPoints2, goodMatches, imgMatches);
+    cv::resizeWindow("Matches", 1800, 600);
     cv::namedWindow("Matches", cv::WINDOW_NORMAL);
     cv::imshow("Matches", imgMatches);
     cv::waitKey(1);
 }
 
-void normalizeCoordinates4to3(cv::Mat &matrix) {
-    for (int i = 0; i < matrix.cols; i++) {
-        matrix.col(i) = matrix.col(i) / matrix.at<double>(3, i);
+void normalizeCoordinates4(cv::Mat &matrix) {
+    if (matrix.rows != 4) {
+        std::cout << matrix << std::endl;
+        return;
     }
-    matrix = matrix.rowRange(0, matrix.rows - 1);
+
+    matrix.row(0) /= matrix.row(3);
+    matrix.row(1) /= matrix.row(3);
+    matrix.row(2) /= matrix.row(3);
+    matrix.row(3) /= matrix.row(3);
 }
 
-void matrixAddVector(cv::Mat &matrix, const cv::Mat &vector) {
-    for (int col = 0; col < matrix.cols; ++col) {
-        matrix.col(col) += vector;
+cv::Mat choseCorrectPoints(cv::Mat &src, cv::Mat &mask) {
+    int countCorrect = 0;
+    for (int i = 0; i < mask.rows; i++) {
+        countCorrect += mask.at<char>(i, 0);
     }
-}
 
-void filterTriangulatedPoints(cv::Mat &points) {
-    cv::Mat result(3, 0, CV_64F);
+    cv::Mat globalTP(3, countCorrect, CV_64F);
 
-    for (int j = 0; j < points.cols; ++j) {
-        if (abs(points.at<double>(0, j)) < MAX_FEATURE_DISTANCE
-            & abs(points.at<double>(1, j)) < MAX_FEATURE_DISTANCE
-            & abs(points.at<double>(2, j)) < MAX_FEATURE_DISTANCE
-            & points.at<double>(2, j) > 0) {
-            cv::Mat newCol = points.col(j);
-            newCol.at<double>(2, 0) = -newCol.at<double>(2, 0);
-            hconcat(result, newCol, result);
-
+    int curPos = 0;
+    for (int i = 0; i < src.cols; i++) {
+        if (mask.at<char>(i, 0)) {
+            for (int j = 0; j < 3; j++) {
+                globalTP.at<double>(j, curPos) = src.at<double>(j, i);
+            }
+            curPos++;
+        }
+        if (curPos == countCorrect) {
+            break;
         }
     }
 
-    points = result;
+    return globalTP;
 }
 
 cv::Mat
 performTriangulation(const std::vector<cv::Point2d> &matchedPoints1, const std::vector<cv::Point2d> &matchedPoints2,
                      const cv::Mat &cameraMatrix, const cv::Mat &P1, cv::Mat &P2) {
-    cv::Mat E = cv::findEssentialMat(matchedPoints1, matchedPoints2, cameraMatrix);
+    cv::Mat R, t, triangulatedPoints, mask;
 
-    cv::Mat R, t, triangulatedPoints;
-    cv::recoverPose(E, matchedPoints1, matchedPoints2, cameraMatrix, R, t, DISTANCE_THRESH, cv::noArray(),
-                    triangulatedPoints);
+    cv::Mat E = cv::findEssentialMat(matchedPoints1, matchedPoints2, cameraMatrix,
+                                     cv::RANSAC, 0.999, 1.0, 1000, mask);
 
-    cv::Mat tmp;
-    cv::hconcat(R, t, tmp);
-    cv::Mat globalMovement = R * t;
+    adaptRecoverPose(E, matchedPoints1, matchedPoints2, cameraMatrix, R, t,
+                     DISTANCE_THRESH, mask, triangulatedPoints);
 
-    cv::Mat newRow = (cv::Mat_<double>(1, 4) << 0, 0, 0, 1);
-    tmp.push_back(newRow);
-    P2 = P1 * tmp;
+//    cv::Mat tmp;
+//    cv::hconcat(R, t, tmp);
+//    cv::Mat newRow = (cv::Mat_<double>(1, 4) << 0, 0, 0, 1);
+//    tmp.push_back(newRow);
+//    P2 = P1 * tmp;
+    P2.colRange(0, 3) = R * P1.colRange(0, 3);
+    P2.col(3) = P1.col(3) + P1.colRange(0, 3) * t;
 
-    normalizeCoordinates4to3(triangulatedPoints);
+    //cv::triangulatePoints(cameraMatrix * P1, cameraMatrix * P2, matchedPoints1, matchedPoints2, triangulatedPoints);
 
-    filterTriangulatedPoints(triangulatedPoints);
+    normalizeCoordinates4(triangulatedPoints);
 
-    cv::Mat R1 = P1(cv::Rect(0, 0, 3, 3));
-    cv::Mat t1 = P1(cv::Rect(3, 0, 1, 3));
+    triangulatedPoints = P1 * triangulatedPoints;
 
-    cv::Mat globalTP(3, 0, CV_64F);
+    cv::Mat globalTP = choseCorrectPoints(triangulatedPoints, mask);
 
-    if (!triangulatedPoints.empty()) {
-        globalTP = R1 * triangulatedPoints;
-
-        matrixAddVector(globalTP, t1);
-
-//        std::cout << P1 << std::endl;
-//        std::cout << globalTP << std::endl;
-    }
+//    cv::Mat R1 = P1.colRange(0, 3);
+//    cv::Mat t1 = P1.col(3);
+//    if (!globalTP.empty()) {
+//        globalTP = R1 * globalTP;
+//        matrixAddVector(globalTP, t1);
+//    }
 
     return globalTP;
 }
@@ -122,5 +128,14 @@ cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, con
         matchedPoints2.push_back(keyPoints2[match.trainIdx].pt);
     }
 
-    return performTriangulation(matchedPoints1, matchedPoints2, cameraMatrix, P1, P2);
+    cv::Mat points = performTriangulation(matchedPoints1, matchedPoints2, cameraMatrix, P1, P2);
+
+    cv::drawKeypoints(firstFrame, keyPoints1, firstFrame, cv::Scalar::all(-1), cv::DrawMatchesFlags::DEFAULT);
+
+
+    imshow("Image with Points", firstFrame);
+    cv::resizeWindow("Image with Points", 900, 600);
+    cv::namedWindow("Image with Points", cv::WINDOW_NORMAL);
+    //cv::waitKey(0);
+    return points;
 }

@@ -44,21 +44,8 @@ void Map::isCoordinateMoreThanMax(double x, double y) {
 }
 
 
-void Map::addFeaturesPoint(cv::Mat mat) {
-    this->features.push_back(mat);
-
-    //int weight = mat.rows;
-    int height = mat.cols;
-
-//    std::cout << mat << std::endl;
-
-    for (int i = 0; i < height; i++) {
-        double y = mat.at<double>(2, i);
-        double z = mat.at<double>(1, i);
-        double x = mat.at<double>(0, i);
-
-        //isCoordinateMoreThanMax(x, y);
-    }
+void Map::addFeaturesPoint(const cv::Mat& mat) {
+    this->features.push_back(mat.clone());
 }
 
 void Map::showMap(int delay) {

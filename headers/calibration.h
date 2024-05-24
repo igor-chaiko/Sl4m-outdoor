@@ -4,4 +4,6 @@
 
 void calibration();
 
+int videoCalibration();
+
 #endif //SL4M_OUTDOOR_CALIBRATION_H

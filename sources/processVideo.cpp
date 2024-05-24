@@ -186,17 +186,11 @@ void startProcessing() {
 
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
-        //Т.к. на первой итерации координаты плохие, пропускаем их.
-        if (isFirstOperation) {
-            isFirstOperation = false;
-        } else {
-            //map.addFeaturesPoint(points3D);
-        }
+        map.addFeaturesPoint(points3D);
 
         cv::Mat imageHash2;
         func->compute(image2, imageHash2);
-        MapPoint currentMapPoint = MapPoint(P2, points,
-                                            imageHash2);
+        MapPoint currentMapPoint = MapPoint(P2, points,imageHash2);
 
 
         for (std::pair<cv::Mat, std::string> pair : signsForDrawing) {
@@ -211,7 +205,7 @@ void startProcessing() {
         descriptors1 = descriptors2;
         P1 = currentMapPoint.getGlobalCoordinates();
 
-        if (cv::waitKey(30) == 27) {
+        if (cv::waitKey(1) == 27) {
             break;
         }
         map.showMap(1);
