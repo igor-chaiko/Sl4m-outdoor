@@ -1,4 +1,4 @@
-#include "opencv4/opencv2/opencv.hpp"
+#include "opencv2/opencv.hpp"
 #include "../headers/adaptRecoverPose.h"
 
 using namespace cv;
@@ -137,21 +137,21 @@ int adaptRecoverPose(InputArray E, InputArray _points1, InputArray _points2,
     int good4 = countNonZero(mask4);
 
     if (good1 >= good2 && good1 >= good3 && good1 >= good4) {
-        std::cout << good1 << " out of " << points1.cols << std::endl;
+//        std::cout << good1 << " out of " << points1.cols << std::endl;
         if (triangulatedPoints.needed()) allTriangulations[0].copyTo(triangulatedPoints);
         R1.copyTo(_R);
         t.copyTo(_t);
         if (_mask.needed()) mask1.copyTo(_mask);
         return good1;
     } else if (good2 >= good1 && good2 >= good3 && good2 >= good4) {
-        std::cout << good2 << " out of " << points1.cols << std::endl;
+//        std::cout << good2 << " out of " << points1.cols << std::endl;
         if (triangulatedPoints.needed()) allTriangulations[1].copyTo(triangulatedPoints);
         R2.copyTo(_R);
         t.copyTo(_t);
         if (_mask.needed()) mask2.copyTo(_mask);
         return good2;
     } else if (good3 >= good1 && good3 >= good2 && good3 >= good4) {
-        std::cout << good3 << " out of " << points1.cols << std::endl;
+//        std::cout << good3 << " out of " << points1.cols << std::endl;
         if (triangulatedPoints.needed()) allTriangulations[2].copyTo(triangulatedPoints);
         t = -t;
         R1.copyTo(_R);
@@ -159,7 +159,7 @@ int adaptRecoverPose(InputArray E, InputArray _points1, InputArray _points2,
         if (_mask.needed()) mask3.copyTo(_mask);
         return good3;
     } else {
-        std::cout << good4 << " out of " << points1.cols << std::endl;
+//        std::cout << good4 << " out of " << points1.cols << std::endl;
         if (triangulatedPoints.needed()) allTriangulations[3].copyTo(triangulatedPoints);
         t = -t;
         R2.copyTo(_R);
