@@ -6,10 +6,14 @@
 #include <vector>
 
 #define WINDOW_NAME "Map"
-#define WINDOW_SIZE_IN_PIXELS 700
+#define WINDOW_SIZE_IN_PIXELS_SAVE 2000
+#define WINDOW_SIZE_IN_PIXELS_SHOW 1000
+#define CONSTANT_FOR_SIGNS 5
+#define AXES_THICKNESS 2
 #define COEFFICIENT_FOR_SCALE 1.3
 #define POINT_RADIUS 3
-#define FEATURES_RADIUS 1
+#define FEATURES_RADIUS 3
+#define SIGN_SIZE 20
 
 #define CONST_FOR_SCALE 5
 
@@ -25,10 +29,10 @@ class Map {
     bool isRebuild;//Изменилась ли максимальная координата с последней отрисовки true - да | false - нет
     cv::Mat canvas;//Полотно, которое будет хранит уже отрисованную карту
 
-
     void drawAxes(cv::Mat canvas) const;
 
     cv::Point2d transformationOfCoordinatesToMatrixView(cv::Point2d point) const;
+
 
 
     void isCoordinateMoreThanMax(MapPoint point);
@@ -50,6 +54,7 @@ public:
     std::vector<MapPoint> &getMapPoints();
 
     bool &getIsRebuild();
+    void saveMap(const std::string& path);
 };
 
 #endif //SL4M_OUTDOOR_MAP_H

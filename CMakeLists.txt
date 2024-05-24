@@ -21,5 +21,8 @@ add_executable(Sl4m_outdoor sources/main.cpp
         sources/loopChecker.cpp
         sources/adaptRecoverPose.cpp
         headers/adaptRecoverPose.h
+        sources/TrafficSigns.cpp
+        headers/TrafficSigns.h
+        sources/trafficSign.cpp
 )
 target_link_libraries(Sl4m_outdoor ${OpenCV_LIBS})

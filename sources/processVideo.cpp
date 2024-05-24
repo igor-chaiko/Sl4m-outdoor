@@ -8,9 +8,10 @@
 #include "../headers/Map.h"
 #include "../headers/triangulation.h"
 #include "../headers/loopChecker.h"
+#include "../headers/TrafficSigns.h"
 
 cv::Mat image2;
-
+int n = 0;
 /**
  * Метод проверяет количество мэтчей.
  * Проверяем все кадры с конца.
@@ -63,16 +64,21 @@ std::vector<cv::Mat> shiftValues(const std::vector<cv::Mat> &frames) {
  * @return -    0 - нашли пул кадров.
  *              1 - не нашли.
  */
-int getFramesPool(std::vector<cv::Mat> &frames, cv::VideoCapture cap) {
+int getFramesPool(std::vector<cv::Mat> &frames, cv::VideoCapture cap, TrafficSigns &trafficSigns,
+                  std::vector<std::pair<cv::Mat, std::string>> &signsForDrawing) {
     cv::Mat frame;
 
     frames = shiftValues(frames);
 
     for (int i = static_cast<int>(frames.size()); i < NUMBER_OF_FRAMES_IN_POOL; i++) {
         cap >> frame;
-
         if (frame.empty()) {
             return -1;
+        }
+
+        std::vector<std::pair<cv::Mat, std::string>> signs = trafficSigns.processSigns(frame);
+        for (const std::pair<cv::Mat, std::string>& pair : signs) {
+            signsForDrawing.push_back(pair);
         }
 
         frames.push_back(frame);
@@ -160,11 +166,14 @@ void startProcessing() {
     MapPoint firstPoint = MapPoint(P1, points, imageHash1);
     Map map = Map();
     map.addPoint(firstPoint);
+    TrafficSigns trafficSigns = TrafficSigns();
+    std::vector<std::pair<cv::Mat, std::string>> signsForDrawing;
 
     bool isFirstOperation = true;
+    int i = 0;
 
     while (true) {
-        if (getFramesPool(framePool, cap) == -1) {
+        if (getFramesPool(framePool, cap, trafficSigns, signsForDrawing) == -1) {
             break;
         }
 
@@ -183,10 +192,14 @@ void startProcessing() {
         func->compute(image2, imageHash2);
         MapPoint currentMapPoint = MapPoint(P2, points,imageHash2);
 
+
+        for (std::pair<cv::Mat, std::string> pair : signsForDrawing) {
+            currentMapPoint.signs.push_back(pair);
+        }
+        signsForDrawing.clear();
         map.addPoint(currentMapPoint);
 
         loopCheck(map.getMapPoints(), map.getIsRebuild());
-
 
         image1 = image2;
         descriptors1 = descriptors2;
@@ -196,12 +209,9 @@ void startProcessing() {
             break;
         }
         map.showMap(1);
+        map.saveMap("../resources/map.jpg");
 
-
-//        if (isFirstOperation) {
-//            cv::waitKey(0);
-//            isFirstOperation = false;
-//        }
+        i++;
     }
 
     map.showMap(0);

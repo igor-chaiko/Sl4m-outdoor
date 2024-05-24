@@ -3,6 +3,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <vector>
+#include "trafficSign.h"
 
 class MapPoint {
 private:
@@ -16,6 +17,8 @@ private:
     cv::Mat P;
 
 public:
+    std::vector<std::pair<cv::Mat, std::string>> signs;
+
     MapPoint(const cv::Mat &P, std::vector<cv::Point2d> localCoordinates, cv::Mat hash);
 
     void setGlobalCoordinates(const cv::Mat &newP);
