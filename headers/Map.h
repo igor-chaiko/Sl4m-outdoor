@@ -40,7 +40,7 @@ public:
     Map();
 
     //Метод добавляет фичи для отрисовки. (де факто будет отрисовываться окружение, ждём пока Рустам пофиксит, после тестим)
-    void addFeaturesPoint(cv::Mat mat);
+    void addFeaturesPoint(const cv::Mat& mat);
 
     //Метод добавляет point для отрисовки
     void addPoint(const MapPoint &point);

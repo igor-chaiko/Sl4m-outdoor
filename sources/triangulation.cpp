@@ -1,7 +1,8 @@
 #include <opencv2/opencv.hpp>
 #include "../headers/triangulation.h"
+#include "../headers/adaptRecoverPose.h"
 
-cv::Ptr<cv::ORB> orb = cv::ORB::create();
+cv::Ptr<cv::ORB> orb = cv::ORB::create(1000);
 cv::BFMatcher bfMatcher(cv::NORM_HAMMING);
 
 void extractKeyPointsAndDescriptors(const cv::Mat &image, std::vector<cv::KeyPoint> &keypoints, cv::Mat &descriptors) {
@@ -25,24 +26,22 @@ void drawAndDisplayMatches(const cv::Mat &firstFrame, const cv::Mat &secondFrame
                            const std::vector<cv::DMatch> &goodMatches) {
     cv::Mat imgMatches;
     cv::drawMatches(firstFrame, keyPoints1, secondFrame, keyPoints2, goodMatches, imgMatches);
-    cv::resizeWindow("Matches", 1000, 600);
+    cv::resizeWindow("Matches", 1800, 600);
     cv::namedWindow("Matches", cv::WINDOW_NORMAL);
     cv::imshow("Matches", imgMatches);
     cv::waitKey(1);
 }
 
-void normalizeCoordinates4to3(cv::Mat &matrix) {
-    for (int i = 0; i < matrix.cols; i++) {
-        matrix.col(i) = matrix.col(i) / matrix.at<double>(3, i);
+void normalizeCoordinates4(cv::Mat &matrix) {
+    if (matrix.rows != 4) {
+        std::cout << matrix << std::endl;
+        return;
     }
-    matrix = matrix.rowRange(0, matrix.rows - 1);
 
-}
-
-void matrixAddVector(cv::Mat &matrix, const cv::Mat &vector) {
-    for (int col = 0; col < matrix.cols; ++col) {
-        matrix.col(col) += vector;
-    }
+    matrix.row(0) /= matrix.row(3);
+    matrix.row(1) /= matrix.row(3);
+    matrix.row(2) /= matrix.row(3);
+    matrix.row(3) /= matrix.row(3);
 }
 
 cv::Mat choseCorrectPoints(cv::Mat &src, cv::Mat &mask) {
@@ -77,8 +76,8 @@ performTriangulation(const std::vector<cv::Point2d> &matchedPoints1, const std::
     cv::Mat E = cv::findEssentialMat(matchedPoints1, matchedPoints2, cameraMatrix,
                                      cv::RANSAC, 0.999, 1.0, 1000, mask);
 
-    cv::recoverPose(E, matchedPoints1, matchedPoints2, cameraMatrix, R, t,
-                    DISTANCE_THRESH, mask);
+    adaptRecoverPose(E, matchedPoints1, matchedPoints2, cameraMatrix, R, t,
+                     DISTANCE_THRESH, mask, triangulatedPoints);
 
 //    cv::Mat tmp;
 //    cv::hconcat(R, t, tmp);
@@ -88,18 +87,20 @@ performTriangulation(const std::vector<cv::Point2d> &matchedPoints1, const std::
     P2.colRange(0, 3) = R * P1.colRange(0, 3);
     P2.col(3) = P1.col(3) + P1.colRange(0, 3) * t;
 
-    cv::triangulatePoints(cameraMatrix * P1, cameraMatrix * P2, matchedPoints1, matchedPoints2, triangulatedPoints);
+    //cv::triangulatePoints(cameraMatrix * P1, cameraMatrix * P2, matchedPoints1, matchedPoints2, triangulatedPoints);
 
-    normalizeCoordinates4to3(triangulatedPoints);
+    normalizeCoordinates4(triangulatedPoints);
+
+    triangulatedPoints = P1 * triangulatedPoints;
 
     cv::Mat globalTP = choseCorrectPoints(triangulatedPoints, mask);
 
-    cv::Mat R1 = P1.colRange(0, 3);
-    cv::Mat t1 = P1.col(3);
-    if (!globalTP.empty()) {
-        globalTP = R1 * globalTP;
-        matrixAddVector(globalTP, t1);
-    }
+//    cv::Mat R1 = P1.colRange(0, 3);
+//    cv::Mat t1 = P1.col(3);
+//    if (!globalTP.empty()) {
+//        globalTP = R1 * globalTP;
+//        matrixAddVector(globalTP, t1);
+//    }
 
     return globalTP;
 }
@@ -129,21 +130,12 @@ cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, con
 
     cv::Mat points = performTriangulation(matchedPoints1, matchedPoints2, cameraMatrix, P1, P2);
 
-//    for (auto i: matchedPoints1) {
-//        circle(firstFrame, i, 3, cv::Scalar(0, 255, 0), -1);
-//    }
-//    imshow("Image with Points", firstFrame);
-//    //cv::waitKey(0);
+    cv::drawKeypoints(firstFrame, keyPoints1, firstFrame, cv::Scalar::all(-1), cv::DrawMatchesFlags::DEFAULT);
+
+
+    imshow("Image with Points", firstFrame);
+    cv::resizeWindow("Image with Points", 900, 600);
+    cv::namedWindow("Image with Points", cv::WINDOW_NORMAL);
+    //cv::waitKey(0);
     return points;
 }
-
-void findSolutionByDecomposing(cv::Mat &cameraMatrix, cv::Mat &essentialMatrix,
-                               cv::Mat &rOut, cv::Mat& tOut,
-                               cv::Mat &triangulatedPoints) {
-    cv::Mat R1, R2, t;
-
-    cv::decomposeEssentialMat(essentialMatrix, R1, R2, t);
-
-
-
-};

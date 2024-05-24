@@ -192,7 +192,7 @@ void startProcessing() {
         descriptors1 = descriptors2;
         P1 = currentMapPoint.getGlobalCoordinates();
 
-        if (cv::waitKey(30) == 27) {
+        if (cv::waitKey(1) == 27) {
             break;
         }
         map.showMap(1);
