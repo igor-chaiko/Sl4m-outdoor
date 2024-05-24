@@ -76,7 +76,9 @@ int getFramesPool(std::vector<cv::Mat> &frames, cv::VideoCapture cap, TrafficSig
             return -1;
         }
 
-        std::vector<std::pair<cv::Mat, std::string>> signs = trafficSigns.processSigns(frame);
+        std::vector<std::pair<cv::Mat, std::string>> signs;
+        if (i % 5 == 0)
+            signs = trafficSigns.processSigns(frame);
         for (const std::pair<cv::Mat, std::string>& pair : signs) {
             signsForDrawing.push_back(pair);
         }
@@ -186,7 +188,7 @@ void startProcessing() {
 
         points3D = triangulation(image1, image2, cameraMatrix, P1, P2);
 
-        map.addFeaturesPoint(points3D);
+//        map.addFeaturesPoint(points3D);
 
         cv::Mat imageHash2;
         func->compute(image2, imageHash2);

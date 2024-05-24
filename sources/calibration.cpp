@@ -107,7 +107,7 @@ int calibration() {
 
 
 int videoCalibration() {
-    std::string videoPath = "../resources/calibrationHD5.MOV";
+    std::string videoPath = "calibration.MOV";
 
     cv::VideoCapture cap(videoPath);
     if (!cap.isOpened()) {
@@ -131,7 +131,13 @@ int videoCalibration() {
     std::vector<cv::Point2f> corners;
     int successCount = 0;
 
+    int i = 0;
     while (cap.read(frame)) {
+        i++;
+
+        if (i & 1) {
+            continue;
+        }
         cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
 
         bool found = cv::findChessboardCorners(gray, boardSize, corners,
@@ -162,7 +168,7 @@ int videoCalibration() {
     std::cout << "Camera Matrix:\n" << cameraMatrix << "\n\n";
     std::cout << "Distortion Coefficients:\n" << distCoefficients << "\n";
 
-    std::ofstream calib("../resources/videoCalibratedCamera5.txt");
+    std::ofstream calib("../resources/igorCalibratedCameraHD.txt");
     if (calib.is_open()) {
         for (int i = 0; i < cameraMatrix.rows; ++i) {
             for (int j = 0; j < cameraMatrix.cols; ++j) {

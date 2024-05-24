@@ -133,9 +133,9 @@ cv::Mat triangulation(const cv::Mat &firstFrame, const cv::Mat &secondFrame, con
     cv::drawKeypoints(firstFrame, keyPoints1, firstFrame, cv::Scalar::all(-1), cv::DrawMatchesFlags::DEFAULT);
 
 
-    imshow("Image with Points", firstFrame);
-    cv::resizeWindow("Image with Points", 900, 600);
-    cv::namedWindow("Image with Points", cv::WINDOW_NORMAL);
+//    imshow("Image with Points", firstFrame);
+//    cv::resizeWindow("Image with Points", 900, 600);
+//    cv::namedWindow("Image with Points", cv::WINDOW_NORMAL);
     //cv::waitKey(0);
     return points;
 }
