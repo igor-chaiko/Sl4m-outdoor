@@ -1,5 +1,5 @@
-## Slam outdoor project
-# Vision
+# Slam outdoor project
+## Vision
 SL4M-outdoor
 
 SLAM(Simultaneous Localization And Mapping) is a technology that allows you to determine the location of an object and at the same time create a map of the surrounding area. Nowadays this technology is used in many areas, such as virtual and augmented reality, robotics, Medical equipment and in many others. We will implement outdoor SLAM(works in OpenSpace) that uses only one camera and zero sensors, but also indoor SLAM(CloseSpace) exists.
