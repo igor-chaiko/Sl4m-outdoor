@@ -15,5 +15,6 @@ The goal of our project is to write software that will process the video
 and build a map of the area using it.
 We will use C++ as the main programming language and the OpenCV library to implement SLAM, Notion will also be used for task tracking.
 
-Use case:
+Use case(we mapped our software result with picture from yandex maps. Origin video: https://disk.yandex.ru/i/8QTmhjjwehEI0w ):
+
 ![image](https://github.com/igor-chaiko/Sl4m-outdoor/assets/116939226/8b4869d2-5c1d-42b5-bcfe-e574a11e34d2)
